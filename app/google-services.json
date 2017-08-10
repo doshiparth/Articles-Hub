@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_number": "446946203299",
+    "project_id": "firebase-articles-hub"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446946203299:android:7884885c70583b6e",
+        "android_client_info": {
+          "package_name": "com.example.parthdoshi.articleshub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446946203299-clta9ld5p8knvp4pv846qqs1pdkis9a9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDy0eIJp0zoNDNy4uGbxyuMVtEclUwfFZk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-103646869-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
