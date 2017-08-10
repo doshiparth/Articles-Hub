@@ -82,7 +82,10 @@ public class HomePage extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.nav_home_profile_page) {
+        if (id == R.id.nav_home_page) {
+            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeArticlesPage()).commit();
+
+        } else if (id == R.id.nav_home_profile_page) {
             fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeProfilePage()).commit();
 
         } else if (id == R.id.nav_home_tags_page) {
@@ -93,9 +96,9 @@ public class HomePage extends AppCompatActivity
 
 //        } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+//        } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+//        } else if (id == R.id.nav_send) {
 
         }
 
