@@ -2,7 +2,7 @@
     <!-- Strings related to start page -->
     <string name="app_name">ArticlesHub</string>
     <string name="startPageWelcomeText">Welcome to Articles Hub</string>
-    <string name="startPageSigninButton">Sign In</string>
+    <string name="startPageSignupButton">Sign Up</string>
     <string name="startPageLoginButton">Log In</string>
     <string name="startPageNewUserText">New User?</string>
     <string name="startPageRegUserText">Registered User?</string>
