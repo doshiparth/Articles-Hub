@@ -2,9 +2,6 @@ package com.example.parthdoshi.articleshub;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -36,7 +33,7 @@ public class HomePage extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -83,16 +80,16 @@ public class HomePage extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.nav_home_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeArticlesPage()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new FragmentHomeArticlesPage()).commit();
 
         } else if (id == R.id.nav_home_profile_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeProfilePage()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new FragmentHomeProfilePage()).commit();
 
         } else if (id == R.id.nav_home_tags_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeTagsPage()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new FragmentHomeTagsPage()).commit();
 
         } else if (id == R.id.nav_home_about_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeAboutPage()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new FragmentHomeAboutPage()).commit();
 
 //        } else if (id == R.id.nav_manage) {
 

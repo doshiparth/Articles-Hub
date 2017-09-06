@@ -11,14 +11,14 @@ import android.view.ViewGroup;
  * Created by Parth on 30-07-2017.
  */
 
-public class HomeArticlesPage extends Fragment {
+public class FragmentHomeTagsPage extends Fragment {
 
     View v1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        v1 = inflater.inflate(R.layout.home_articles_page, container, false);
+        v1 = inflater.inflate(R.layout.fragment_home_tags_page, container, false);
         return v1;
     }
 }
