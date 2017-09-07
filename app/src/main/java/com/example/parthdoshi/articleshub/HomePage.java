@@ -14,12 +14,15 @@ import android.view.MenuItem;
 
 public class HomePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawer;
+    NavigationView navigationView;
+    Toolbar toolbar = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -31,13 +34,13 @@ public class HomePage extends AppCompatActivity
             }
         });*/
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -78,6 +81,26 @@ public class HomePage extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        switch (id){
+
+            case R.id.nav_home_page:
+                Intent home= new Intent(HomePage.this,HomePage.class);
+                startActivity(home);
+                break;
+            case R.id.nav_home_profile_page:
+                Intent profile= new Intent(HomePage.this,HomeProfilePage.class);
+                startActivity(profile);
+                break;
+            case R.id.nav_home_tags_page:
+                Intent tags= new Intent(HomePage.this,HomeTagsPage.class);
+                startActivity(tags);
+                break;
+            case R.id.nav_home_about_page:
+                Intent about= new Intent(HomePage.this,HomeAboutPage.class);
+                startActivity(about);
+                break;
+
+        /*
         FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.nav_home_page) {
@@ -109,7 +132,7 @@ public class HomePage extends AppCompatActivity
 //        } else if (id == R.id.nav_share) {
 
 //        } else if (id == R.id.nav_send) {
-
+*/
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

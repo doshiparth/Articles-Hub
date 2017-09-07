@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.parthdoshi.articleshub.HomePage"
-    tools:showIn="@layout/app_bar_home_page">
+    tools:context="com.example.parthdoshi.articleshub.HomeAboutPage"
+    tools:showIn="@layout/app_bar_home_about_page">
 
     <TextView
-        android:id="@+id/home_page_text"
+        android:id="@+id/about_page_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home page"
+        android:text="About page"
         android:textSize="20sp" />
 
 </RelativeLayout>

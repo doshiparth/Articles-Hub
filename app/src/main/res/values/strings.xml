@@ -36,4 +36,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_home_profile_page">HomeProfilePage</string>
+    <string name="title_activity_home_about_page">HomeAboutPage</string>
+    <string name="title_activity_home_tags_page">HomeTagsPage</string>
+    <string name="title_activity_home_articles_page">HomeArticlesPage</string>
 </resources>
