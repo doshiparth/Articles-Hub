@@ -49,7 +49,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.parthdoshi.articleshub.SelectTagPage" />
         </activity>
-        <activity android:name=".ArticleDisplayPage"></activity>
+        <activity android:name=".ArticleDisplayPage" />
+        <activity android:name=".HomeProfilePage" />
+        <activity android:name=".HomeAboutPage" />
+        <activity android:name=".HomeTagsPage" />
+        <activity android:name=".HomeArticlesPage"></activity>
     </application>
 
 </manifest>

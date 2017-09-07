@@ -8,7 +8,7 @@ public class SelectPageModel {
     String TagName;
     int TagValue;
 
-    SelectPageModel(String TagName, int TagValue){
+    public SelectPageModel(String TagName, int TagValue){
         this.TagName = TagName;
         this.TagValue = TagValue;
     }

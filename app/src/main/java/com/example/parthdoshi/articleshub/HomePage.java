@@ -1,6 +1,7 @@
 package com.example.parthdoshi.articleshub;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -80,16 +81,28 @@ public class HomePage extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.nav_home_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new FragmentHomeArticlesPage()).commit();
+            //fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeArticlesPage()).commit();
+            Intent myIntent = new Intent(HomePage.this, HomeArticlesPage.class);
+            //myIntent.putExtra("key", value); //Optional parameters
+            HomePage.this.startActivity(myIntent);
 
         } else if (id == R.id.nav_home_profile_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new FragmentHomeProfilePage()).commit();
+            //fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeProfilePage()).commit();
+            Intent myIntent = new Intent(HomePage.this, HomeProfilePage.class);
+            //myIntent.putExtra("key", value); //Optional parameters
+            HomePage.this.startActivity(myIntent);
 
         } else if (id == R.id.nav_home_tags_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new FragmentHomeTagsPage()).commit();
+            //fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeTagsPage()).commit();
+            Intent myIntent = new Intent(HomePage.this, HomeTagsPage.class);
+            //myIntent.putExtra("key", value); //Optional parameters
+            HomePage.this.startActivity(myIntent);
 
         } else if (id == R.id.nav_home_about_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_home_frame, new FragmentHomeAboutPage()).commit();
+            //fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeAboutPage()).commit();
+            Intent myIntent = new Intent(HomePage.this, HomeAboutPage.class);
+            //myIntent.putExtra("key", value); //Optional parameters
+            HomePage.this.startActivity(myIntent);
 
 //        } else if (id == R.id.nav_manage) {
 
