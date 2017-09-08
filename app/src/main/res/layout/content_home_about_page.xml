@@ -12,7 +12,16 @@
         android:id="@+id/about_page_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="About page"
+        android:layout_centerHorizontal="true"
+        android:text="About Articles Hub"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about_page_text"
+        android:layout_marginTop="20dp"
+        android:text="@string/about_description"
         android:textSize="20sp" />
 
 </RelativeLayout>
