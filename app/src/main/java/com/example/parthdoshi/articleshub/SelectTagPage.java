@@ -8,35 +8,35 @@ import android.widget.ListView;
 
 public class SelectTagPage extends AppCompatActivity {
     ListView lv;
-    SelectPageModel[] TagList;
+    SelectTagPageModel[] TagList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_tag_page);
         lv = (ListView) findViewById(R.id.select_page_listview);
-        TagList = new SelectPageModel[20];
-        TagList[0] = new SelectPageModel("Science", 0);
-        TagList[1] = new SelectPageModel("Education", 1);
-        TagList[2] = new SelectPageModel("Technology", 1);
-        TagList[3] = new SelectPageModel("Fashion", 0);
-        TagList[4] = new SelectPageModel("Gaming", 1);
-        TagList[5] = new SelectPageModel("Tag5", 1);
-        TagList[6] = new SelectPageModel("Tag6", 0);
-        TagList[7] = new SelectPageModel("Tag7", 1);
-        TagList[8] = new SelectPageModel("Tag8", 1);
-        TagList[9] = new SelectPageModel("Tag9", 1);
-        TagList[10] = new SelectPageModel("Tag10", 1);
-        TagList[11] = new SelectPageModel("Tag11", 0);
-        TagList[12] = new SelectPageModel("Tag12", 1);
-        TagList[13] = new SelectPageModel("Tag13", 1);
-        TagList[14] = new SelectPageModel("Tag14", 1);
-        TagList[15] = new SelectPageModel("Tag15", 0);
-        TagList[16] = new SelectPageModel("Tag16", 1);
-        TagList[17] = new SelectPageModel("Tag17", 0);
-        TagList[18] = new SelectPageModel("Tag18", 1);
-        TagList[19] = new SelectPageModel("Tag19", 0);
+        TagList = new SelectTagPageModel[20];
+        TagList[0] = new SelectTagPageModel("Science", 0);
+        TagList[1] = new SelectTagPageModel("Education", 1);
+        TagList[2] = new SelectTagPageModel("Technology", 1);
+        TagList[3] = new SelectTagPageModel("Fashion", 0);
+        TagList[4] = new SelectTagPageModel("Gaming", 1);
+        TagList[5] = new SelectTagPageModel("Tag5", 1);
+        TagList[6] = new SelectTagPageModel("Tag6", 0);
+        TagList[7] = new SelectTagPageModel("Tag7", 1);
+        TagList[8] = new SelectTagPageModel("Tag8", 1);
+        TagList[9] = new SelectTagPageModel("Tag9", 1);
+        TagList[10] = new SelectTagPageModel("Tag10", 1);
+        TagList[11] = new SelectTagPageModel("Tag11", 0);
+        TagList[12] = new SelectTagPageModel("Tag12", 1);
+        TagList[13] = new SelectTagPageModel("Tag13", 1);
+        TagList[14] = new SelectTagPageModel("Tag14", 1);
+        TagList[15] = new SelectTagPageModel("Tag15", 0);
+        TagList[16] = new SelectTagPageModel("Tag16", 1);
+        TagList[17] = new SelectTagPageModel("Tag17", 0);
+        TagList[18] = new SelectTagPageModel("Tag18", 1);
+        TagList[19] = new SelectTagPageModel("Tag19", 0);
 
-        SelectPageCustomAdapter adapter = new SelectPageCustomAdapter(this, TagList);
+        SelectTagPageCustomAdapter adapter = new SelectTagPageCustomAdapter(this, TagList);
         lv.setAdapter(adapter);
     }
 

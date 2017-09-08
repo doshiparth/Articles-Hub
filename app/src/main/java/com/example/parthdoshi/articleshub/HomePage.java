@@ -11,12 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 public class HomePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar = null;
+
+    HomePageModel[] ArticleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,29 @@ public class HomePage extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Below is the original code for displaying content on HomePage
+
+        ArticleList = new HomePageModel[13];
+        ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");
+        ArticleList[1] = new HomePageModel("Article 1", "This is the metadata description of Article 1");
+        ArticleList[2] = new HomePageModel("Article 2", "This is the metadata description of Article 2");
+        ArticleList[3] = new HomePageModel("Article 3", "This is the metadata description of Article 3");
+        ArticleList[4] = new HomePageModel("Article 4", "This is the metadata description of Article 4");
+        ArticleList[5] = new HomePageModel("Article 5", "This is the metadata description of Article 5");
+        ArticleList[6] = new HomePageModel("Article 6", "This is the metadata description of Article 6");
+        ArticleList[7] = new HomePageModel("Article 7", "This is the metadata description of Article 7");
+        ArticleList[8] = new HomePageModel("Article 8", "This is the metadata description of Article 8");
+        ArticleList[9] = new HomePageModel("Article 9", "This is the metadata description of Article 9");
+        ArticleList[10] = new HomePageModel("Article 10", "This is the metadata description of Article 10");
+        ArticleList[11] = new HomePageModel("Article 11", "This is the metadata description of Article 11");
+        ArticleList[12] = new HomePageModel("Article 12", "This is the metadata description of Article 12");
+        ListView hplv = (ListView) findViewById(R.id.home_page_listview);
+        HomePageCustomAdapter homePageCustomAdapter = new HomePageCustomAdapter(this, ArticleList);
+        hplv.setAdapter(homePageCustomAdapter);
     }
+
+
 
     @Override
     public void onBackPressed() {

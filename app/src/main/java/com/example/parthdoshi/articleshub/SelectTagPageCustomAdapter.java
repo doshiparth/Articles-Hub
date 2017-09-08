@@ -11,11 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-class SelectPageCustomAdapter extends ArrayAdapter<SelectPageModel> {
-    SelectPageModel[] TagList = null;
+class SelectTagPageCustomAdapter extends ArrayAdapter<SelectTagPageModel> {
+    SelectTagPageModel[] TagList = null;
     Context context;
 
-    public SelectPageCustomAdapter(@NonNull Context context, SelectPageModel[] resource) {
+    public SelectTagPageCustomAdapter(@NonNull Context context, SelectTagPageModel[] resource) {
         super(context, R.layout.activity_select_tag_page_custom_row, resource);
         this.context = context;
         this.TagList = resource;

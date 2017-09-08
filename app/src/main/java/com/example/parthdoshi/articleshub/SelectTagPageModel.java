@@ -4,14 +4,14 @@ package com.example.parthdoshi.articleshub;
  * Created by Parth on 30-07-2017.
  */
 
-public class SelectPageModel {
+public class SelectTagPageModel {
     private String TagName;
     private int TagValue;
 
-    public SelectPageModel() {
+    public SelectTagPageModel() {
     }
 
-    public SelectPageModel(String TagName, int TagValue){
+    public SelectTagPageModel(String TagName, int TagValue){
         this.TagName = TagName;
         this.TagValue = TagValue;
     }

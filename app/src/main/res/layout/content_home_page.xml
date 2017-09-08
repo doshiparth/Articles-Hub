@@ -8,11 +8,19 @@
     tools:context="com.example.parthdoshi.articleshub.HomePage"
     tools:showIn="@layout/app_bar_home_page">
 
+    <!--
     <TextView
         android:id="@+id/home_page_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Home page"
         android:textSize="20sp" />
+        -->
+    <ListView
+        android:id="@+id/home_page_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
 
 </RelativeLayout>
