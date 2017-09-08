@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class HomePage extends AppCompatActivity
@@ -65,6 +67,18 @@ public class HomePage extends AppCompatActivity
         ListView hplv = (ListView) findViewById(R.id.home_page_listview);
         HomePageCustomAdapter homePageCustomAdapter = new HomePageCustomAdapter(this, ArticleList);
         hplv.setAdapter(homePageCustomAdapter);
+
+        hplv.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String articleHeading = ArticleList[i].getArticleHeading();
+                        Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
+                        myIntent.putExtra("ArticleHeading", articleHeading);
+                        startActivity(myIntent);
+                    }
+                }
+        );
     }
 
 
