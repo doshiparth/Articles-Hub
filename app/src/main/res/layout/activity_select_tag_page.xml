@@ -16,26 +16,19 @@
         android:layout_marginTop="17dp"
         android:text="@string/select_page_instruction"/>
 
-    <ScrollView
-        android:id="@+id/select_page_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/select_page_instruction"
-        android:layout_marginTop="12dp">
-
         <LinearLayout
             android:id="@+id/select_page_inner_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_below="@+id/select_page_instruction">
 
             <ListView
                 android:id="@+id/select_page_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
-    </ScrollView>
 
     <Button
         android:id="@+id/select_page_button"
@@ -44,7 +37,7 @@
         android:text="@string/select_page_button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignBottom="@+id/select_page_scroll_view"
+        android:layout_alignBottom="@+id/select_page_inner_layout"
         android:onClick="goToHome"/>
 
 </RelativeLayout>

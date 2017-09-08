@@ -11,16 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-/**
- * Created by Parth on 30-07-2017.
- */
-
-public class SelectPageCustomAdapter extends ArrayAdapter {
+class SelectPageCustomAdapter extends ArrayAdapter<SelectPageModel> {
     SelectPageModel[] TagList = null;
     Context context;
 
     public SelectPageCustomAdapter(@NonNull Context context, SelectPageModel[] resource) {
-        super(context, R.layout.activity_row_select_tag_page);
+        super(context, R.layout.activity_select_tag_page_custom_row, resource);
         this.context = context;
         this.TagList = resource;
     }
@@ -29,7 +25,7 @@ public class SelectPageCustomAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        convertView = inflater.inflate(R.layout.activity_row_select_tag_page, parent, false);
+        convertView = inflater.inflate(R.layout.activity_select_tag_page_custom_row, parent, false);
         TextView name = (TextView) convertView.findViewById(R.id.select_page_textview);
         CheckBox cb = (CheckBox) convertView.findViewById(R.id.select_page_checkbox);
         name.setText(TagList[position].getTagName());

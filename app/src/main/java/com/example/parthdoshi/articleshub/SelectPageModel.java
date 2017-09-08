@@ -5,8 +5,11 @@ package com.example.parthdoshi.articleshub;
  */
 
 public class SelectPageModel {
-    String TagName;
-    int TagValue;
+    private String TagName;
+    private int TagValue;
+
+    public SelectPageModel() {
+    }
 
     public SelectPageModel(String TagName, int TagValue){
         this.TagName = TagName;
@@ -19,5 +22,13 @@ public class SelectPageModel {
 
     public int getTagValue(){
         return this.TagValue;
+    }
+
+    public void setTagValue(int tagValue) {
+        TagValue = tagValue;
+    }
+
+    public void setTagName(String tagName) {
+        TagName = tagName;
     }
 }
