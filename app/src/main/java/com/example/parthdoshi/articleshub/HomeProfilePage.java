@@ -45,6 +45,10 @@ public class HomeProfilePage extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Below is the original code for displaying content on HomeProfilePage
+
+
     }
 
     @Override

@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.neel.articleshubapi.restapi.beans.ArticleDetail;
+
 public class HomePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;

@@ -9,10 +9,16 @@
     tools:showIn="@layout/app_bar_home_profile_page">
 
     <TextView
-        android:id="@+id/profile_page_text"
+        android:id="@+id/text_profile_page_emailid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile page"
+        android:text="Email ID"
         android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/text_profile_page_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textSize="20sp" />
 </RelativeLayout>
