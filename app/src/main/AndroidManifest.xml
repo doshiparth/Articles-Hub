@@ -72,6 +72,7 @@
             android:name=".HomeTagsPage"
             android:label="@string/title_activity_home_tags_page"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EditDetailPage"></activity>
     </application>
 
 </manifest>

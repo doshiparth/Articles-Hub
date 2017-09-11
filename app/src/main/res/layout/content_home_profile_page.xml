@@ -17,8 +17,30 @@
 
     <TextView
         android:id="@+id/text_profile_page_username"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_profile_page_emailid"
+        android:text="User Name"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/text_profile_page_userinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_profile_page_username"
+        android:text="User's Description"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_edit_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_profile_page_userinfo"
+        android:layout_marginTop="34dp"
+        android:text="Edit your details" />
+
+
 </RelativeLayout>

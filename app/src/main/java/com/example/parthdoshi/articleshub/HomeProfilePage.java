@@ -13,6 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
+import com.neel.articleshubapi.restapi.beans.UserDetail;
+import com.neel.articleshubapi.restapi.request.RequestTask;
+
+import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class HomeProfilePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -20,6 +28,13 @@ public class HomeProfilePage extends AppCompatActivity
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar = null;
+
+    TextView userEmailID;
+    TextView userName;
+    TextView userInfo;
+    Button editDetail;
+
+    String BASE_URL = "https://articleshub.herokuapp.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +63,23 @@ public class HomeProfilePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomeProfilePage
 
+        userEmailID = (TextView)findViewById(R.id.text_profile_page_emailid);
+        userName = (TextView)findViewById(R.id.text_profile_page_username);
+        userInfo = (TextView)findViewById(R.id.text_profile_page_userinfo);
+        editDetail = (Button) findViewById(R.id.btn_edit_detail);
 
+        String email;
+        userEmailID.setText();
+        userName.setText();
+        userInfo.setText();
+
+        editDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(HomeProfilePage.this, EditDetailPage.class);
+                startActivity(myIntent);
+            }
+        });
     }
 
     @Override

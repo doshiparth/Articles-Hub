@@ -13,15 +13,42 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="Article Title"
+        android:layout_centerHorizontal="true"
         android:textSize="35sp"/>
 
     <TextView
-        android:id="@+id/text_article_data"
-        android:layout_width="wrap_content"
+        android:id="@+id/text_author_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text_article_title"
-        android:text="The whole article will be displayed here line by line"
+        android:text="Author Name" />
+
+    <TextView
+        android:id="@+id/text_article_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Article Date"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="83dp"
+        android:layout_below="@+id/text_author_name" />
+
+    <TextView
+        android:id="@+id/text_article_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_author_name"
+        android:text="Article Tag" />
+
+    <TextView
+        android:id="@+id/text_article_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_article_tag"
+        android:layout_marginTop="12dp"
+        android:text="Article Content"
         android:textSize="15sp"/>
 
 </RelativeLayout>
