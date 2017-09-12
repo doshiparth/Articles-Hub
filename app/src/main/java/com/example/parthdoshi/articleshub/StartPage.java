@@ -10,7 +10,12 @@ public class StartPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start_page);
+
+        //Checking for internet connection
+        if(NetworkStatus.getInstance(this).isOnline())
+            setContentView(R.layout.activity_start_page);
+        else
+            NetworkStatus.getInstance(this).buildDialog(this).show();
     }
     public void signinOnClick(View v1){
         Intent myIntent = new Intent(StartPage.this, SignupPage.class);

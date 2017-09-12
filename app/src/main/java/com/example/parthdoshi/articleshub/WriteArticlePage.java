@@ -20,7 +20,13 @@ public class WriteArticlePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_article_page);
+
+        //Checking for internet connection
+        if(NetworkStatus.getInstance(this).isOnline())
+            setContentView(R.layout.activity_write_article_page);
+        else
+            NetworkStatus.getInstance(this).buildDialog(this).show();
+
         BASE_URL = getResources().getString(R.string.BASE_URL);
         ArticleDetail article = new ArticleDetail();
         article.setAuthor("doshi2");

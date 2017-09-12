@@ -24,7 +24,14 @@ public class HomeAboutPage extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_about_page);
+
+        //Checking for internet connection
+        if(NetworkStatus.getInstance(this).isOnline())
+            setContentView(R.layout.activity_home_about_page);
+        else
+            NetworkStatus.getInstance(this).buildDialog(this).show();
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

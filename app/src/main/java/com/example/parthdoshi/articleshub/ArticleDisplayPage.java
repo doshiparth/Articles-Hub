@@ -40,7 +40,13 @@ public class ArticleDisplayPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_article_display_page);
+
+        //Checking for internet connection
+        if(NetworkStatus.getInstance(this).isOnline())
+            setContentView(R.layout.activity_article_display_page);
+        else
+            NetworkStatus.getInstance(this).buildDialog(this).show();
+
 
         BASE_URL = getResources().getString(R.string.BASE_URL);
 

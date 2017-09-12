@@ -12,7 +12,13 @@ public class SelectTagPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_tag_page);
+
+        //Checking for internet connection
+        if(NetworkStatus.getInstance(this).isOnline())
+            setContentView(R.layout.activity_select_tag_page);
+        else
+            NetworkStatus.getInstance(this).buildDialog(this).show();
+
         lv = (ListView) findViewById(R.id.select_page_listview);
         TagList = new SelectTagPageModel[20];
         TagList[0] = new SelectTagPageModel("Science", 0);

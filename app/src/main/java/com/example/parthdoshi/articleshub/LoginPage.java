@@ -76,7 +76,14 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_page);
+
+        //Checking for internet connectivity
+        if(NetworkStatus.getInstance(this).isOnline())
+            setContentView(R.layout.activity_login_page);
+        else
+            NetworkStatus.getInstance(this).buildDialog(this).show();
+
+
         setupActionBar();
         // Set up the login form.
         BASE_URL = getResources().getString(R.string.BASE_URL);
