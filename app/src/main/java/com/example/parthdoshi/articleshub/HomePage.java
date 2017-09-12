@@ -16,14 +16,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.neel.articleshubapi.restapi.beans.ArticleDetail;
+import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
+import com.neel.articleshubapi.restapi.request.RequestTask;
+
+import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class HomePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar = null;
-
-    HomePageModel[] ArticleList;
+    String BASE_URL;
+    HomePageModel[] articleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +56,14 @@ public class HomePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomePage
 
-        ArticleList = new HomePageModel[13];
-        ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");
+        BASE_URL = getResources().getString(R.string.BASE_URL);
+        ShortArticleDetail[] articleDetails = getArticles();
+        articleList = new HomePageModel[articleDetails.length];
+        for(int i=0; i < articleDetails.length; i++){
+            articleList[i] = new HomePageModel(articleDetails[i]);
+        }
+
+        /*ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");
         ArticleList[1] = new HomePageModel("Article 1", "This is the metadata description of Article 1");
         ArticleList[2] = new HomePageModel("Article 2", "This is the metadata description of Article 2");
         ArticleList[3] = new HomePageModel("Article 3", "This is the metadata description of Article 3");
@@ -66,21 +76,31 @@ public class HomePage extends AppCompatActivity
         ArticleList[10] = new HomePageModel("Article 10", "This is the metadata description of Article 10");
         ArticleList[11] = new HomePageModel("Article 11", "This is the metadata description of Article 11");
         ArticleList[12] = new HomePageModel("Article 12", "This is the metadata description of Article 12");
+        */
+
         ListView hplv = (ListView) findViewById(R.id.home_page_listview);
-        HomePageCustomAdapter homePageCustomAdapter = new HomePageCustomAdapter(this, ArticleList);
+        HomePageCustomAdapter homePageCustomAdapter = new HomePageCustomAdapter(this, articleList);
         hplv.setAdapter(homePageCustomAdapter);
 
         hplv.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        String articleHeading = ArticleList[i].getArticleHeading();
+                        String articleHeading = articleList[i].getArticleHeading();
                         Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
-                        myIntent.putExtra("ArticleHeading", articleHeading);
+                        myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
                         startActivity(myIntent);
                     }
                 }
         );
+    }
+
+    private ShortArticleDetail[] getArticles (){
+        RequestTask<ShortArticleDetail[]> rt2=
+                new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
+        rt2.execute(BASE_URL+"/tag/tag1/articles");
+        ShortArticleDetail[] ud=rt2.getObj();
+        return ud;
     }
 
 

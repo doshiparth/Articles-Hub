@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,10 +31,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.neel.articleshubapi.restapi.beans.UserDetail;
+import com.neel.articleshubapi.restapi.request.AddRequestTask;
+import com.neel.articleshubapi.restapi.request.HeaderTools;
+
+import org.springframework.http.HttpMethod;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.example.parthdoshi.articleshub.R.id.login;
 
 /**
  * A login screen that offers login via email/password.
@@ -62,6 +70,8 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String BASE_URL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +79,7 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
         setContentView(R.layout.activity_login_page);
         setupActionBar();
         // Set up the login form.
+        BASE_URL = getResources().getString(R.string.BASE_URL);
         mEmailView = (AutoCompleteTextView) findViewById(R.id.login_page_email);
         populateAutoComplete();
 
@@ -76,7 +87,7 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -94,6 +105,14 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private String doLogin(UserDetail login){
+        AddRequestTask<String,UserDetail> rt4=new AddRequestTask<String, UserDetail>(String.class,
+                login, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON, HeaderTools.ACCEPT_TEXT);
+        rt4.execute(BASE_URL+"/authentication/"+login.getUserName());
+        String token = rt4.getObj();
+        return token;
     }
 
     private void populateAutoComplete() {
@@ -199,6 +218,17 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+        }
+        UserDetail loginObj =new UserDetail();
+        loginObj.setUserName("uhhfgghgf");
+        loginObj.setPass("pa");
+        String token = doLogin(loginObj);
+        if(token!=null && !token.equalsIgnoreCase("")){
+            // login successfull
+            Log.i("doshi login", token);
+        }else{
+            // login fail
+            Log.i("doshi login", "login fail");
         }
     }
 

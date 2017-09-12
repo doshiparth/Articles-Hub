@@ -14,16 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartPage">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
+        <activity android:name=".StartPage"></activity>
         <activity
             android:name=".LoginPage"
             android:label="@string/title_activity_login_page"
@@ -59,7 +50,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.parthdoshi.articleshub.SelectTagPage" />
         </activity>
-        <activity android:name=".ArticleDisplayPage" />
+        <activity android:name=".ArticleDisplayPage">
+
+        </activity>
         <activity
             android:name=".HomeProfilePage"
             android:label="@string/title_activity_home_profile_page"
@@ -72,7 +65,13 @@
             android:name=".HomeTagsPage"
             android:label="@string/title_activity_home_tags_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EditDetailPage"></activity>
+        <activity android:name=".EditDetailPage" />
+        <activity android:name=".WriteArticlePage">
+
+        </activity>
+        <activity android:name=".EditArticlePage">
+
+        </activity>
     </application>
 
 </manifest>

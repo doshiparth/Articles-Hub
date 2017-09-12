@@ -18,7 +18,10 @@ import android.widget.TextView;
 
 import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
 import com.neel.articleshubapi.restapi.beans.UserDetail;
+import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
+
+import org.springframework.http.HttpMethod;
 
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
@@ -32,7 +35,8 @@ public class HomeProfilePage extends AppCompatActivity
     TextView userEmailID;
     TextView userName;
     TextView userInfo;
-    Button editDetail;
+    Button editDetailButton;
+    Button logoutButton;
 
     String BASE_URL = "https://articleshub.herokuapp.com";
 
@@ -66,18 +70,26 @@ public class HomeProfilePage extends AppCompatActivity
         userEmailID = (TextView)findViewById(R.id.text_profile_page_emailid);
         userName = (TextView)findViewById(R.id.text_profile_page_username);
         userInfo = (TextView)findViewById(R.id.text_profile_page_userinfo);
-        editDetail = (Button) findViewById(R.id.btn_edit_detail);
-
+        editDetailButton = (Button) findViewById(R.id.btn_edit_detail);
+        logoutButton = (Button) findViewById(R.id.btn_logout);
         String email;
-        userEmailID.setText();
-        userName.setText();
-        userInfo.setText();
+        //userEmailID.setText();
+        //userName.setText();
+        //userInfo.setText();
 
-        editDetail.setOnClickListener(new View.OnClickListener() {
+        editDetailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(HomeProfilePage.this, EditDetailPage.class);
                 startActivity(myIntent);
+            }
+        });
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RequestTask<String> rt5=new RequestTask<String>(String.class, HttpMethod.DELETE,
+                        new HeaderTools.EntryImp("token","2c91a00e5e74e4b2015e758850c90003"));
+                rt5.execute(BASE_URL+"/authentication/doshi2");
             }
         });
     }

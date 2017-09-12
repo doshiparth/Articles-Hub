@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.neel.articleshubapi.restapi.beans.ArticleDetail;
+import com.neel.articleshubapi.restapi.beans.UserDetail;
+import com.neel.articleshubapi.restapi.request.AddRequestTask;
+import com.neel.articleshubapi.restapi.request.HeaderTools;
+
+import org.springframework.http.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +70,7 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String BASE_URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +78,8 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
         setContentView(R.layout.activity_signup_page);
         setupActionBar();
         // Set up the login form.
+        BASE_URL = getResources().getString(R.string.BASE_URL);
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.signup_page_email);
         populateAutoComplete();
 
@@ -94,6 +105,21 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
 
         mLoginFormView = findViewById(R.id.sigup_form);
         mProgressView = findViewById(R.id.signup_progress);
+    }
+
+    private void doSignUp(UserDetail user){
+        AddRequestTask<String,UserDetail> rt6=new AddRequestTask<String, UserDetail>(String.class,
+                user, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON);
+        rt6.execute(BASE_URL+"/user");
+        rt6.getObj();
+    }
+
+    private String doLogin(UserDetail login){
+        AddRequestTask<String,UserDetail> rt4=new AddRequestTask<String, UserDetail>(String.class,
+                login, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON, HeaderTools.ACCEPT_TEXT);
+        rt4.execute(BASE_URL+"/authentication/"+login.getUserName());
+        String token = rt4.getObj();
+        return token;
     }
 
     private void populateAutoComplete() {
@@ -199,6 +225,24 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+        }
+        UserDetail user = new UserDetail();
+        user.setEmailId("dos@hskdhd.skjsb");
+        user.setInfo("android test doshi");
+        user.setPass("123");
+        user.setUserName("doshi2");
+        doSignUp(user);
+
+        UserDetail loginObj =new UserDetail();
+        loginObj.setUserName(user.getUserName());
+        loginObj.setPass(user.getPass());
+        String token = doLogin(loginObj);
+        if(token!=null && !token.equalsIgnoreCase("")){
+            // sign up successfull
+            Log.i("doshi signup", token);
+        }else{
+            // sign up fail
+            Log.i("doshi signup", "login fail");
         }
     }
 

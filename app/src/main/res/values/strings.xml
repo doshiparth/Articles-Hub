@@ -41,6 +41,9 @@
     <string name="title_activity_home_tags_page">HomeTagsPage</string>
     <string name="title_activity_home_articles_page">HomeArticlesPage</string>
 
+    <string name="BASE_URL">https://articleshub.herokuapp.com</string>
+
+
     <string name="about_description">Articles Hub is a community based web service.
         It provides a platform for users to write their own articles on any topic of their choice by selecting one
         or more tags from the provided tags.</string>

@@ -42,5 +42,14 @@
         android:layout_marginTop="34dp"
         android:text="Edit your details" />
 
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/text_profile_page_username"
+        android:layout_below="@+id/btn_edit_detail"
+        android:layout_marginTop="21dp"
+        android:text="Logout" />
+
 
 </RelativeLayout>
