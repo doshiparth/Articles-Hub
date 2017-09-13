@@ -1,9 +1,9 @@
 package com.example.parthdoshi.articleshub;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,14 +16,10 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
-import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpMethod;
-
-import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class HomeProfilePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,7 +34,9 @@ public class HomeProfilePage extends AppCompatActivity
     Button editDetailButton;
     Button logoutButton;
 
-    String BASE_URL = "https://articleshub.herokuapp.com";
+
+    //Declaring SharedPreferences to access data from other login activity
+    public SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +47,17 @@ public class HomeProfilePage extends AppCompatActivity
             setContentView(R.layout.activity_home_profile_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
+
+        //Getting data from SharedPreferences
+        sharedPref = getSharedPreferences(FixedVars.PREF_USER_NAME, Context.MODE_PRIVATE);
+
+        String uName = "";
+        if (sharedPref.contains(FixedVars.PREF_USER_NAME))
+        {
+            uName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        }
+        //String[] tagList = uName.;
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,7 +104,7 @@ public class HomeProfilePage extends AppCompatActivity
             public void onClick(View view) {
                 RequestTask<String> rt5=new RequestTask<String>(String.class, HttpMethod.DELETE,
                         new HeaderTools.EntryImp("token","2c91a00e5e74e4b2015e758850c90003"));
-                rt5.execute(BASE_URL+"/authentication/doshi2");
+                rt5.execute(FixedVars.BASE_URL+"/authentication/doshi2");
             }
         });
     }

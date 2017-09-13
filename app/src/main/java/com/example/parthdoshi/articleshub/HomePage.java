@@ -1,13 +1,14 @@
 package com.example.parthdoshi.articleshub;
 
-import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
@@ -25,11 +25,13 @@ import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_J
 
 public class HomePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     DrawerLayout drawer;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     NavigationView navigationView;
     Toolbar toolbar = null;
-    String BASE_URL;
     HomePageModel[] articleList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class HomePage extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,8 +68,8 @@ public class HomePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomePage
 
-        BASE_URL = getResources().getString(R.string.BASE_URL);
         ShortArticleDetail[] articleDetails = getArticles();
+
         articleList = new HomePageModel[articleDetails.length];
         for(int i=0; i < articleDetails.length; i++){
             articleList[i] = new HomePageModel(articleDetails[i]);
@@ -96,7 +98,7 @@ public class HomePage extends AppCompatActivity
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        String articleHeading = articleList[i].getArticleHeading();
+                        //String articleHeading = articleList[i].getArticleHeading();
                         Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
                         myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
                         startActivity(myIntent);
@@ -108,7 +110,7 @@ public class HomePage extends AppCompatActivity
     private ShortArticleDetail[] getArticles (){
         RequestTask<ShortArticleDetail[]> rt2=
                 new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
-        rt2.execute(BASE_URL+"/tag/tag1/articles");
+        rt2.execute(FixedVars.BASE_URL+"/tag/tag1/articles");
         ShortArticleDetail[] ud=rt2.getObj();
         return ud;
     }

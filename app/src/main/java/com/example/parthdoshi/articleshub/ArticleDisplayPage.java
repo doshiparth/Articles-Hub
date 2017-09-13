@@ -55,14 +55,18 @@ public class ArticleDisplayPage extends AppCompatActivity {
         articleDate = (TextView) findViewById(R.id.text_article_date);
         articleTag = (TextView) findViewById(R.id.text_article_tag);
         articleContent = (TextView) findViewById(R.id.text_article_content);
+
         Bundle articleData = getIntent().getExtras();
         if(articleData==null){
             return;
         }
+
         String articleLink = articleData.getString("ArticleLink");
+
         RequestTask<ArticleDetail> rt=new RequestTask<>(ArticleDetail.class,CONTENT_TYPE_JSON);
         rt.execute(articleLink);
         final ArticleDetail article=rt.getObj();
+
         tagArray = new String[article.getTag().size()];
         Iterator<String> itr1= article.getTag().iterator();
         for(int i=0;i<tagArray.length;i++)

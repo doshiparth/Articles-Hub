@@ -3,7 +3,9 @@ package com.example.parthdoshi.articleshub;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -21,15 +23,12 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
-import static com.example.parthdoshi.articleshub.R.id.login;
 
 /**
  * A login screen that offers login via email/password.
@@ -66,11 +64,24 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
+    private AutoCompleteTextView userNameText;
+    private EditText passwordText;
+    Button loginPageButton;
     private View mProgressView;
     private View mLoginFormView;
-    private String BASE_URL;
+    String token;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+
+    // User name (make variable public to access from outside)
+    public static final String PREF_USER_NAME = "userName";
+
+    // Token received from server (make variable public to access from outside)
+    public static final String PREF_LOGIN_TOKEN = "loginToken";
+
+    // Token received from server (make variable public to access from outside)
+    public static final String PREF_NAME = "tokenInfo";
+
 
 
     @Override
@@ -85,13 +96,19 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
 
 
         setupActionBar();
+
+        //Creating a SharedPreferences file
+        sharedPref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
         // Set up the login form.
-        BASE_URL = getResources().getString(R.string.BASE_URL);
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.login_page_email);
+        userNameText = (AutoCompleteTextView) findViewById(R.id.login_page_uname);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.login_page_password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        passwordText = (EditText) findViewById(R.id.login_page_password);
+
+        /*TODO Remove these comments if error or exceptions generated.
+        passwordText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == login || id == EditorInfo.IME_NULL) {
@@ -100,10 +117,10 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
                 }
                 return false;
             }
-        });
+        });*/
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_log_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        loginPageButton = (Button) findViewById(R.id.btn_log_in_page);
+        loginPageButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -117,8 +134,8 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
     private String doLogin(UserDetail login){
         AddRequestTask<String,UserDetail> rt4=new AddRequestTask<String, UserDetail>(String.class,
                 login, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON, HeaderTools.ACCEPT_TEXT);
-        rt4.execute(BASE_URL+"/authentication/"+login.getUserName());
-        String token = rt4.getObj();
+        rt4.execute(FixedVars.BASE_URL+"/authentication/"+userNameText.toString());
+        token = rt4.getObj();
         return token;
     }
 
@@ -138,7 +155,7 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(userNameText, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -187,31 +204,31 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
         }
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        userNameText.setError(null);
+        passwordText.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String email = userNameText.getText().toString();
+        String password = passwordText.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+            passwordText.setError(getString(R.string.error_invalid_password));
+            focusView = passwordText;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+            userNameText.setError(getString(R.string.error_field_required));
+            focusView = userNameText;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+            userNameText.setError(getString(R.string.error_invalid_email));
+            focusView = userNameText;
             cancel = true;
         }
 
@@ -227,8 +244,8 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
             mAuthTask.execute((Void) null);
         }
         UserDetail loginObj =new UserDetail();
-        loginObj.setUserName("uhhfgghgf");
-        loginObj.setPass("pa");
+        loginObj.setUserName(String.valueOf(userNameText.getText()));
+        loginObj.setPass(String.valueOf(passwordText.getText()));
         String token = doLogin(loginObj);
         if(token!=null && !token.equalsIgnoreCase("")){
             // login successfull
@@ -325,7 +342,7 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
                 new ArrayAdapter<>(LoginPage.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        userNameText.setAdapter(adapter);
     }
 
 
@@ -383,11 +400,17 @@ public class LoginPage extends AppCompatActivity implements LoaderCallbacks<Curs
 
             if (success) {
                 finish();
-                Intent myIntent = new Intent(LoginPage.this, SelectTagPage.class);
+
+                //Saving details for using in other activities using SharedPreferences.
+                editor.putString(PREF_USER_NAME,userNameText.getText().toString());
+                editor.putString(PREF_LOGIN_TOKEN, token);
+                editor.apply();
+
+                Intent myIntent = new Intent(LoginPage.this, HomePage.class);
                 startActivity(myIntent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                passwordText.setError(getString(R.string.error_incorrect_password));
+                passwordText.requestFocus();
             }
         }
 

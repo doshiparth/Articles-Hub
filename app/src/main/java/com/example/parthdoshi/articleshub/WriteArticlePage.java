@@ -15,8 +15,6 @@ import java.util.Set;
 
 public class WriteArticlePage extends AppCompatActivity {
 
-    private String BASE_URL;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +25,6 @@ public class WriteArticlePage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
-        BASE_URL = getResources().getString(R.string.BASE_URL);
         ArticleDetail article = new ArticleDetail();
         article.setAuthor("doshi2");
         article.setTitle("android test article");
@@ -40,6 +37,6 @@ public class WriteArticlePage extends AppCompatActivity {
         AddRequestTask<String,ArticleDetail> rt6=new AddRequestTask<String, ArticleDetail>(String.class,
                 article, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
                 HeaderTools.makeAuth("2c91a00e5e74e4b2015e758850c90003"));
-        rt6.execute(BASE_URL+"/article");
+        rt6.execute(FixedVars.BASE_URL+"/article");
     }
 }

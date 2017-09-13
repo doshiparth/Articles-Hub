@@ -10,7 +10,7 @@
 
     <!-- Strings related to login page -->
     <string name="prompt_email">Enter your Email</string>
-    <string name="prompt_reg_email">Enter your registered Email</string>
+    <string name="prompt_reg_uname">Enter your registered Username</string>
     <string name="prompt_password">Password</string>
     <string name="action_log_in">Log in</string>
     <string name="action_sign_up">Create Account</string>
@@ -47,4 +47,6 @@
     <string name="about_description">Articles Hub is a community based web service.
         It provides a platform for users to write their own articles on any topic of their choice by selecting one
         or more tags from the provided tags.</string>
+
+    <string name="select_tag_page_search_title">Search here</string>
 </resources>

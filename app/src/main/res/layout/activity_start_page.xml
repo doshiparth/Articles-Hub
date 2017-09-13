@@ -5,7 +5,7 @@
     android:id="@+id/startPageLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C0C0C0"
+    android:background="@drawable/app_background"
     tools:context="com.example.parthdoshi.articleshub.StartPage">
 
     <TextView

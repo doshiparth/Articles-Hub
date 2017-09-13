@@ -22,7 +22,6 @@ import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_J
 
 public class EditArticlePage extends AppCompatActivity {
 
-    private String BASE_URL;
     Button deleteArticle;
 
     @Override
@@ -35,11 +34,10 @@ public class EditArticlePage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
-        BASE_URL = getResources().getString(R.string.BASE_URL);
         ArticleDetail articleNew = new ArticleDetail();
 
         RequestTask<ArticleDetail> rt=new RequestTask<>(ArticleDetail.class,CONTENT_TYPE_JSON);
-        rt.execute(BASE_URL+"/article/"+21);             //Change Article id from last page
+        rt.execute(FixedVars.BASE_URL+"/article/"+21);             //Change Article id from last page
         final ArticleDetail articleOld=rt.getObj();
         //if(articleOld==null)
         Log.i("Sorry","author old "+articleOld.getAuthor());
@@ -64,7 +62,7 @@ public class EditArticlePage extends AppCompatActivity {
         AddRequestTask<String,ArticleDetail> rt6=new AddRequestTask<String, ArticleDetail>(String.class,
                 articleNew, HttpMethod.PUT, HeaderTools.CONTENT_TYPE_JSON,
                 HeaderTools.makeAuth("2c91a00e5e74e4b2015e758850c90003"));
-        rt6.execute(BASE_URL+"/article/"+articleNew.getArticleId());
+        rt6.execute(FixedVars.BASE_URL+"/article/"+articleNew.getArticleId());
         rt6.getObj();
 
         deleteArticle = (Button) findViewById(R.id.btn_delete_article);
@@ -74,7 +72,7 @@ public class EditArticlePage extends AppCompatActivity {
                 RequestTask<String> rt5=new RequestTask<String>(String.class, HttpMethod.DELETE,
                         HeaderTools.ACCEPT_JSON,
                         HeaderTools.makeAuth("2c91a00e5e74e4b2015e758850c90003"));
-                rt5.execute(BASE_URL+"/article/"+articleOld.getArticleId());
+                rt5.execute(FixedVars.BASE_URL+"/article/"+articleOld.getArticleId());
                 rt5.getObj();
             }
         });

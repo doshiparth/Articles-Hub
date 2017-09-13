@@ -31,7 +31,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
@@ -70,7 +69,6 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private String BASE_URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +82,6 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
 
         setupActionBar();
         // Set up the login form.
-        BASE_URL = getResources().getString(R.string.BASE_URL);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.signup_page_email);
         populateAutoComplete();
@@ -116,14 +113,14 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
     private void doSignUp(UserDetail user){
         AddRequestTask<String,UserDetail> rt6=new AddRequestTask<String, UserDetail>(String.class,
                 user, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON);
-        rt6.execute(BASE_URL+"/user");
+        rt6.execute(FixedVars.BASE_URL+"/user");
         rt6.getObj();
     }
 
     private String doLogin(UserDetail login){
         AddRequestTask<String,UserDetail> rt4=new AddRequestTask<String, UserDetail>(String.class,
                 login, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON, HeaderTools.ACCEPT_TEXT);
-        rt4.execute(BASE_URL+"/authentication/"+login.getUserName());
+        rt4.execute(FixedVars.BASE_URL+"/authentication/"+login.getUserName());
         String token = rt4.getObj();
         return token;
     }

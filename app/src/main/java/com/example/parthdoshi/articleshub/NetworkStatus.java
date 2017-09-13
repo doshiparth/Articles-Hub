@@ -42,9 +42,7 @@ public class NetworkStatus {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 return;
-
                 //finish();
             }
         });
