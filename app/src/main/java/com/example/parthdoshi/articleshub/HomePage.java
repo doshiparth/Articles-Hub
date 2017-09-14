@@ -31,7 +31,8 @@ public class HomePage extends AppCompatActivity
     NavigationView navigationView;
     Toolbar toolbar = null;
     HomePageModel[] articleList;
-
+    String[] selectedTags;
+    ShortArticleDetail[] articleDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +43,16 @@ public class HomePage extends AppCompatActivity
             setContentView(R.layout.activity_home_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //Getting selected tags from SelectTagPage using intent.     (Use SharedPref instead)
+        Intent intent = getIntent();
+        selectedTags = intent.getStringArrayExtra("selectedTags");
+
+        //Floating Button for writing new Article.
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,14 +75,16 @@ public class HomePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomePage
 
-        ShortArticleDetail[] articleDetails = getArticles();
-
-        articleList = new HomePageModel[articleDetails.length];
-        for(int i=0; i < articleDetails.length; i++){
-            articleList[i] = new HomePageModel(articleDetails[i]);
+        for(String oneTag : selectedTags){
+            articleDetails = getArticles(oneTag);
+            articleList = new HomePageModel[articleDetails.length];
+            for(int i=0; i < articleDetails.length; i++){
+                articleList[i] = new HomePageModel(articleDetails[i]);
+            }
         }
 
-        /*ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");
+        /*
+        ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");
         ArticleList[1] = new HomePageModel("Article 1", "This is the metadata description of Article 1");
         ArticleList[2] = new HomePageModel("Article 2", "This is the metadata description of Article 2");
         ArticleList[3] = new HomePageModel("Article 3", "This is the metadata description of Article 3");
@@ -107,10 +116,10 @@ public class HomePage extends AppCompatActivity
         );
     }
 
-    private ShortArticleDetail[] getArticles (){
+    private ShortArticleDetail[] getArticles (String oneTag){
         RequestTask<ShortArticleDetail[]> rt2=
                 new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
-        rt2.execute(FixedVars.BASE_URL+"/tag/tag1/articles");
+        rt2.execute(""+FixedVars.BASE_URL+"/tag/"+oneTag+"/articles");
         ShortArticleDetail[] ud=rt2.getObj();
         return ud;
     }

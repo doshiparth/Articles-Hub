@@ -4,52 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/startPageLayout"
     android:layout_width="match_parent"
+    android:background="@drawable/app_background7"
     android:layout_height="match_parent"
-    android:background="@drawable/app_background"
     tools:context="com.example.parthdoshi.articleshub.StartPage">
 
-    <TextView
-        android:id="@+id/startPageWelcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/startPageWelcomeText"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        android:layout_marginTop="82dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/startPageLogo"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:src="@drawable/image_logo"
+        android:contentDescription="Application Logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp" />
 
     <Button
         android:id="@+id/startPageSignupButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/startPageWelcomeText"
-        android:layout_below="@+id/startPageWelcomeText"
-        android:layout_marginStart="47dp"
-        android:layout_marginTop="138dp"
         android:onClick="signinOnClick"
-        android:text="@string/startPageSignupButton" />
+        android:text="@string/startPageSignupButton"
+        android:layout_below="@+id/startPageNewUserText"
+        android:layout_alignEnd="@+id/button" />
 
     <Button
         android:id="@+id/startPageLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/startPageWelcomeText"
-        android:layout_alignTop="@+id/startPageSignupButton"
-        android:layout_marginEnd="46dp"
         android:text="@string/startPageLoginButton"
-        android:onClick="loginOnClick"/>
+        android:onClick="loginOnClick"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="60dp" />
 
     <TextView
         android:id="@+id/startPageNewUserText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/startPageNewUserText"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:layout_alignBaseline="@+id/startPageRegUserText"
         android:layout_alignBottom="@+id/startPageRegUserText"
         android:layout_alignStart="@+id/startPageSignupButton"
@@ -60,7 +53,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/startPageRegUserText"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:layout_above="@+id/startPageLoginButton"
-        android:layout_alignEnd="@+id/startPageLoginButton" />
+        android:layout_alignStart="@+id/startPageLoginButton" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="124dp"
+        android:text="Go straight to the Home Page"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="skipOnClick"/>
 </RelativeLayout>

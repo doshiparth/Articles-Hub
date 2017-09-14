@@ -27,8 +27,8 @@ public class SelectTagPage extends AppCompatActivity {
             "Fashion",
             "Technology",
             "Gaming",
-            "One",
-            "Two",
+            "Tag1",
+            "Tag2",
             "Three",
             "Four",
             "Five",
@@ -37,6 +37,11 @@ public class SelectTagPage extends AppCompatActivity {
             "Eight",
             "Nine",
             "Ten"
+    };
+
+    String[] listSelected = {
+            "Tag1",
+            "Tag2"
     };
 
     @Override
@@ -107,8 +112,6 @@ public class SelectTagPage extends AppCompatActivity {
 
 
         /*
-        lv = (ListView) findViewById(R.id.select_page_listview);
-
         TagList = new SelectTagPageModel[20];
         TagList[0] = new SelectTagPageModel("Science", 0);
         TagList[1] = new SelectTagPageModel("Education", 1);
@@ -149,5 +152,7 @@ public class SelectTagPage extends AppCompatActivity {
     public void goToHome(View v){
         Intent myIntent = new Intent(SelectTagPage.this, HomePage.class);
         SelectTagPage.this.startActivity(myIntent);
+        myIntent.putExtra("selectedTags", listSelected);
+        startActivity(myIntent);
     }
 }

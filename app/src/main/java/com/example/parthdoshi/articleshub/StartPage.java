@@ -17,6 +17,8 @@ public class StartPage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
     }
+
+    //Applying actions on all three buttons
     public void signinOnClick(View v1){
         Intent myIntent = new Intent(StartPage.this, SignupPage.class);
         //myIntent.putExtra("key", value); //Optional parameters
@@ -24,6 +26,11 @@ public class StartPage extends AppCompatActivity {
     }
     public void loginOnClick(View v2){
         Intent myIntent = new Intent(StartPage.this, LoginPage.class);
+        //myIntent.putExtra("key", value); //Optional parameters
+        StartPage.this.startActivity(myIntent);
+    }
+    public void skipOnClick(View v3){
+        Intent myIntent = new Intent(StartPage.this, HomePage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);
     }

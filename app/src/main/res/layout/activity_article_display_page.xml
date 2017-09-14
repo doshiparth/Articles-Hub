@@ -13,7 +13,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="Article Title"
-        android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:textSize="35sp"/>
 
     <TextView
@@ -22,7 +22,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text_article_title"
-        android:text="Author Name" />
+        android:text="Author Name"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/text_article_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_author_name"
+        android:text="Article Tag"
+        android:textSize="15sp"/>
 
     <TextView
         android:id="@+id/text_article_date"
@@ -31,15 +41,8 @@
         android:text="Article Date"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="83dp"
-        android:layout_below="@+id/text_author_name" />
-
-    <TextView
-        android:id="@+id/text_article_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/text_author_name"
-        android:text="Article Tag" />
+        android:textSize="15sp"/>
 
     <TextView
         android:id="@+id/text_article_content"
@@ -48,8 +51,9 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text_article_tag"
         android:layout_marginTop="12dp"
+        android:inputType="textImeMultiLine"
         android:text="Article Content"
-        android:textSize="15sp"/>
+        android:textSize="20sp"/>
 
     <Button
         android:id="@+id/btn_like"
@@ -60,23 +64,26 @@
         android:layout_marginTop="22dp"
         android:text="Like" />
 
+    <EditText
+        android:id="@+id/edit_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_like"
+        android:layout_marginTop="10dp"
+        android:layout_above="@+id/btn_comment"
+        android:layout_alignParentStart="true"
+        android:ems="10"
+        android:textSize="20sp"
+        android:inputType="textMultiLine"
+        android:text=""
+        android:hint="Write your comment here"/>
+
     <Button
         android:id="@+id/btn_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Comment"
+        android:text="Submit Comment"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
-
-    <EditText
-        android:id="@+id/edit_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_comment"
-        android:layout_alignParentStart="true"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        android:hint="Write Comment"/>
 
 </RelativeLayout>

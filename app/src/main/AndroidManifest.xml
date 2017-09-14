@@ -17,7 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".StartPage">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".LoginPage"
@@ -38,44 +41,46 @@
 
         <service android:name=".HomePageRefreshService" />
 
-        <activity android:name=".SelectTagPage">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".SelectTagPage"
+            android:label="Select Tags"
+            android:theme="@style/AppTheme.NoActionBar">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".HomePage"
             android:label="@string/title_activity_home_page"
             android:parentActivityName=".SelectTagPage"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.parthdoshi.articleshub.SelectTagPage" />
         </activity>
+
         <activity android:name=".ArticleDisplayPage">
 
         </activity>
+
         <activity
             android:name=".HomeProfilePage"
             android:label="@string/title_activity_home_profile_page"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".HomeAboutPage"
             android:label="@string/title_activity_home_about_page"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".HomeTagsPage"
             android:label="@string/title_activity_home_tags_page"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".EditDetailPage" />
-        <activity android:name=".WriteArticlePage">
 
-        </activity>
-        <activity android:name=".EditArticlePage">
+        <activity android:name=".WriteArticlePage" />
 
-        </activity>
+        <activity android:name=".EditArticlePage" />
+
     </application>
 
 </manifest>

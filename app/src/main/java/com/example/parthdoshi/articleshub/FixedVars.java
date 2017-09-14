@@ -12,7 +12,11 @@ public class FixedVars {
     public static final String PREF_USER_NAME = "userName";
 
     // Token received from server (make variable public to access from outside)
-    public static final String PREF_TOKEN = "tokenInfo";
+    public static final String PREF_LOGIN_TOKEN = "loginToken";
+
+    // Token received from server (make variable public to access from outside)
+    public static final String PREF_NAME = "tokenInfo";
+
 
     //The base URL for server connection
     public static final String BASE_URL = "https://articleshub.herokuapp.com";
