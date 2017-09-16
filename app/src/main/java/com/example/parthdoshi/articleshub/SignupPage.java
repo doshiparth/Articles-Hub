@@ -129,6 +129,7 @@ public class SignupPage extends AppCompatActivity {
         userNameText.setError(null);
         uinfoText.setError(null);
         passwordText.setError(null);
+        noTokenErrorText.setError(null);
 
         // Store values at the time of the login attempt.
         String email = emailText.getText().toString();

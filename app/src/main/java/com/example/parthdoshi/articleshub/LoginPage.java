@@ -122,6 +122,7 @@ public class LoginPage extends AppCompatActivity {
         // Reset errors.
         userNameText.setError(null);
         passwordText.setError(null);
+        noTokenErrorText.setError(null);
 
         // Store values at the time of the login attempt.
         String uname = userNameText.getText().toString();
