@@ -1,35 +1,21 @@
 package com.example.parthdoshi.articleshub;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
@@ -37,57 +23,59 @@ import com.neel.articleshubapi.restapi.request.HeaderTools;
 
 import org.springframework.http.HttpMethod;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
-
 /**
- * A login screen that offers login via email/password.
+ * A signup screen that lets new user register using email address
  */
-public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
+public class SignupPage extends AppCompatActivity {
 
     /**
      * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
+     * <p>
+     * private static final String[] DUMMY_CREDENTIALS = new String[]{
+     * "doshiparth007@gmail.com:123456", "neel.patel.2012.np@gmail.com:123456", "foo@example.com:hello", "bar@example.com:world"
+     * };
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    private EditText emailText;
+    private EditText userNameText;
+    private EditText uinfoText;
+    private EditText passwordText;
+    Button signupButton;
+    private TextView noTokenErrorText;
+    public String token;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connectivity
-        if(NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline())
             setContentView(R.layout.activity_signup_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
-        setupActionBar();
+        //Initializing ProgressDialog
+        progressDialog = new ProgressDialog(SignupPage.this);
+
+
+        //Creating a SharedPreferences file
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        editor.apply();
+
         // Set up the login form.
+        emailText = (EditText) findViewById(R.id.signup_page_email);
+        userNameText = (EditText) findViewById(R.id.signup_page_username);
+        uinfoText = (EditText) findViewById(R.id.signup_page_uinfo);
+        passwordText = (EditText) findViewById(R.id.signup_page_password);
+        signupButton = (Button) findViewById(R.id.btn_signup);
+        noTokenErrorText = (TextView) findViewById(R.id.text_no_token_error_signup);
 
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.signup_page_email);
-        populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.signup_page_password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        passwordText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.signup || id == EditorInfo.IME_NULL) {
@@ -98,86 +86,33 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_up_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        signupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-
-        mLoginFormView = findViewById(R.id.sigup_form);
-        mProgressView = findViewById(R.id.signup_progress);
     }
 
-    private void doSignUp(UserDetail user){
-        AddRequestTask<String,UserDetail> rt6=new AddRequestTask<String, UserDetail>(String.class,
+    private void doSignUp(UserDetail user) {
+        AddRequestTask<String, UserDetail> signupRequest = new AddRequestTask<String, UserDetail>(String.class,
                 user, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON);
-        rt6.execute(FixedVars.BASE_URL+"/user");
-        rt6.getObj();
+        signupRequest.execute(FixedVars.BASE_URL + "/user");
+        signupRequest.getObj();
     }
 
-    private String doLogin(UserDetail login){
-        AddRequestTask<String,UserDetail> rt4=new AddRequestTask<String, UserDetail>(String.class,
+    private void doLogin(UserDetail login) {
+        AddRequestTask<String, UserDetail> loginRequest = new AddRequestTask<String, UserDetail>(String.class,
                 login, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON, HeaderTools.ACCEPT_TEXT);
-        rt4.execute(FixedVars.BASE_URL+"/authentication/"+login.getUserName());
-        String token = rt4.getObj();
-        return token;
+        loginRequest.execute(FixedVars.BASE_URL + "/authentication/" + login.getUserName());
+        progressDialog.setTitle("Please wait");
+        progressDialog.setMessage("Registering you as our new user");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        token = loginRequest.getObj();
+        //return token;
     }
 
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -185,227 +120,103 @@ public class SignupPage extends AppCompatActivity implements LoaderCallbacks<Cur
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
+        if (token != null) {
             return;
         }
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        emailText.setError(null);
+        userNameText.setError(null);
+        uinfoText.setError(null);
+        passwordText.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String email = emailText.getText().toString();
+        String uname = userNameText.getText().toString();
+        String uinfo = uinfoText.getText().toString();
+        String password = passwordText.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+        // Check if the Email field is empty.
+        //if (TextUtils.isEmpty(email)) {
+        if (email.matches("")) {
+            emailText.setError(getString(R.string.error_field_required));
+            focusView = emailText;
+            cancel = true;
+        }
+        // Check if the username field is empty.
+        //if (TextUtils.isEmpty(uname)) {
+        if (uname.matches("")) {
+            userNameText.setError(getString(R.string.error_field_required));
+            focusView = userNameText;
+            cancel = true;
+        }
+        // Check if the User Info field is empty.
+        //if (!TextUtils.isEmpty(uinfo)) {
+        if (uinfo.matches("")) {
+            uinfoText.setError(getString(R.string.error_field_required));
+            focusView = uinfoText;
+            cancel = true;
+        }
+        // Check if the password field is empty.
+        //if (!TextUtils.isEmpty(password)) {
+        if (password.matches("")) {
+            passwordText.setError(getString(R.string.error_field_required));
+            focusView = passwordText;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
+        //Only makes a call to the REST Server API if none of the required fields are empty
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
-        UserDetail user = new UserDetail();
-        user.setEmailId("dos@hskdhd.skjsb");
-        user.setInfo("android test doshi");
-        user.setPass("123");
-        user.setUserName("doshi2");
-        doSignUp(user);
+            //Attempts login by calling the server using REST Api call
+            UserDetail user = new UserDetail();
+            user.setEmailId(email);
+            user.setUserName(uname);
+            user.setInfo(uinfo);
+            user.setPass(password);
+            doSignUp(user);
 
-        UserDetail loginObj =new UserDetail();
-        loginObj.setUserName(user.getUserName());
-        loginObj.setPass(user.getPass());
-        String token = doLogin(loginObj);
-        if(token!=null && !token.equalsIgnoreCase("")){
-            // sign up successfull
+            UserDetail loginObj = new UserDetail();
+            loginObj.setUserName(user.getUserName());
+            loginObj.setPass(user.getPass());
+            doLogin(loginObj);
+        }
+
+        if (token != null && !token.equalsIgnoreCase("")) {
+            // sign up successful
             Log.i("doshi signup", token);
-        }else{
-            // sign up fail
-            Log.i("doshi signup", "login fail");
-        }
-    }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
+            //Saving details for using in other activities using SharedPreferences.
+            editor.putString(FixedVars.PREF_USER_NAME, userNameText.getText().toString());
+            editor.putString(FixedVars.PREF_LOGIN_TOKEN, token);
+            editor.apply();
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
+            progressDialog.cancel();
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+            Toast.makeText(SignupPage.this, "Welcome to Articles Hub "+uname, Toast.LENGTH_LONG).show();
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
+            Intent myIntent = new Intent(SignupPage.this, SelectTagPage.class);
+            startActivity(myIntent);
+            finish();
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
+            // sign up failed
+            Log.i("doshi signup", "signup failed");
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
+            noTokenErrorText.setEnabled(true);
+            noTokenErrorText.setText(getString(R.string.invalid_login_credentials));
+            userNameText.requestFocus();
+            emailText.requestFocus();
+            uinfoText.requestFocus();
+            passwordText.requestFocus();
 
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(SignupPage.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;   //changed to false in video
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-                Intent myIntent = new Intent(SignupPage.this, SelectTagPage.class);
-                startActivity(myIntent);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
+            progressDialog.cancel();
         }
     }
 }
-

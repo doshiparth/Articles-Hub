@@ -73,6 +73,7 @@ public class LoginPage extends AppCompatActivity {
         // Set up the login form.
         userNameText = (EditText) findViewById(R.id.login_page_uname);
         passwordText = (EditText) findViewById(R.id.login_page_password);
+        noTokenErrorText = (TextView) findViewById(R.id.text_no_token_error_login);
 
         //If user clicks send/next button on keyboard, login would still be initialized directly
         passwordText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -174,6 +175,7 @@ public class LoginPage extends AppCompatActivity {
 
                 Intent myIntent = new Intent(LoginPage.this, HomeAboutPage.class);
                 startActivity(myIntent);
+                finish();
             }
             else if(token == null){
                 // login fail
