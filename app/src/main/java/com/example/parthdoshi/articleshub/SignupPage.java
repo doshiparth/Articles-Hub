@@ -41,6 +41,8 @@ public class SignupPage extends AppCompatActivity {
     private EditText userNameText;
     private EditText uinfoText;
     private EditText passwordText;
+    private EditText fnameText;
+    private EditText lnameText;
     Button signupButton;
     private TextView noTokenErrorText;
     public String token;
@@ -68,6 +70,8 @@ public class SignupPage extends AppCompatActivity {
         editor.apply();
 
         // Set up the login form.
+        fnameText = (EditText) findViewById(R.id.signup_page_fname);
+        lnameText = (EditText) findViewById(R.id.signup_page_lname);
         emailText = (EditText) findViewById(R.id.signup_page_email);
         userNameText = (EditText) findViewById(R.id.signup_page_username);
         uinfoText = (EditText) findViewById(R.id.signup_page_uinfo);
@@ -125,6 +129,8 @@ public class SignupPage extends AppCompatActivity {
         }
 
         // Reset errors.
+        fnameText.setError(null);
+        lnameText.setError(null);
         emailText.setError(null);
         userNameText.setError(null);
         uinfoText.setError(null);
@@ -132,6 +138,8 @@ public class SignupPage extends AppCompatActivity {
         noTokenErrorText.setError(null);
 
         // Store values at the time of the login attempt.
+        String fname = emailText.getText().toString();
+        String lname = emailText.getText().toString();
         String email = emailText.getText().toString();
         String uname = userNameText.getText().toString();
         String uinfo = uinfoText.getText().toString();
@@ -140,6 +148,19 @@ public class SignupPage extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
+        // Check if the First name field is empty.
+        //if (TextUtils.isEmpty(fname)) {
+        if (fname.matches("")) {
+            fnameText.setError(getString(R.string.error_field_required));
+            focusView = fnameText;
+            cancel = true;
+        }// Check if the Last name field is empty.
+        //if (TextUtils.isEmpty(lname)) {
+        if (lname.matches("")) {
+            lnameText.setError(getString(R.string.error_field_required));
+            focusView = lnameText;
+            cancel = true;
+        }
         // Check if the Email field is empty.
         //if (TextUtils.isEmpty(email)) {
         if (email.matches("")) {
@@ -177,6 +198,8 @@ public class SignupPage extends AppCompatActivity {
         } else {
             //Attempts login by calling the server using REST Api call
             UserDetail user = new UserDetail();
+            user.setFirstName(fname);
+            user.setLastName(lname);
             user.setEmailId(email);
             user.setUserName(uname);
             user.setInfo(uinfo);
@@ -201,7 +224,6 @@ public class SignupPage extends AppCompatActivity {
             progressDialog.cancel();
 
             Toast.makeText(SignupPage.this, "Welcome to Articles Hub "+uname, Toast.LENGTH_LONG).show();
-
 
             Intent myIntent = new Intent(SignupPage.this, SelectTagPage.class);
             startActivity(myIntent);
