@@ -1,6 +1,8 @@
 package com.example.parthdoshi.articleshub;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
+import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
 import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
@@ -35,7 +38,9 @@ public class ArticleDisplayPage extends AppCompatActivity {
     Button likeButton;
     EditText commentText;
     Button commentButton;
-    private String BASE_URL;
+    String token = null, userName = null;
+    ShortArticleDetail[] articleDetails;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +52,15 @@ public class ArticleDisplayPage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
-
-        BASE_URL = getResources().getString(R.string.BASE_URL);
-
         articleTitle = (TextView) findViewById(R.id.text_article_title);
         authorName = (TextView) findViewById(R.id.text_author_name);
         articleDate = (TextView) findViewById(R.id.text_article_date);
         articleTag = (TextView) findViewById(R.id.text_article_tag);
         articleContent = (TextView) findViewById(R.id.text_article_content);
+
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
         Bundle articleData = getIntent().getExtras();
         if(articleData==null){
@@ -94,9 +100,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
             public void onClick(View view) {
                 RequestTask<String> rt5=new RequestTask<String>(String.class, HttpMethod.POST,
                         HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth("2c91a00e5e74e4b2015e753593120002"));
-                rt5.execute(BASE_URL+"/user/"+"doshi2"+"/like/"+article.getArticleId());
-                // TODO replace username with the user's name from SQLite DB.
+                        HeaderTools.makeAuth(token));
+                rt5.execute(FixedVars.BASE_URL+"/user/"+userName+"/like/"+article.getArticleId());
             }
         });
         commentText = (EditText)findViewById(R.id.edit_comment);
@@ -107,14 +112,12 @@ public class ArticleDisplayPage extends AppCompatActivity {
             public void onClick(View view) {
                 CommentDetail comment = new CommentDetail();
                 comment.setArticleId(article.getArticleId());
-                comment.setUserName("doshi2");
+                comment.setUserName(userName);
                 comment.setContent(String.valueOf(commentText.getText()));
                 AddRequestTask<String,CommentDetail> rt6=new AddRequestTask<String, CommentDetail>(String.class,
                         comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
                         HeaderTools.makeAuth("2c91a00e5e74e4b2015e758850c90003"));
-                rt6.execute(BASE_URL+"/comment");
-                // TODO replace username with the user's name from SQLite DB.
-
+                rt6.execute(FixedVars.BASE_URL+"/comment");
             }
         });
     }

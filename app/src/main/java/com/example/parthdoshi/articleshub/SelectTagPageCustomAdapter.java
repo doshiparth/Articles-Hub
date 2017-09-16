@@ -30,12 +30,7 @@ class SelectTagPageCustomAdapter extends ArrayAdapter<SelectTagPageModel> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_select_tag_page_custom_row, parent, false);
         }
         TextView name = (TextView) convertView.findViewById(R.id.select_page_textview);
-        CheckBox cb = (CheckBox) convertView.findViewById(R.id.select_page_checkbox);
         name.setText(currentTag.getTagName());
-        if(currentTag.getTagValue() == 1)
-            cb.setChecked(true);
-        else
-            cb.setChecked(false);
         return convertView;
     }
 }

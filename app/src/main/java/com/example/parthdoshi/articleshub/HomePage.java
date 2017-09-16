@@ -19,6 +19,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
+import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
+import com.neel.articleshubapi.restapi.beans.UserDetail;
+import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
@@ -31,8 +34,11 @@ public class HomePage extends AppCompatActivity
     NavigationView navigationView;
     Toolbar toolbar = null;
     HomePageModel[] articleList;
-    String[] selectedTags;
+    ListView hplv;
+    //String[] selectedTags;
+    String token = null, userName = null;
     ShortArticleDetail[] articleDetails;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +52,9 @@ public class HomePage extends AppCompatActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //Getting selected tags from SelectTagPage using intent.     (Use SharedPref instead)
-        Intent intent = getIntent();
-        selectedTags = intent.getStringArrayExtra("selectedTags");
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
         //Floating Button for writing new Article.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -75,13 +80,27 @@ public class HomePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomePage
 
-        for(String oneTag : selectedTags){
-            articleDetails = getArticles(oneTag);
+        if(token != null && !token.equalsIgnoreCase("")){
+            RequestTask<ShortArticleDetail[]> rt=
+                    new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
+            rt.execute(FixedVars.BASE_URL+"/home/"+userName);
+            // initiate waiting logic
+            articleDetails = rt.getObj();
+            // terminate waiting logic
+
+        }else {
+            RequestTask<ShortArticleDetail[]> rt=
+                    new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
+            rt.execute(FixedVars.BASE_URL+"/home");
+            // initiate waiting logic
+            articleDetails = rt.getObj();
+            // terminate waiting logic
+
+        }
             articleList = new HomePageModel[articleDetails.length];
             for(int i=0; i < articleDetails.length; i++){
                 articleList[i] = new HomePageModel(articleDetails[i]);
             }
-        }
 
         /*
         ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");
@@ -99,8 +118,8 @@ public class HomePage extends AppCompatActivity
         ArticleList[12] = new HomePageModel("Article 12", "This is the metadata description of Article 12");
         */
 
-        ListView hplv = (ListView) findViewById(R.id.home_page_listview);
-        HomePageCustomAdapter homePageCustomAdapter = new HomePageCustomAdapter(this, articleList);
+        hplv = (ListView) findViewById(R.id.home_page_listview);
+        HomePageCustomAdapter homePageCustomAdapter = new HomePageCustomAdapter(HomePage.this, articleList);
         hplv.setAdapter(homePageCustomAdapter);
 
         hplv.setOnItemClickListener(
@@ -111,20 +130,11 @@ public class HomePage extends AppCompatActivity
                         Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
                         myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
                         startActivity(myIntent);
+                        finish();
                     }
                 }
         );
     }
-
-    private ShortArticleDetail[] getArticles (String oneTag){
-        RequestTask<ShortArticleDetail[]> rt2=
-                new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
-        rt2.execute(""+FixedVars.BASE_URL+"/tag/"+oneTag+"/articles");
-        ShortArticleDetail[] ud=rt2.getObj();
-        return ud;
-    }
-
-
 
     @Override
     public void onBackPressed() {
@@ -181,40 +191,6 @@ public class HomePage extends AppCompatActivity
                 Intent about= new Intent(HomePage.this,HomeAboutPage.class);
                 startActivity(about);
                 break;
-
-        /*
-        FragmentManager fragmentManager = getFragmentManager();
-
-        if (id == R.id.nav_home_page) {
-            //fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeArticlesPage()).commit();
-            Intent myIntent = new Intent(HomePage.this, HomeArticlesPage.class);
-            //myIntent.putExtra("key", value); //Optional parameters
-            HomePage.this.startActivity(myIntent);
-
-        } else if (id == R.id.nav_home_profile_page) {
-            //fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeProfilePage()).commit();
-            Intent myIntent = new Intent(HomePage.this, HomeProfilePage.class);
-            //myIntent.putExtra("key", value); //Optional parameters
-            HomePage.this.startActivity(myIntent);
-
-        } else if (id == R.id.nav_home_tags_page) {
-            //fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeTagsPage()).commit();
-            Intent myIntent = new Intent(HomePage.this, HomeTagsPage.class);
-            //myIntent.putExtra("key", value); //Optional parameters
-            HomePage.this.startActivity(myIntent);
-
-        } else if (id == R.id.nav_home_about_page) {
-            //fragmentManager.beginTransaction().replace(R.id.content_home_frame, new HomeAboutPage()).commit();
-            Intent myIntent = new Intent(HomePage.this, HomeAboutPage.class);
-            //myIntent.putExtra("key", value); //Optional parameters
-            HomePage.this.startActivity(myIntent);
-
-//        } else if (id == R.id.nav_manage) {
-
-//        } else if (id == R.id.nav_share) {
-
-//        } else if (id == R.id.nav_send) {
-*/
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

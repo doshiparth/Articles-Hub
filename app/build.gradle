@@ -32,10 +32,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     //compile 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
@@ -43,7 +44,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     //My Libraries
-    compile 'com.github.NeelPatel21:Articles-hub-android-api:v1.1.2'
+    compile 'com.github.NeelPatel21:Articles-hub-android-api:v2.0.1'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
-    compile 'com.android.support:mediarouter-v7:26.0.0-alpha1'
 }

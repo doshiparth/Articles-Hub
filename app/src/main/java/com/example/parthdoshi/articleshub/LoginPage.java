@@ -174,7 +174,7 @@ public class LoginPage extends AppCompatActivity {
 
                 Toast.makeText(LoginPage.this, "Login Successful", Toast.LENGTH_LONG).show();
 
-                Intent myIntent = new Intent(LoginPage.this, HomeAboutPage.class);
+                Intent myIntent = new Intent(LoginPage.this, HomePage.class);
                 startActivity(myIntent);
                 finish();
             }
