@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +57,8 @@ public class SelectTagPage extends AppCompatActivity {
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+
+        Log.i("Select Tag Page Token", token);
 
 
         //Initializing Tags
