@@ -61,6 +61,9 @@ public class LoginPage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
+        //Initializing ProgressDialog
+        progressDialog = new ProgressDialog(LoginPage.this);
+
 
         //Creating a SharedPreferences file
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
@@ -88,7 +91,6 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
-                progressDialog = new ProgressDialog(LoginPage.this);
             }
         });
     }
@@ -96,7 +98,7 @@ public class LoginPage extends AppCompatActivity {
     private void doLogin(UserDetail login){
         AddRequestTask<String,UserDetail> loginRequest = new AddRequestTask<String, UserDetail>(String.class,
                 login, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON, HeaderTools.ACCEPT_TEXT);
-        loginRequest.execute(FixedVars.BASE_URL+"/authentication/"+userNameText.toString());
+        loginRequest.execute(FixedVars.BASE_URL+"/authentication/"+login.getUserName());
         progressDialog.setTitle("Please wait");
         progressDialog.setMessage("Loading");
         progressDialog.setCancelable(false);
@@ -173,17 +175,15 @@ public class LoginPage extends AppCompatActivity {
                 Intent myIntent = new Intent(LoginPage.this, HomeAboutPage.class);
                 startActivity(myIntent);
             }
-            else{
+            else if(token == null){
                 // login fail
                 Log.i("doshi login", "login fail");
                 noTokenErrorText.setEnabled(true);
                 noTokenErrorText.setText(getString(R.string.invalid_login_credentials));
                 userNameText.requestFocus();
                 passwordText.requestFocus();
+                progressDialog.cancel();
             }
-            //mAuthTask = new UserLoginTask(uname, password);
-            //mAuthTask.execute((Void) null);
         }
-
     }
 }
