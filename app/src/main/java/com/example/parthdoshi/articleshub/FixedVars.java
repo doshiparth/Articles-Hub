@@ -2,9 +2,7 @@ package com.example.parthdoshi.articleshub;
 
 import android.content.SharedPreferences;
 
-/**
- * Created by Parth on 13-09-2017.
- */
+import java.util.ArrayList;
 
 public class FixedVars {
 
@@ -20,5 +18,13 @@ public class FixedVars {
 
     //The base URL for server connection
     public static final String BASE_URL = "https://articleshub.herokuapp.com";
+
+    //The list of fixed tags
+    public static ArrayList<String> TAG_LIST = new ArrayList<>();
+
+    public static ArrayList<String> addTag(String tag){
+        TAG_LIST.add(tag);
+        return TAG_LIST;
+    }
 
 }

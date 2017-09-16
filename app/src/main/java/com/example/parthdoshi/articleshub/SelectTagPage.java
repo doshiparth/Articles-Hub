@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -18,31 +19,11 @@ import java.util.List;
 
 public class SelectTagPage extends AppCompatActivity {
     ListView lv;
-    //SelectTagPageModel[] TagList;
     MaterialSearchView searchView;
 
-    String[] listSource = {
-            "Science",
-            "Maths",
-            "Fashion",
-            "Technology",
-            "Gaming",
-            "Tag1",
-            "Tag2",
-            "Three",
-            "Four",
-            "Five",
-            "Six",
-            "Seven",
-            "Eight",
-            "Nine",
-            "Ten"
-    };
-
-    String[] listSelected = {
-            "Tag1",
-            "Tag2"
-    };
+    ArrayList<String> listSource = new ArrayList<>();
+    ArrayList<String> listSelected = new ArrayList<>();
+    ArrayList<String> listFound = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +41,26 @@ public class SelectTagPage extends AppCompatActivity {
         getSupportActionBar().setTitle("Tag Search");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
+        //Initializing Tags
+        listSource.add("tutorial");
+        listSource.add("story");
+        listSource.add("fashion");
+        listSource.add("science");
+        listSource.add("game");
+        listSource.add("smartphone");
+        listSource.add("philosophy");
+        listSource.add("programming");
+        listSource.add("study");
+        listSource.add("news");
+        listSource.add("movie");
+        listSource.add("ai");
+        listSource.add("future");
+        listSource.add("book");
+
         lv = (ListView)findViewById(R.id.select_page_listview);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,listSource);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, listSource);
         lv.setAdapter(adapter);
+
 
 
         searchView = (MaterialSearchView)findViewById(R.id.select_tag_page_search_view);
@@ -87,57 +85,36 @@ public class SelectTagPage extends AppCompatActivity {
                 return false;
             }
 
+            //Check if the entered Text in the search box matches with our list of tags
+            //If it does load those items in the new ArrayAdapter object
+            //else display the adapter with the old list
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText != null && !newText.isEmpty()){
-                    List<String> listFound = new ArrayList<String>();
                     for(String item:listSource){
                         if(item.contains(newText))
                             listFound.add(item);
                     }
 
-                    ArrayAdapter adapter = new ArrayAdapter(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
                     lv.setAdapter(adapter);
                 }
                 else{
                     //if search text is null
                     //return default
-                    ArrayAdapter adapter = new ArrayAdapter(SelectTagPage.this, android.R.layout.simple_list_item_1, listSource);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSource);
                     lv.setAdapter(adapter);
                 }
                 return true;
             }
 
         });
-
-
-        /*
-        TagList = new SelectTagPageModel[20];
-        TagList[0] = new SelectTagPageModel("Science", 0);
-        TagList[1] = new SelectTagPageModel("Education", 1);
-        TagList[2] = new SelectTagPageModel("Technology", 1);
-        TagList[3] = new SelectTagPageModel("Fashion", 0);
-        TagList[4] = new SelectTagPageModel("Gaming", 1);
-        TagList[5] = new SelectTagPageModel("Tag5", 1);
-        TagList[6] = new SelectTagPageModel("Tag6", 0);
-        TagList[7] = new SelectTagPageModel("Tag7", 1);
-        TagList[8] = new SelectTagPageModel("Tag8", 1);
-        TagList[9] = new SelectTagPageModel("Tag9", 1);
-        TagList[10] = new SelectTagPageModel("Tag10", 1);
-        TagList[11] = new SelectTagPageModel("Tag11", 0);
-        TagList[12] = new SelectTagPageModel("Tag12", 1);
-        TagList[13] = new SelectTagPageModel("Tag13", 1);
-        TagList[14] = new SelectTagPageModel("Tag14", 1);
-        TagList[15] = new SelectTagPageModel("Tag15", 0);
-        TagList[16] = new SelectTagPageModel("Tag16", 1);
-        TagList[17] = new SelectTagPageModel("Tag17", 0);
-        TagList[18] = new SelectTagPageModel("Tag18", 1);
-        TagList[19] = new SelectTagPageModel("Tag19", 0);
-
-
-        SelectTagPageCustomAdapter adapter = new SelectTagPageCustomAdapter(this, TagList);
-        lv.setAdapter(adapter);
-        */
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                listSelected.add(listSource.get(i));
+            }
+        });
     }
 
     @Override
@@ -150,9 +127,15 @@ public class SelectTagPage extends AppCompatActivity {
 
 
     public void goToHome(View v){
+        //Converting ArrayList to list of strings
+        String selectedTags[] = new String[listSelected.size()];
+        for(int j =0;j<listSelected.size();j++){
+            selectedTags[j] = listSelected.get(j);
+        }
+
         Intent myIntent = new Intent(SelectTagPage.this, HomePage.class);
         SelectTagPage.this.startActivity(myIntent);
-        myIntent.putExtra("selectedTags", listSelected);
+        myIntent.putExtra("selectedTags", selectedTags);
         startActivity(myIntent);
     }
 }

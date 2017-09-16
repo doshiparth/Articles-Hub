@@ -3,10 +3,6 @@ package com.example.parthdoshi.articleshub;
 import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
 
-/**
- * Created by Parth on 09-09-2017.
- */
-
 public class HomePageModel {
     //private String articleHeading;
     //private String articleMetadata;

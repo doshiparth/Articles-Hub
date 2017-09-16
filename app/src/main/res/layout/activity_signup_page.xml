@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.parthdoshi.articleshub.SignupPage">
 
-    <!-- Login progress -->
+    <!-- Signup progress -->
     <ProgressBar
         android:id="@+id/signup_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -81,7 +81,7 @@
                     android:hint="@string/prompt_password"
                     android:imeActionId="@+id/signup"
                     android:imeActionLabel="@string/action_sign_up_short"
-                    android:imeOptions="actionUnspecified"
+                    android:imeOptions="actionSend"
                     android:inputType="textPassword"
                     android:maxLines="1" />
 
