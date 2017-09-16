@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.neel.articleshubapi.restapi.beans.TagDetail;
-import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
 
@@ -35,6 +34,9 @@ public class SelectTagPage extends AppCompatActivity {
     ArrayList<String> listSource = new ArrayList<>();
     ArrayList<String> listFound = new ArrayList<>();
     ArrayList<String> listSelected = new ArrayList<>();
+
+    ArrayAdapter<String> sourceAdapter;
+    ArrayAdapter<String> selectedAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +76,13 @@ public class SelectTagPage extends AppCompatActivity {
 
         lv_select = (ListView)findViewById(R.id.select_page_display_listview);
         lv_selected = (ListView) findViewById(R.id.select_page_selected_listview);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, listSource);
-        lv_select.setAdapter(adapter);
-        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+
+        sourceAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, listSource);
+        lv_select.setAdapter(sourceAdapter);
+
+        selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
         lv_selected.setAdapter(selectedAdapter);
+
         searchView = (MaterialSearchView)findViewById(R.id.select_tag_page_search_view);
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
@@ -89,9 +94,10 @@ public class SelectTagPage extends AppCompatActivity {
             public void onSearchViewClosed() {
                 //If Search View closed, list view will return default
                 lv_select = (ListView)findViewById(R.id.select_tag_page_search_view);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_1,listSource);
-                lv_select.setAdapter(adapter);
-                ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                lv_selected = (ListView) findViewById(R.id.select_page_selected_listview);
+                sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_1,listSource);
+                lv_select.setAdapter(sourceAdapter);
+                selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
                 lv_selected.setAdapter(selectedAdapter);
             }
         });
@@ -133,7 +139,17 @@ public class SelectTagPage extends AppCompatActivity {
         lv_select.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                listSelected.add(listSource.get(i));
+                for(int j=0 ; j<listSelected.size() ; j++){
+                    if(!(listSource.get(i).equalsIgnoreCase(listSelected.get(j)))){
+                        listSelected.add(listSource.get(i));
+                        listSource.remove((listSource.get(i)));
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSource);
+                        lv_select.setAdapter(adapter);
+                        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                        lv_selected.setAdapter(selectedAdapter);
+                        return;
+                    }
+                }
             }
         });
     }
@@ -169,6 +185,8 @@ public class SelectTagPage extends AppCompatActivity {
         rt.getObj();
         // terminate waiting logic
         HttpStatus status = rt.getHttpStatus();
+
+        FixedVars.TAG_SELECTED_FLAG = true;
         Intent myIntent = new Intent(SelectTagPage.this, HomePage.class);
         SelectTagPage.this.startActivity(myIntent);
         startActivity(myIntent);

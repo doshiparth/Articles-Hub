@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
 import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
@@ -80,22 +81,26 @@ public class HomePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomePage
 
-        if(token != null && !token.equalsIgnoreCase("")){
-            RequestTask<ShortArticleDetail[]> rt=
+        if(token != null && !token.equalsIgnoreCase("") && FixedVars.TAG_SELECTED_FLAG){
+            RequestTask<ShortArticleDetail[]> regUserArticleRequest=
                     new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
-            rt.execute(FixedVars.BASE_URL+"/home/"+userName);
+            regUserArticleRequest.execute(FixedVars.BASE_URL+"/home/"+userName);
             // initiate waiting logic
-            articleDetails = rt.getObj();
+            articleDetails = regUserArticleRequest.getObj();
             // terminate waiting logic
 
-        }else {
-            RequestTask<ShortArticleDetail[]> rt=
-                    new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
-            rt.execute(FixedVars.BASE_URL+"/home");
-            // initiate waiting logic
-            articleDetails = rt.getObj();
-            // terminate waiting logic
-
+        }else if(token != null && !FixedVars.TAG_SELECTED_FLAG) {
+            Toast.makeText(HomePage.this, "Logged in but tags not selected.... Select tags first", Toast.LENGTH_LONG).show();
+            Intent myIntent = new Intent(HomePage.this, SelectTagPage.class);
+            startActivity(myIntent);
+        }
+        else if(token == null){
+                RequestTask<ShortArticleDetail[]> unregUserArticleRequest=
+                        new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
+                unregUserArticleRequest.execute(FixedVars.BASE_URL+"/home");
+                // initiate waiting logic
+                articleDetails = unregUserArticleRequest.getObj();
+                // terminate waiting logic
         }
             articleList = new HomePageModel[articleDetails.length];
             for(int i=0; i < articleDetails.length; i++){

@@ -19,6 +19,8 @@ public class FixedVars {
     //The base URL for server connection
     public static final String BASE_URL = "https://articleshub.herokuapp.com";
 
+    public static Boolean TAG_SELECTED_FLAG = false;
+
     //The list of fixed tags
     public static ArrayList<String> TAG_LIST = new ArrayList<>();
 
