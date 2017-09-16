@@ -49,4 +49,5 @@
         or more tags from the provided tags.</string>
 
     <string name="select_tag_page_search_title">Search here</string>
+    <string name="invalid_login_credentials">Invalid Login Credentials</string>
 </resources>
