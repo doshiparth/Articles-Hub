@@ -26,6 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_reg_uname"
+                    android:inputType="textNoSuggestions"
                     android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
@@ -42,7 +43,7 @@
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_log_in_short"
                     android:imeOptions="actionSend"
-                    android:inputType="textPassword"
+                    android:inputType="textPassword|textNoSuggestions"
                     android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>

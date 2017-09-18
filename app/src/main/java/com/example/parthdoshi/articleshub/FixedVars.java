@@ -19,6 +19,7 @@ public class FixedVars {
     //The base URL for server connection
     public static final String BASE_URL = "https://articleshub.herokuapp.com";
 
+    //To check if the current user has selected some tags
     public static Boolean TAG_SELECTED_FLAG = false;
 
     //The list of fixed tags

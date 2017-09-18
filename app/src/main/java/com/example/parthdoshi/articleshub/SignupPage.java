@@ -233,7 +233,7 @@ public class SignupPage extends AppCompatActivity {
             Log.i("doshi signup", "signup failed");
 
             noTokenErrorText.setEnabled(true);
-            noTokenErrorText.setText(getString(R.string.invalid_login_credentials));
+            noTokenErrorText.setText(getString(R.string.invalid_or_empty_details));
             userNameText.requestFocus();
             emailText.requestFocus();
             uinfoText.requestFocus();
