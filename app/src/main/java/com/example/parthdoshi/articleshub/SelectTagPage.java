@@ -42,9 +42,6 @@ public class SelectTagPage extends AppCompatActivity {
     List<String> listFound = new ArrayList<>();
     List<String> listSelected = new ArrayList<>();
 
-    ArrayAdapter<String> sourceAdapter;
-    ArrayAdapter<String> foundAdapter;
-    ArrayAdapter<String> selectedAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +63,10 @@ public class SelectTagPage extends AppCompatActivity {
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+
+        //ArrayAdapter<String> sourceAdapter;
+        //ArrayAdapter<String> foundAdapter;
+        //ArrayAdapter<String> selectedAdapter;
 
         Log.i("Select Tag Page Token", token);
 
@@ -96,12 +97,12 @@ public class SelectTagPage extends AppCompatActivity {
         lv_select.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         lv_selected.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        sourceAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, listSource);
-        selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-        foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
+        ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, listSource);
+        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+        ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
 
-        //lv_select.setAdapter(sourceAdapter);
-        //lv_selected.setAdapter(selectedAdapter);
+        lv_select.setAdapter(sourceAdapter);
+        lv_selected.setAdapter(selectedAdapter);
 
         searchView = (MaterialSearchView)findViewById(R.id.select_tag_page_search_view);
 
@@ -115,6 +116,8 @@ public class SelectTagPage extends AppCompatActivity {
                 //If Search View closed, list view will return default
                 lv_select = (ListView)findViewById(R.id.select_page_display_listview);
                 lv_selected = (ListView) findViewById(R.id.select_page_selected_listview);
+                ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
+                ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
                 lv_select.setAdapter(sourceAdapter);
                 lv_selected.setAdapter(selectedAdapter);
             }
@@ -131,20 +134,29 @@ public class SelectTagPage extends AppCompatActivity {
             //else display the adapter with the old list
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                for (String str:listSource) {
+                    System.out.println(str);
+                }
+
                 if(newText != null && !newText.isEmpty()){
                     for(String item:listSource){
                         if(item.contains(newText))
                             listFound.add(item);
                     }
-
+                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                    ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
                     lv_select.setAdapter(foundAdapter);
+                    lv_selected.setAdapter(selectedAdapter);
                 }
                 else{
                     //if search text is null
                     //return default
+                    ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
+                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
                     lv_select.setAdapter(sourceAdapter);
+                    lv_selected.setAdapter(selectedAdapter);
                 }
-                lv_selected.setAdapter(selectedAdapter);
                 return true;
             }
 
@@ -155,8 +167,14 @@ public class SelectTagPage extends AppCompatActivity {
                 NO_SELECTION_FLAG = false;
                 //for(int j=0 ; j<listSelected.size() ; j++) {
                 //    if (!(listSource.get(i).equalsIgnoreCase(listSelected.get(j)))) {
+                for (String str:listSource) {
+                    System.out.println(str);
+                }
                         listSelected.add(listSource.get(i));
                         listSource.remove((listSource.get(i)));
+                        ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
+                        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                        //ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
                         lv_select.setAdapter(sourceAdapter);
                         lv_selected.setAdapter(selectedAdapter);
                 //        return;

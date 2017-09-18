@@ -15,6 +15,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
         android:text="@string/select_page_instruction"/>
 
         <RelativeLayout
@@ -23,13 +26,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_below="@+id/select_page_instruction">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/search_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:title="Tag Search" />
 
             <com.miguelcatalan.materialsearchview.MaterialSearchView
                 android:id="@+id/select_tag_page_search_view"
@@ -42,6 +38,14 @@
                 app:searchSuggestionIcon="@drawable/ic_suggestion"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/search_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                android:title="Tag Search" />
+
 
             <ListView
                 android:id="@+id/select_page_display_listview"
@@ -56,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Your Selected Tags"
+                android:textStyle="bold"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:layout_below="@id/select_page_display_listview"/>
