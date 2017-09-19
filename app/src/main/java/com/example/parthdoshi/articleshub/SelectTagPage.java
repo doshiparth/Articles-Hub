@@ -117,12 +117,18 @@ public class SelectTagPage extends AppCompatActivity {
                 // terminate waiting logic
                 HttpStatus status = tagRead.getHttpStatus();
 
-                if(status==HttpStatus.OK && tag!=null) {
-                    listSelected.add(tag.getTagName());
-                    NO_SELECTION_FLAG = false;
-                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-                    lv_selected.setAdapter(selectedAdapter);
-                }
+                if(status==HttpStatus.OK && tag == null) {
+                    for (String addedTag:listSelected) {
+                        if(!usersTag.equalsIgnoreCase(addedTag)) {
+                            listSelected.add(tag.getTagName());
+                            NO_SELECTION_FLAG = false;
+                            userSearchText.setText("");
+                            ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                            lv_selected.setAdapter(selectedAdapter);
+                        }
+                    }
+                }else if(usersTag.equals(""))
+                    Toast.makeText(SelectTagPage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
             }
@@ -272,14 +278,15 @@ public class SelectTagPage extends AppCompatActivity {
         //    selectedTags[j] = listSelected.get(j);
         //}
 
-        for (String str:listSelected) {
-            System.out.println("Selected tags");
-            System.out.println(str);
-        }
+
 
         //Sending user's favorite tags to the server
 
         if(!NO_SELECTION_FLAG){
+            for (String str:listSelected) {
+                System.out.println("Selected tags");
+                System.out.println(str);
+            }
             TagDetail[] tagDetails = new TagDetail[listSelected.size()];
             for(int i=0;i<listSelected.size();i++){
                 TagDetail tagDetail = new TagDetail();
@@ -287,7 +294,7 @@ public class SelectTagPage extends AppCompatActivity {
                 tagDetails[i] = tagDetail;
             }
             AddRequestTask<String,TagDetail[]> rt=new AddRequestTask<String, TagDetail[]>(String.class,
-                    tagDetails, HttpMethod.PUT, CONTENT_TYPE_JSON,
+                    tagDetails, HttpMethod.POST, CONTENT_TYPE_JSON,
                     HeaderTools.makeAuth(token));
             rt.execute(FixedVars.BASE_URL+"/user/"+userName+"/favorite-tags");
             // initiate waiting logic

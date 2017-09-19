@@ -116,7 +116,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 comment.setContent(String.valueOf(commentText.getText()));
                 AddRequestTask<String,CommentDetail> rt6=new AddRequestTask<String, CommentDetail>(String.class,
                         comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth("2c91a00e5e74e4b2015e758850c90003"));
+                        HeaderTools.makeAuth("token"));
                 rt6.execute(FixedVars.BASE_URL+"/comment");
             }
         });

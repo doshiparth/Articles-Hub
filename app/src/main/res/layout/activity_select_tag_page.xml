@@ -51,7 +51,7 @@
         <EditText
             android:id="@+id/txt_user_search"
             android:layout_width="220dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:background="@color/accent"
             android:layout_alignBaseline="@+id/btn_user_search"
             android:layout_alignBottom="@+id/btn_user_search"

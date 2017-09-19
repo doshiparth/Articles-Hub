@@ -24,7 +24,10 @@ import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
 import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
 import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
+import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
+
+import org.springframework.http.HttpMethod;
 
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
@@ -85,8 +88,10 @@ public class HomePage extends AppCompatActivity
         //Below is the original code for displaying content on HomePage
 
         if(token != null && !token.equalsIgnoreCase("") && FixedVars.TAG_SELECTED_FLAG){
+
             RequestTask<ShortArticleDetail[]> regUserArticleRequest=
-                    new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
+                    new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON,
+                            HeaderTools.makeAuth(token));
             regUserArticleRequest.execute(FixedVars.BASE_URL+"/home/"+userName);
             // initiate waiting logic
             articleDetails = regUserArticleRequest.getObj();
@@ -97,9 +102,10 @@ public class HomePage extends AppCompatActivity
             Intent myIntent = new Intent(HomePage.this, SelectTagPage.class);
             startActivity(myIntent);
         }
-        else if(token == null){
+        else if(token == null && token.equalsIgnoreCase("") ){
+
                 RequestTask<ShortArticleDetail[]> unregUserArticleRequest=
-                        new RequestTask<>(ShortArticleDetail[].class,CONTENT_TYPE_JSON);
+                        new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON);
                 unregUserArticleRequest.execute(FixedVars.BASE_URL+"/home");
                 // initiate waiting logic
                 articleDetails = unregUserArticleRequest.getObj();
