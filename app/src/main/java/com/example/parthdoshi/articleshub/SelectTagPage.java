@@ -11,9 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,22 +24,27 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.neel.articleshubapi.restapi.beans.TagDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
+import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
+import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
+
 
 public class SelectTagPage extends AppCompatActivity {
-    ListView lv_select;
+    //ListView lv_select;
     ListView lv_selected;
-    MaterialSearchView searchView;
+    //MaterialSearchView searchView;
+    EditText userSearchText;
+    Button userSearchButton;
     SharedPreferences sharedPref;
     String token = null;
     String userName = null;
     Boolean NO_SELECTION_FLAG = true;
 
-    List<String> listSource = new ArrayList<>();
-    List<String> listFound = new ArrayList<>();
+    //List<String> listSource = new ArrayList<>();
+    //List<String> listFound = new ArrayList<>();
     List<String> listSelected = new ArrayList<>();
 
 
@@ -54,15 +59,18 @@ public class SelectTagPage extends AppCompatActivity {
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
         //Code to display and manage the search view in the toolbar
-        Toolbar toolbar = (Toolbar)findViewById(R.id.search_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Tag Search Bar");
-        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        //Toolbar toolbar = (Toolbar)findViewById(R.id.search_toolbar);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle("Tag Search Bar");
+        //toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
         //Getting user details from the shared preferences file
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+
+        userSearchText = (EditText) findViewById(R.id.txt_user_search);
+        userSearchButton = (Button) findViewById(R.id.btn_user_search);
 
         //ArrayAdapter<String> sourceAdapter;
         //ArrayAdapter<String> foundAdapter;
@@ -70,7 +78,7 @@ public class SelectTagPage extends AppCompatActivity {
 
         Log.i("Select Tag Page Token", token);
 
-
+        /*
         //Initializing Tags
         listSource.add("tutorial");
         listSource.add("story");
@@ -87,23 +95,50 @@ public class SelectTagPage extends AppCompatActivity {
         listSource.add("future");
         listSource.add("book");
 
+
         for (String str:listSource) {
             System.out.println(str);
         }
+        */
 
-        lv_select = (ListView)findViewById(R.id.select_page_display_listview);
-        lv_selected = (ListView) findViewById(R.id.select_page_selected_listview);
-
-        lv_select.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        lv_selected = (ListView) findViewById(R.id.select_page_listview);
         lv_selected.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-        ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, listSource);
         ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-        ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
-
-        lv_select.setAdapter(sourceAdapter);
         lv_selected.setAdapter(selectedAdapter);
 
+        userSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String usersTag = userSearchText.getText().toString().toLowerCase();
+                RequestTask<TagDetail> tagRead=new RequestTask<>(TagDetail.class,CONTENT_TYPE_JSON);
+                tagRead.execute(FixedVars.BASE_URL+"/tag/"+usersTag);
+                // initiate waiting logic
+                TagDetail tag=tagRead.getObj();
+                // terminate waiting logic
+                HttpStatus status = tagRead.getHttpStatus();
+
+                if(status==HttpStatus.OK && tag!=null) {
+                    listSelected.add(tag.getTagName());
+                    NO_SELECTION_FLAG = false;
+                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                    lv_selected.setAdapter(selectedAdapter);
+                }
+                else
+                    Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+        //lv_select = (ListView)findViewById(R.id.select_page_display_listview);
+        //lv_select.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        //ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_multiple_choice, listSource);
+        //ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
+
+        //lv_select.setAdapter(sourceAdapter);
+
+        /*
         searchView = (MaterialSearchView)findViewById(R.id.select_tag_page_search_view);
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
@@ -113,19 +148,36 @@ public class SelectTagPage extends AppCompatActivity {
 
             @Override
             public void onSearchViewClosed() {
-                //If Search View closed, list view will return default
-                lv_select = (ListView)findViewById(R.id.select_page_display_listview);
-                lv_selected = (ListView) findViewById(R.id.select_page_selected_listview);
-                ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
+                lv_selected = (ListView) findViewById(R.id.select_page_listview);
                 ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-                lv_select.setAdapter(sourceAdapter);
                 lv_selected.setAdapter(selectedAdapter);
+
+                //ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
+                //If Search View closed, list view will return default
+                //lv_select = (ListView)findViewById(R.id.select_page_display_listview);
+                //lv_select.setAdapter(sourceAdapter);
             }
         });
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                String usersTag = query.toLowerCase();
+                RequestTask<TagDetail> tagRead=new RequestTask<>(TagDetail.class,CONTENT_TYPE_JSON);
+                tagRead.execute(FixedVars.BASE_URL+"/tag/"+usersTag);
+                // initiate waiting logic
+                TagDetail tag=tagRead.getObj();
+                // terminate waiting logic
+                HttpStatus status = tagRead.getHttpStatus();
+
+                if(status==HttpStatus.OK && tag!=null) {
+                    listSelected.add(tag.getTagName());
+                    NO_SELECTION_FLAG = false;
+                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                    lv_selected.setAdapter(selectedAdapter);
+                }
+                else
+                    Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
                 return true;
             }
 
@@ -134,7 +186,6 @@ public class SelectTagPage extends AppCompatActivity {
             //else display the adapter with the old list
             @Override
             public boolean onQueryTextChange(String newText) {
-
                 for (String str:listSource) {
                     System.out.println(str);
                 }
@@ -161,6 +212,8 @@ public class SelectTagPage extends AppCompatActivity {
             }
 
         });
+        */
+        /*
         lv_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -187,6 +240,7 @@ public class SelectTagPage extends AppCompatActivity {
 
             }
         });
+        */
 
         /*
         lv_selected.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -204,9 +258,9 @@ public class SelectTagPage extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_select_tag_page_search_view,menu);
-        MenuItem item = menu.findItem(R.id.select_tag_page_action_search);
-        searchView.setMenuItem(item);
+        //getMenuInflater().inflate(R.menu.menu_select_tag_page_search_view,menu);
+        //MenuItem item = menu.findItem(R.id.select_tag_page_action_search);
+        //searchView.setMenuItem(item);
         return true;
     }
 
@@ -233,13 +287,15 @@ public class SelectTagPage extends AppCompatActivity {
                 tagDetails[i] = tagDetail;
             }
             AddRequestTask<String,TagDetail[]> rt=new AddRequestTask<String, TagDetail[]>(String.class,
-                    tagDetails, HttpMethod.PUT, HeaderTools.CONTENT_TYPE_JSON,
+                    tagDetails, HttpMethod.PUT, CONTENT_TYPE_JSON,
                     HeaderTools.makeAuth(token));
             rt.execute(FixedVars.BASE_URL+"/user/"+userName+"/favorite-tags");
             // initiate waiting logic
             rt.getObj();
             // terminate waiting logic
             HttpStatus status = rt.getHttpStatus();
+            if(status==HttpStatus.OK)
+                Toast.makeText(SelectTagPage.this, "Tags saved", Toast.LENGTH_LONG).show();
 
             FixedVars.TAG_SELECTED_FLAG = true;
             Intent myIntent = new Intent(SelectTagPage.this, HomePage.class);

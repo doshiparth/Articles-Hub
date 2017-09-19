@@ -27,6 +27,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/select_page_instruction">
 
+        <!--
         <com.miguelcatalan.materialsearchview.MaterialSearchView
             android:id="@+id/select_tag_page_search_view"
             android:layout_width="match_parent"
@@ -45,33 +46,53 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:title="Tag Search" />
+            -->
 
-
-        <ListView
-            android:id="@+id/select_page_display_listview"
-            android:layout_height="200dp"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/search_toolbar"
-            android:divider="#806326"
-            android:dividerHeight="1dp" />
-
-        <TextView
-            android:id="@+id/select_page_your_tag_text"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/txt_user_search"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:text="Your Selected Tags"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:layout_below="@id/select_page_display_listview"/>
+            android:background="@color/accent"
+            android:layout_alignBaseline="@+id/btn_user_search"
+            android:layout_alignBottom="@+id/btn_user_search"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:id="@+id/btn_user_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignRight="@+id/txt_user_search"
+            android:text="Search for this tag" />
 
         <ListView
-            android:id="@+id/select_page_selected_listview"
-            android:layout_height="200dp"
+            android:id="@+id/select_page_listview"
+            android:layout_height="fill_parent"
             android:layout_width="match_parent"
-            android:layout_below="@+id/select_page_your_tag_text"
+            android:layout_below="@+id/btn_user_search"
             android:divider="#806326"
             android:dividerHeight="1dp" />
+
+
+        <!--
+                <TextView
+                    android:id="@+id/select_page_your_tag_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your Selected Tags"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:layout_below="@id/select_page_display_listview"/>
+
+                <ListView
+                    android:id="@+id/select_page_selected_listview"
+                    android:layout_height="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/select_page_your_tag_text"
+                    android:divider="#806326"
+                    android:dividerHeight="1dp" />
+        -->
     </RelativeLayout>
 
     <Button
