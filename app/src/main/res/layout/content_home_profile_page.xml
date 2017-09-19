@@ -9,19 +9,38 @@
     tools:showIn="@layout/app_bar_home_profile_page">
 
     <TextView
+        android:id="@+id/text_profile_page_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Profile"
+        android:textSize="35sp"
+        android:textColor="#"
+        android:textAlignment="center"/>
+    <TextView
         android:id="@+id/text_profile_page_emailid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Email ID"
+        android:layout_below="@+id/text_profile_page_heading"
+        android:layout_marginTop="20dp"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/text_profile_page_username"
+        android:id="@+id/text_profile_page_userfname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text_profile_page_emailid"
-        android:text="User Name"
+        android:text="First Name"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/text_profile_page_userlname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/text_profile_page_userfname"
+        android:text="Last Name"
         android:textSize="20sp" />
 
     <TextView
@@ -29,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/text_profile_page_username"
+        android:layout_below="@+id/text_profile_page_userlname"
         android:text="User's Description"
         android:textSize="20sp" />
 
@@ -46,7 +65,6 @@
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/text_profile_page_username"
         android:layout_below="@+id/btn_edit_detail"
         android:layout_marginTop="21dp"
         android:text="Logout" />

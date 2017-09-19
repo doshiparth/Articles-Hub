@@ -16,10 +16,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
+import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpMethod;
+
+import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class HomeProfilePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,14 +33,18 @@ public class HomeProfilePage extends AppCompatActivity
     Toolbar toolbar = null;
 
     TextView userEmailID;
-    TextView userName;
+    TextView userFname;
+    TextView userLname;
     TextView userInfo;
     Button editDetailButton;
     Button logoutButton;
+    String token = null, userName = null;
 
+    UserDetail ud;
 
     //Declaring SharedPreferences to access data from other login activity
     public SharedPreferences sharedPref;
+    SharedPreferences.Editor editor = sharedPref.edit();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +57,9 @@ public class HomeProfilePage extends AppCompatActivity
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
         //Getting data from SharedPreferences
-        sharedPref = getSharedPreferences(FixedVars.PREF_USER_NAME, Context.MODE_PRIVATE);
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
         String uName = "";
         if (sharedPref.contains(FixedVars.PREF_USER_NAME))
@@ -83,14 +93,24 @@ public class HomeProfilePage extends AppCompatActivity
         //Below is the original code for displaying content on HomeProfilePage
 
         userEmailID = (TextView)findViewById(R.id.text_profile_page_emailid);
-        userName = (TextView)findViewById(R.id.text_profile_page_username);
+        userFname = (TextView)findViewById(R.id.text_profile_page_userfname);
+        userLname = (TextView)findViewById(R.id.text_profile_page_userlname);
         userInfo = (TextView)findViewById(R.id.text_profile_page_userinfo);
         editDetailButton = (Button) findViewById(R.id.btn_edit_detail);
         logoutButton = (Button) findViewById(R.id.btn_logout);
         String email;
-        //userEmailID.setText();
-        //userName.setText();
-        //userInfo.setText();
+
+        RequestTask<UserDetail> rt=
+                new RequestTask<>(UserDetail.class,CONTENT_TYPE_JSON);
+        rt.execute(FixedVars.BASE_URL+"/user/"+FixedVars.PREF_USER_NAME);
+        // initiate waiting logic
+        ud=rt.getObj();
+        // terminate waiting logic
+
+        userEmailID.setText(ud.getEmailId());
+        userFname.setText(ud.getFirstName());
+        userLname.setText(ud.getLastName());
+        userInfo.setText(ud.getInfo());
 
         editDetailButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +123,12 @@ public class HomeProfilePage extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 RequestTask<String> rt5=new RequestTask<String>(String.class, HttpMethod.DELETE,
-                        new HeaderTools.EntryImp("token","2c91a00e5e74e4b2015e758850c90003"));
-                rt5.execute(FixedVars.BASE_URL+"/authentication/doshi2");
+                        new HeaderTools.EntryImp("token",token));
+                rt5.execute(FixedVars.BASE_URL+"/authentication/"+ud.getUserName());
+                editor.clear();
+                editor.apply();
+                Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);
+                startActivity(myIntent);
             }
         });
     }

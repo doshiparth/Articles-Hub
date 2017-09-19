@@ -154,7 +154,7 @@ public class LoginPage extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             //Attempts login by calling the server using REST Api call
-            UserDetail loginObj =new UserDetail();
+            UserDetail loginObj = new UserDetail();
             loginObj.setUserName(uname);
             loginObj.setPass(password);
             doLogin(loginObj);
