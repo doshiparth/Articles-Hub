@@ -41,7 +41,7 @@ public class SelectTagPage extends AppCompatActivity {
     SharedPreferences sharedPref;
     String token = null;
     String userName = null;
-    Boolean NO_SELECTION_FLAG = true;
+    //Boolean NO_SELECTION_FLAG = true;
 
     //List<String> listSource = new ArrayList<>();
     //List<String> listFound = new ArrayList<>();
@@ -121,7 +121,7 @@ public class SelectTagPage extends AppCompatActivity {
                     for (String addedTag:listSelected) {
                         if(!usersTag.equalsIgnoreCase(addedTag)) {
                             listSelected.add(tag.getTagName());
-                            NO_SELECTION_FLAG = false;
+                            //NO_SELECTION_FLAG = false;
                             userSearchText.setText("");
                             ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
                             lv_selected.setAdapter(selectedAdapter);
@@ -282,7 +282,7 @@ public class SelectTagPage extends AppCompatActivity {
 
         //Sending user's favorite tags to the server
 
-        if(!NO_SELECTION_FLAG){
+        //if(!NO_SELECTION_FLAG){
             for (String str:listSelected) {
                 System.out.println("Selected tags");
                 System.out.println(str);
@@ -309,9 +309,9 @@ public class SelectTagPage extends AppCompatActivity {
             SelectTagPage.this.startActivity(myIntent);
             startActivity(myIntent);
             finish();
-        }
-        else{
-            Toast.makeText(SelectTagPage.this, "You need to select atleast one tag to go ahead", Toast.LENGTH_LONG).show();
-        }
+        //}
+        //else{
+            //Toast.makeText(SelectTagPage.this, "You need to select atleast one tag to go ahead", Toast.LENGTH_LONG).show();
+        //}
     }
 }

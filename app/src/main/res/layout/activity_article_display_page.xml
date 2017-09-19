@@ -23,6 +23,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text_article_title"
         android:text="Author Name"
+        android:layout_margin="5dp"
         android:textSize="20sp"/>
 
     <TextView
@@ -31,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text_author_name"
+        android:layout_margin="5dp"
         android:text="Article Tag"
         android:textSize="15sp"/>
 
@@ -41,6 +43,7 @@
         android:text="Article Date"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="83dp"
+        android:layout_margin="5dp"
         android:layout_below="@+id/text_author_name"
         android:textSize="15sp"/>
 
@@ -50,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text_article_tag"
+        android:layout_margin="5dp"
         android:layout_marginTop="12dp"
         android:inputType="textImeMultiLine"
         android:text="Article Content"
@@ -70,9 +74,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_like"
         android:layout_marginTop="10dp"
+        android:layout_margin="5dp"
         android:layout_above="@+id/btn_comment"
         android:layout_alignParentStart="true"
-        android:ems="10"
+        android:ems="15"
         android:textSize="20sp"
         android:inputType="textMultiLine"
         android:text=""

@@ -87,7 +87,7 @@ public class HomePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomePage
 
-        if(token != null && !token.equalsIgnoreCase("") && FixedVars.TAG_SELECTED_FLAG){
+        if(token != null && !token.equalsIgnoreCase("")){
 
             RequestTask<ShortArticleDetail[]> regUserArticleRequest=
                     new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON,
@@ -97,12 +97,12 @@ public class HomePage extends AppCompatActivity
             articleDetails = regUserArticleRequest.getObj();
             // terminate waiting logic
 
-        }else if(token != null && !FixedVars.TAG_SELECTED_FLAG) {
+        }/*else if(token != null && !FixedVars.TAG_SELECTED_FLAG) {
             Toast.makeText(HomePage.this, "Logged in but tags not selected.... Select tags first", Toast.LENGTH_LONG).show();
             Intent myIntent = new Intent(HomePage.this, SelectTagPage.class);
             startActivity(myIntent);
-        }
-        else if(token == null && token.equalsIgnoreCase("") ){
+        }*/
+        else if(token == null || token.equalsIgnoreCase("") ){
 
                 RequestTask<ShortArticleDetail[]> unregUserArticleRequest=
                         new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON);
@@ -111,10 +111,10 @@ public class HomePage extends AppCompatActivity
                 articleDetails = unregUserArticleRequest.getObj();
                 // terminate waiting logic
         }
-            articleList = new HomePageModel[articleDetails.length];
-            for(int i=0; i < articleDetails.length; i++){
-                articleList[i] = new HomePageModel(articleDetails[i]);
-            }
+        articleList = new HomePageModel[articleDetails.length];
+        for(int i=0; i < articleDetails.length; i++){
+            articleList[i] = new HomePageModel(articleDetails[i]);
+        }
 
         /*
         ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");

@@ -98,14 +98,13 @@ public class ArticleDisplayPage extends AppCompatActivity {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestTask<String> rt5=new RequestTask<String>(String.class, HttpMethod.POST,
+                RequestTask<String> likeRequest=new RequestTask<String>(String.class, HttpMethod.POST,
                         HeaderTools.CONTENT_TYPE_JSON,
                         HeaderTools.makeAuth(token));
-                rt5.execute(FixedVars.BASE_URL+"/user/"+userName+"/like/"+article.getArticleId());
+                likeRequest.execute(FixedVars.BASE_URL+"/user/"+userName+"/like/"+article.getArticleId());
             }
         });
         commentText = (EditText)findViewById(R.id.edit_comment);
-
         commentButton = (Button)findViewById(R.id.btn_comment);
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,10 +113,10 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 comment.setArticleId(article.getArticleId());
                 comment.setUserName(userName);
                 comment.setContent(String.valueOf(commentText.getText()));
-                AddRequestTask<String,CommentDetail> rt6=new AddRequestTask<String, CommentDetail>(String.class,
+                AddRequestTask<String,CommentDetail> commentRequest=new AddRequestTask<String, CommentDetail>(String.class,
                         comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth("token"));
-                rt6.execute(FixedVars.BASE_URL+"/comment");
+                        HeaderTools.makeAuth(token));
+                commentRequest.execute(FixedVars.BASE_URL+"/comment");
             }
         });
     }

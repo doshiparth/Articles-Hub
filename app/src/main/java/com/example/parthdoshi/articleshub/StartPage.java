@@ -1,11 +1,18 @@
 package com.example.parthdoshi.articleshub;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class StartPage extends AppCompatActivity {
+
+    SharedPreferences sharedPref;
+    String userName = null, token =null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +23,16 @@ public class StartPage extends AppCompatActivity {
             setContentView(R.layout.activity_start_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
+
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
+
+        if(!token.equals("")) {
+            Toast.makeText(StartPage.this, "Welcome again "+userName, Toast.LENGTH_LONG).show();
+            Intent myIntent = new Intent(StartPage.this, HomePage.class);
+            startActivity(myIntent);
+        }
     }
 
     //Applying actions on all three buttons

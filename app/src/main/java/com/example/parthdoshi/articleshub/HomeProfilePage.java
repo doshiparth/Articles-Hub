@@ -61,14 +61,6 @@ public class HomeProfilePage extends AppCompatActivity
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
-        String uName = "";
-        if (sharedPref.contains(FixedVars.PREF_USER_NAME))
-        {
-            uName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
-        }
-        //String[] tagList = uName.;
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -98,7 +90,6 @@ public class HomeProfilePage extends AppCompatActivity
         userInfo = (TextView)findViewById(R.id.text_profile_page_userinfo);
         editDetailButton = (Button) findViewById(R.id.btn_edit_detail);
         logoutButton = (Button) findViewById(R.id.btn_logout);
-        String email;
 
         RequestTask<UserDetail> rt=
                 new RequestTask<>(UserDetail.class,CONTENT_TYPE_JSON);
@@ -122,9 +113,9 @@ public class HomeProfilePage extends AppCompatActivity
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestTask<String> rt5=new RequestTask<String>(String.class, HttpMethod.DELETE,
+                RequestTask<String> logoutRequest=new RequestTask<String>(String.class, HttpMethod.DELETE,
                         new HeaderTools.EntryImp("token",token));
-                rt5.execute(FixedVars.BASE_URL+"/authentication/"+ud.getUserName());
+                logoutRequest.execute(FixedVars.BASE_URL+"/authentication/"+ud.getUserName());
                 editor.clear();
                 editor.apply();
                 Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);
