@@ -175,13 +175,6 @@ public class SignupPage extends AppCompatActivity {
             focusView = userNameText;
             cancel = true;
         }
-        // Check if the User Info field is empty.
-        //if (!TextUtils.isEmpty(uinfo)) {
-        if (uinfo.matches("")) {
-            uinfoText.setError(getString(R.string.error_field_required));
-            focusView = uinfoText;
-            cancel = true;
-        }
         // Check if the password field is empty.
         //if (!TextUtils.isEmpty(password)) {
         if (password.matches("")) {

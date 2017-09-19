@@ -109,7 +109,7 @@ public class SelectTagPage extends AppCompatActivity {
         userSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String usersTag = userSearchText.getText().toString().toLowerCase();
+                String usersTag = userSearchText.getText().toString().trim().toLowerCase();
                 RequestTask<TagDetail> tagRead=new RequestTask<>(TagDetail.class,CONTENT_TYPE_JSON);
                 tagRead.execute(FixedVars.BASE_URL+"/tag/"+usersTag);
                 // initiate waiting logic
@@ -117,7 +117,7 @@ public class SelectTagPage extends AppCompatActivity {
                 // terminate waiting logic
                 HttpStatus status = tagRead.getHttpStatus();
 
-                if(status==HttpStatus.OK && tag == null) {
+                if(status==HttpStatus.OK && tag != null) {
                     for (String addedTag:listSelected) {
                         if(!usersTag.equalsIgnoreCase(addedTag)) {
                             listSelected.add(tag.getTagName());

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/startPageLayout"
     android:layout_width="match_parent"
-    android:background="@drawable/app_background7"
+    android:background="@drawable/app_bcg4"
     android:layout_height="match_parent"
     tools:context="com.example.parthdoshi.articleshub.StartPage">
 
@@ -17,25 +17,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp" />
-
-    <Button
-        android:id="@+id/startPageSignupButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="signinOnClick"
-        android:text="@string/startPageSignupButton"
-        android:layout_below="@+id/startPageNewUserText"
-        android:layout_alignEnd="@+id/button" />
-
-    <Button
-        android:id="@+id/startPageLoginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/startPageLoginButton"
-        android:onClick="loginOnClick"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="60dp" />
 
     <TextView
         android:id="@+id/startPageNewUserText"
@@ -58,6 +39,29 @@
         android:layout_alignStart="@+id/startPageLoginButton" />
 
     <Button
+        android:id="@+id/startPageLoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/startPageLoginButton"
+        android:onClick="loginOnClick"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="60dp"
+        android:theme="@style/PinkButton"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    <Button
+        android:id="@+id/startPageSignupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="signinOnClick"
+        android:text="@string/startPageSignupButton"
+        android:layout_below="@+id/startPageNewUserText"
+        android:layout_alignEnd="@+id/button"
+        android:theme="@style/PinkButton"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,5 +69,7 @@
         android:text="Go straight to the Home Page"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="skipOnClick"/>
+        android:onClick="skipOnClick"
+        android:theme="@style/PinkButton"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
 </RelativeLayout>

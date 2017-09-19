@@ -50,6 +50,6 @@
 
     <string name="select_tag_page_search_title">Search here</string>
     <string name="invalid_login_credentials">Invalid Login Credentials</string>
-    <string name="prompt_info">Enter your info</string>
+    <string name="prompt_info">Enter your info (Optional)</string>
     <string name="invalid_or_empty_details">Invalid details entered</string>
 </resources>
