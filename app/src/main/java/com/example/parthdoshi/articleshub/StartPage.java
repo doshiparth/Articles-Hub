@@ -24,7 +24,6 @@ public class StartPage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
-        /*
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
@@ -34,7 +33,6 @@ public class StartPage extends AppCompatActivity {
             startActivity(myIntent);
             Toast.makeText(StartPage.this, "Welcome again "+userName, Toast.LENGTH_LONG).show();
         }
-        */
     }
 
     //Applying actions on all three buttons

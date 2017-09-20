@@ -107,6 +107,7 @@ public class HomePage extends AppCompatActivity
         swippy.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                swippy.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
                 loadHomePage();
             }
         });
@@ -116,7 +117,6 @@ public class HomePage extends AppCompatActivity
     public void loadHomePage(){
 
         //Below is the original code for displaying content on HomePage
-
         if(token != null && !token.equalsIgnoreCase("")){
 
             RequestTask<ShortArticleDetail[]> regUserArticleRequest=
@@ -167,6 +167,7 @@ public class HomePage extends AppCompatActivity
                     }
             );
         }
+        swippy.setRefreshing(false);
     }
 
     @Override

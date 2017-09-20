@@ -32,6 +32,7 @@ public class HomeProfilePage extends AppCompatActivity
     NavigationView navigationView;
     Toolbar toolbar = null;
 
+    TextView profileHeading;
     TextView userEmailID;
     TextView userFname;
     TextView userLname;
@@ -40,6 +41,7 @@ public class HomeProfilePage extends AppCompatActivity
     Button logoutButton;
     String token = null, userName = null;
 
+    String ufname = null, ulname = null, uinfo = null, uemailid = null;
     UserDetail ud;
 
     //Declaring SharedPreferences to access data from other login activity
@@ -85,6 +87,7 @@ public class HomeProfilePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomeProfilePage
 
+        profileHeading = (TextView) findViewById(R.id.text_profile_page_heading);
         userEmailID = (TextView) findViewById(R.id.text_profile_page_emailid);
         userFname = (TextView) findViewById(R.id.text_profile_page_userfname);
         userLname = (TextView) findViewById(R.id.text_profile_page_userlname);
@@ -93,16 +96,22 @@ public class HomeProfilePage extends AppCompatActivity
         logoutButton = (Button) findViewById(R.id.btn_logout);
 
         RequestTask<UserDetail> rt =
-                new RequestTask<>(UserDetail.class, CONTENT_TYPE_JSON);
-        rt.execute(FixedVars.BASE_URL + "/user/" + FixedVars.PREF_USER_NAME);
+                new RequestTask<>(UserDetail.class, HttpMethod.GET, CONTENT_TYPE_JSON);
+        rt.execute(FixedVars.BASE_URL+"/user/"+userName);
         // initiate waiting logic
         ud = rt.getObj();
         // terminate waiting logic
 
-        userEmailID.setText(ud.getEmailId());
-        userFname.setText(ud.getFirstName());
-        userLname.setText(ud.getLastName());
-        userInfo.setText(ud.getInfo());
+        ufname = ud.getFirstName();
+        ulname = ud.getLastName();
+        uinfo = ud.getInfo();
+        uemailid = ud.getEmailId();
+
+        profileHeading.setText(""+userName+"'s Profile");
+        userEmailID.setText(uemailid);
+        userFname.setText(ufname);
+        userLname.setText(ulname);
+        userInfo.setText(uinfo);
 
         editDetailButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +125,7 @@ public class HomeProfilePage extends AppCompatActivity
             public void onClick(View view) {
                 RequestTask<String> logoutRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
                         new HeaderTools.EntryImp("token", token));
-                logoutRequest.execute(FixedVars.BASE_URL + "/authentication/" + ud.getUserName());
+                logoutRequest.execute(FixedVars.BASE_URL+"/authentication/"+ud.getUserName());
                 editor.clear();
                 editor.apply();
                 Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);

@@ -22,6 +22,7 @@ import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 
 import java.util.Iterator;
 
@@ -40,6 +41,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
     Button likeButton;
     EditText commentText;
     Button commentButton;
+    Button commentEditButton;
     String token = null, userName = null;
     ShortArticleDetail[] articleDetails;
     SharedPreferences sharedPref;
@@ -106,6 +108,12 @@ public class ArticleDisplayPage extends AppCompatActivity {
                         HeaderTools.CONTENT_TYPE_JSON,
                         HeaderTools.makeAuth(token));
                 likeRequest.execute(FixedVars.BASE_URL+"/user/"+userName+"/like/"+article.getArticleId());
+                HttpStatus status = likeRequest.getHttpStatus();
+
+                if(status == HttpStatus.ACCEPTED)
+                    Toast.makeText(ArticleDisplayPage.this, "You liked this article", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
             }
         });
         commentText = (EditText)findViewById(R.id.edit_comment);
@@ -125,7 +133,24 @@ public class ArticleDisplayPage extends AppCompatActivity {
                             comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
                     commentRequest.execute(FixedVars.BASE_URL+"/comment");
+                    HttpStatus status = commentRequest.getHttpStatus();
+                    if(status == HttpStatus.CREATED){
+                        Toast.makeText(ArticleDisplayPage.this, "Your comment has been successfully posted", Toast.LENGTH_LONG).show();
+                        commentText.setEnabled(false);
+                        commentButton.setEnabled(false);
+                        commentEditButton.setEnabled(true);
+                    }
+                    else
+                        Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+        commentEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                commentText.setEnabled(true);
+                commentButton.setEnabled(true);
+                commentEditButton.setEnabled(false);
             }
         });
     }

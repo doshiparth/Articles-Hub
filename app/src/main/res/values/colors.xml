@@ -13,4 +13,8 @@
     <color name="divider">#BDBDBD</color>
     <color name="indigo">#4B0082</color>
     <color name="pink">#ff1493</color>
+
+    <color name="orange">#FF9900</color>
+    <color name="green">#009900</color>
+    <color name="blue">#000099</color>
 </resources>

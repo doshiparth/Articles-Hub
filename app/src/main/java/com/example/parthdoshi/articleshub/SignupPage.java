@@ -138,8 +138,8 @@ public class SignupPage extends AppCompatActivity {
         noTokenErrorText.setError(null);
 
         // Store values at the time of the login attempt.
-        String fname = emailText.getText().toString();
-        String lname = emailText.getText().toString();
+        String fname = fnameText.getText().toString();
+        String lname = lnameText.getText().toString();
         String email = emailText.getText().toString();
         String uname = userNameText.getText().toString();
         String uinfo = uinfoText.getText().toString();

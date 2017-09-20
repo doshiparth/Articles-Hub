@@ -95,4 +95,13 @@
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:id="@+id/btn_edit_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/edit_comment"
+        android:layout_below="@+id/edit_comment"
+        android:text="Edit Comment"
+        android:enabled="false"/>
+
 </RelativeLayout>
