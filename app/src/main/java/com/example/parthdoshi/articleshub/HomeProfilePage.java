@@ -44,20 +44,21 @@ public class HomeProfilePage extends AppCompatActivity
 
     //Declaring SharedPreferences to access data from other login activity
     public SharedPreferences sharedPref;
-    SharedPreferences.Editor editor = sharedPref.edit();
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connection
-        if(NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline())
             setContentView(R.layout.activity_home_profile_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
         //Getting data from SharedPreferences
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
@@ -84,18 +85,18 @@ public class HomeProfilePage extends AppCompatActivity
 
         //Below is the original code for displaying content on HomeProfilePage
 
-        userEmailID = (TextView)findViewById(R.id.text_profile_page_emailid);
-        userFname = (TextView)findViewById(R.id.text_profile_page_userfname);
-        userLname = (TextView)findViewById(R.id.text_profile_page_userlname);
-        userInfo = (TextView)findViewById(R.id.text_profile_page_userinfo);
+        userEmailID = (TextView) findViewById(R.id.text_profile_page_emailid);
+        userFname = (TextView) findViewById(R.id.text_profile_page_userfname);
+        userLname = (TextView) findViewById(R.id.text_profile_page_userlname);
+        userInfo = (TextView) findViewById(R.id.text_profile_page_userinfo);
         editDetailButton = (Button) findViewById(R.id.btn_edit_detail);
         logoutButton = (Button) findViewById(R.id.btn_logout);
 
-        RequestTask<UserDetail> rt=
-                new RequestTask<>(UserDetail.class,CONTENT_TYPE_JSON);
-        rt.execute(FixedVars.BASE_URL+"/user/"+FixedVars.PREF_USER_NAME);
+        RequestTask<UserDetail> rt =
+                new RequestTask<>(UserDetail.class, CONTENT_TYPE_JSON);
+        rt.execute(FixedVars.BASE_URL + "/user/" + FixedVars.PREF_USER_NAME);
         // initiate waiting logic
-        ud=rt.getObj();
+        ud = rt.getObj();
         // terminate waiting logic
 
         userEmailID.setText(ud.getEmailId());
@@ -113,9 +114,9 @@ public class HomeProfilePage extends AppCompatActivity
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestTask<String> logoutRequest=new RequestTask<String>(String.class, HttpMethod.DELETE,
-                        new HeaderTools.EntryImp("token",token));
-                logoutRequest.execute(FixedVars.BASE_URL+"/authentication/"+ud.getUserName());
+                RequestTask<String> logoutRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
+                        new HeaderTools.EntryImp("token", token));
+                logoutRequest.execute(FixedVars.BASE_URL + "/authentication/" + ud.getUserName());
                 editor.clear();
                 editor.apply();
                 Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);

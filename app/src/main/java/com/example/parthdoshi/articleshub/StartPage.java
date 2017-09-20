@@ -24,15 +24,17 @@ public class StartPage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
+        /*
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
         if(!token.equals("")) {
-            Toast.makeText(StartPage.this, "Welcome again "+userName, Toast.LENGTH_LONG).show();
             Intent myIntent = new Intent(StartPage.this, HomePage.class);
             startActivity(myIntent);
+            Toast.makeText(StartPage.this, "Welcome again "+userName, Toast.LENGTH_LONG).show();
         }
+        */
     }
 
     //Applying actions on all three buttons
@@ -40,15 +42,18 @@ public class StartPage extends AppCompatActivity {
         Intent myIntent = new Intent(StartPage.this, SignupPage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);
+        finish();
     }
     public void loginOnClick(View v2){
         Intent myIntent = new Intent(StartPage.this, LoginPage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);
+        finish();
     }
     public void skipOnClick(View v3){
         Intent myIntent = new Intent(StartPage.this, HomePage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);
+        finish();
     }
 }

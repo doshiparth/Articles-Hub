@@ -45,5 +45,5 @@ dependencies {
 
     //My Libraries
     compile 'com.github.NeelPatel21:Articles-hub-android-api:v2.0.1'
-    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    //compile 'com.miguelcatalan:materialsearchview:1.4.0'
 }

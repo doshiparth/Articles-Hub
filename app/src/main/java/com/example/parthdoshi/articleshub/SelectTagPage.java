@@ -18,9 +18,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
+//import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.neel.articleshubapi.restapi.beans.TagDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
@@ -41,7 +42,8 @@ public class SelectTagPage extends AppCompatActivity {
     SharedPreferences sharedPref;
     String token = null;
     String userName = null;
-    //Boolean NO_SELECTION_FLAG = true;
+    Boolean NO_SELECTION_FLAG = true;
+    Boolean TAG_ALREADY_PRESENT = false;
 
     //List<String> listSource = new ArrayList<>();
     //List<String> listFound = new ArrayList<>();
@@ -102,7 +104,7 @@ public class SelectTagPage extends AppCompatActivity {
         */
 
         lv_selected = (ListView) findViewById(R.id.select_page_listview);
-        lv_selected.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        //lv_selected.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
         lv_selected.setAdapter(selectedAdapter);
 
@@ -118,14 +120,20 @@ public class SelectTagPage extends AppCompatActivity {
                 HttpStatus status = tagRead.getHttpStatus();
 
                 if(status==HttpStatus.OK && tag != null) {
+                    //To check if the tag user has selected is already present in his selection list
                     for (String addedTag:listSelected) {
-                        if(!usersTag.equalsIgnoreCase(addedTag)) {
-                            listSelected.add(tag.getTagName());
-                            //NO_SELECTION_FLAG = false;
-                            userSearchText.setText("");
-                            ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-                            lv_selected.setAdapter(selectedAdapter);
+                        if((usersTag.equals(addedTag))){
+                            Toast.makeText(SelectTagPage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
+                            TAG_ALREADY_PRESENT = true;
                         }
+                    }
+                    //If the tag is not already present and is available in the Database, ENTER it into the list
+                    if(!TAG_ALREADY_PRESENT){
+                        listSelected.add(tag.getTagName());
+                        userSearchText.setText("");
+                        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                        lv_selected.setAdapter(selectedAdapter);
+                        NO_SELECTION_FLAG = false;
                     }
                 }else if(usersTag.equals(""))
                     Toast.makeText(SelectTagPage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
@@ -282,7 +290,7 @@ public class SelectTagPage extends AppCompatActivity {
 
         //Sending user's favorite tags to the server
 
-        //if(!NO_SELECTION_FLAG){
+        if(!NO_SELECTION_FLAG){
             for (String str:listSelected) {
                 System.out.println("Selected tags");
                 System.out.println(str);
@@ -304,14 +312,13 @@ public class SelectTagPage extends AppCompatActivity {
             if(status==HttpStatus.OK)
                 Toast.makeText(SelectTagPage.this, "Tags saved", Toast.LENGTH_LONG).show();
 
-            FixedVars.TAG_SELECTED_FLAG = true;
             Intent myIntent = new Intent(SelectTagPage.this, HomePage.class);
             SelectTagPage.this.startActivity(myIntent);
             startActivity(myIntent);
             finish();
-        //}
-        //else{
-            //Toast.makeText(SelectTagPage.this, "You need to select atleast one tag to go ahead", Toast.LENGTH_LONG).show();
-        //}
+        }
+        else{
+            Toast.makeText(SelectTagPage.this, "You need to select atleast one tag to go ahead", Toast.LENGTH_LONG).show();
+        }
     }
 }

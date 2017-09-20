@@ -26,7 +26,7 @@ public class HomeAboutPage extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //Checking for internet connection
-        if(NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline())
             setContentView(R.layout.activity_home_about_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();

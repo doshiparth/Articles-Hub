@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
@@ -52,6 +54,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layout_article_display_page);
+        relativeLayout.requestFocus();
         articleTitle = (TextView) findViewById(R.id.text_article_title);
         authorName = (TextView) findViewById(R.id.text_author_name);
         articleDate = (TextView) findViewById(R.id.text_article_date);
@@ -109,14 +113,19 @@ public class ArticleDisplayPage extends AppCompatActivity {
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CommentDetail comment = new CommentDetail();
-                comment.setArticleId(article.getArticleId());
-                comment.setUserName(userName);
-                comment.setContent(String.valueOf(commentText.getText()));
-                AddRequestTask<String,CommentDetail> commentRequest=new AddRequestTask<String, CommentDetail>(String.class,
-                        comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth(token));
-                commentRequest.execute(FixedVars.BASE_URL+"/comment");
+                if(commentText.getText().toString().isEmpty()){
+                    Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    CommentDetail comment = new CommentDetail();
+                    comment.setArticleId(article.getArticleId());
+                    comment.setUserName(userName);
+                    comment.setContent(String.valueOf(commentText.getText()));
+                    AddRequestTask<String,CommentDetail> commentRequest=new AddRequestTask<String, CommentDetail>(String.class,
+                            comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
+                            HeaderTools.makeAuth(token));
+                    commentRequest.execute(FixedVars.BASE_URL+"/comment");
+                }
             }
         });
     }
