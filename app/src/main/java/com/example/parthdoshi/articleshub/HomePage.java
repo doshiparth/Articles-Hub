@@ -1,5 +1,6 @@
 package com.example.parthdoshi.articleshub;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,9 +22,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
-import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
-import com.neel.articleshubapi.restapi.beans.UserDetail;
-import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
@@ -45,6 +43,7 @@ public class HomePage extends AppCompatActivity
     ShortArticleDetail[] articleDetails;
     SharedPreferences sharedPref;
     SwipeRefreshLayout swippy;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +57,15 @@ public class HomePage extends AppCompatActivity
 
         //toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+
+        //Initializing ProgressDialog
+        progressDialog = new ProgressDialog(HomePage.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setMessage("Registering you as our new user");
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
+
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
@@ -87,7 +95,9 @@ public class HomePage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         swippy = (SwipeRefreshLayout) findViewById(R.id.home_page_swippy);
 
+        progressDialog.show();
         loadHomePage();
+        progressDialog.dismiss();
 
         /*
         ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");
@@ -117,6 +127,7 @@ public class HomePage extends AppCompatActivity
     public void loadHomePage(){
 
         //Below is the original code for displaying content on HomePage
+
         if(token != null && !token.equalsIgnoreCase("")){
 
             RequestTask<ShortArticleDetail[]> regUserArticleRequest=

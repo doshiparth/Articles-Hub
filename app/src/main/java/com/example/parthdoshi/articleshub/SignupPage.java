@@ -62,7 +62,11 @@ public class SignupPage extends AppCompatActivity {
 
         //Initializing ProgressDialog
         progressDialog = new ProgressDialog(SignupPage.this);
-
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setMessage("Registering you as our new user");
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
 
         //Creating a SharedPreferences file
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
@@ -93,6 +97,7 @@ public class SignupPage extends AppCompatActivity {
         signupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.show();
                 attemptLogin();
             }
         });
@@ -109,10 +114,6 @@ public class SignupPage extends AppCompatActivity {
         AddRequestTask<String, UserDetail> loginRequest = new AddRequestTask<String, UserDetail>(String.class,
                 login, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON, HeaderTools.ACCEPT_TEXT);
         loginRequest.execute(FixedVars.BASE_URL + "/authentication/" + login.getUserName());
-        progressDialog.setTitle("Please wait");
-        progressDialog.setMessage("Registering you as our new user");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
         token = loginRequest.getObj();
         //return token;
     }
@@ -231,8 +232,7 @@ public class SignupPage extends AppCompatActivity {
             emailText.requestFocus();
             uinfoText.requestFocus();
             passwordText.requestFocus();
-
-            progressDialog.cancel();
+            progressDialog.dismiss();
         }
     }
 }
