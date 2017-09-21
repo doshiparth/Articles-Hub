@@ -12,8 +12,8 @@
         android:id="@+id/startPageLogo"
         android:layout_width="200dp"
         android:layout_height="70dp"
-        android:src="@drawable/image_logo"
-        android:contentDescription="Application Logo"
+        android:src="@drawable/transparent_logo"
+        android:contentDescription="Articles Hub"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp" />

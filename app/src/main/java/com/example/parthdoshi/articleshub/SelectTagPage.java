@@ -55,7 +55,7 @@ public class SelectTagPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connection
-        if(NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline())
             setContentView(R.layout.activity_select_tag_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
@@ -112,30 +112,30 @@ public class SelectTagPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String usersTag = userSearchText.getText().toString().trim().toLowerCase();
-                RequestTask<TagDetail> tagRead=new RequestTask<>(TagDetail.class,CONTENT_TYPE_JSON);
-                tagRead.execute(FixedVars.BASE_URL+"/tag/"+usersTag);
+                RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
+                tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
                 // initiate waiting logic
-                TagDetail tag=tagRead.getObj();
+                TagDetail tag = tagRead.getObj();
                 // terminate waiting logic
                 HttpStatus status = tagRead.getHttpStatus();
 
-                if(status==HttpStatus.OK && tag != null) {
+                if (status == HttpStatus.OK && tag != null) {
                     //To check if the tag user has selected is already present in his selection list
-                    for (String addedTag:FixedVars.listSelected) {
-                        if((usersTag.equals(addedTag))){
+                    for (String addedTag : FixedVars.listSelected) {
+                        if ((usersTag.equals(addedTag))) {
                             Toast.makeText(SelectTagPage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
                             TAG_ALREADY_PRESENT = true;
                         }
                     }
                     //If the tag is not already present and is available in the Database, ENTER it into the list
-                    if(!TAG_ALREADY_PRESENT){
+                    if (!TAG_ALREADY_PRESENT) {
                         FixedVars.listSelected.add(tag.getTagName());
                         userSearchText.setText("");
                         ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, FixedVars.listSelected);
                         lv_selected.setAdapter(selectedAdapter);
                         NO_SELECTION_FLAG = false;
                     }
-                }else if(usersTag.equals(""))
+                } else if (usersTag.equals(""))
                     Toast.makeText(SelectTagPage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
@@ -153,7 +153,6 @@ public class SelectTagPage extends AppCompatActivity {
                 lv_selected.setAdapter(selectedAdapter);
             }
         });
-
 
 
         //lv_select = (ListView)findViewById(R.id.select_page_display_listview);
@@ -291,7 +290,7 @@ public class SelectTagPage extends AppCompatActivity {
     }
 
 
-    public void goToHome(View v){
+    public void goToHome(View v) {
         //Converting ArrayList to list of strings
         //String selectedTags[] = new String[listSelected.size()];
         //for(int j =0;j<listSelected.size();j++){
@@ -299,37 +298,35 @@ public class SelectTagPage extends AppCompatActivity {
         //}
 
 
-
         //Sending user's favorite tags to the server
 
-        if(!FixedVars.listSelected.isEmpty()){
-            for (String str:FixedVars.listSelected) {
+        if (!FixedVars.listSelected.isEmpty()) {
+            for (String str : FixedVars.listSelected) {
                 System.out.println("Selected tags");
                 System.out.println(str);
             }
             TagDetail[] tagDetails = new TagDetail[FixedVars.listSelected.size()];
-            for(int i=0;i<FixedVars.listSelected.size();i++){
+            for (int i = 0; i < FixedVars.listSelected.size(); i++) {
                 TagDetail tagDetail = new TagDetail();
                 tagDetail.setTagName(FixedVars.listSelected.get(i));
                 tagDetails[i] = tagDetail;
             }
-            AddRequestTask<String,TagDetail[]> rt=new AddRequestTask<String, TagDetail[]>(String.class,
+            AddRequestTask<String, TagDetail[]> rt = new AddRequestTask<String, TagDetail[]>(String.class,
                     tagDetails, HttpMethod.POST, CONTENT_TYPE_JSON,
                     HeaderTools.makeAuth(token));
-            rt.execute(FixedVars.BASE_URL+"/user/"+userName+"/favorite-tags");
+            rt.execute(FixedVars.BASE_URL + "/user/" + userName + "/favorite-tags");
             // initiate waiting logic
             rt.getObj();
             // terminate waiting logic
             HttpStatus status = rt.getHttpStatus();
-            if(status==HttpStatus.OK)
+            if (status == HttpStatus.OK)
                 Toast.makeText(SelectTagPage.this, "Tags saved", Toast.LENGTH_LONG).show();
 
             Intent myIntent = new Intent(SelectTagPage.this, HomePage.class);
             SelectTagPage.this.startActivity(myIntent);
             startActivity(myIntent);
             finish();
-        }
-        else{
+        } else {
             Toast.makeText(SelectTagPage.this, "You need to select atleast one tag to go ahead", Toast.LENGTH_LONG).show();
         }
     }

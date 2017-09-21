@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
+    android:layout_margin="10dp"
     android:focusableInTouchMode="true"
     tools:context="com.example.parthdoshi.articleshub.ArticleDisplayPage">
 
