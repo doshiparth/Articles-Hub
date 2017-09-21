@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +46,7 @@ public class WriteArticlePage extends AppCompatActivity {
 
     //Local variables to send through the REST Api
     String title = "";
-    String singleTag = "Tags";
+    String singleTag = "";
     Set<String> tags = new HashSet<>();
     List<String> content = new ArrayList<>();
 
@@ -124,19 +125,21 @@ public class WriteArticlePage extends AppCompatActivity {
                 article.setAuthor(userName);
                 article.setTitle(title);
                 article.setTag(tags);
+                Log.i("Tags",tags.toString());
+                Log.i("Title",title);
                 article.setContent(content);
                 AddRequestTask<String, ArticleDetail> createArticleRequest = new AddRequestTask<String, ArticleDetail>(String.class,
                         article, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
                         HeaderTools.makeAuth(token));
                 createArticleRequest.execute(FixedVars.BASE_URL + "/article");
-                HttpStatus status = createArticleRequest.getHttpStatus();
+                //HttpStatus status = createArticleRequest.getHttpStatus();
 
-                if (status == HttpStatus.CREATED) {
+                //if (status == HttpStatus.CREATED) {
                     Toast.makeText(WriteArticlePage.this, "Article created", Toast.LENGTH_LONG).show();
                     Intent myIntent = new Intent(WriteArticlePage.this, ViewWrittenArticlePage.class);
                     startActivity(myIntent);
-                } else
-                    Toast.makeText(WriteArticlePage.this, "Error!! Article not created", Toast.LENGTH_LONG).show();
+                //} else
+                    //Toast.makeText(WriteArticlePage.this, "Error!! Article not created", Toast.LENGTH_LONG).show();
 
             }
         });

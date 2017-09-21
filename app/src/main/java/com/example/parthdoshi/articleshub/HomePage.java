@@ -33,9 +33,9 @@ public class HomePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawer;
-    SwipeRefreshLayout mSwipeRefreshLayout;
     NavigationView navigationView;
     Toolbar toolbar = null;
+
     HomePageModel[] articleList;
     ListView hplv;
     //String[] selectedTags;
@@ -50,13 +50,13 @@ public class HomePage extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //Checking for internet connection
-        if(NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline())
             setContentView(R.layout.activity_home_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //Initializing ProgressDialog
         progressDialog = new ProgressDialog(HomePage.this);
@@ -124,16 +124,16 @@ public class HomePage extends AppCompatActivity
 
     }
 
-    public void loadHomePage(){
+    public void loadHomePage() {
 
         //Below is the original code for displaying content on HomePage
 
-        if(token != null && !token.equalsIgnoreCase("")){
+        if (token != null && !token.equalsIgnoreCase("")) {
 
-            RequestTask<ShortArticleDetail[]> regUserArticleRequest=
+            RequestTask<ShortArticleDetail[]> regUserArticleRequest =
                     new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
-            regUserArticleRequest.execute(FixedVars.BASE_URL+"/home/"+userName);
+            regUserArticleRequest.execute(FixedVars.BASE_URL + "/home/" + userName);
             // initiate waiting logic
             articleDetails = regUserArticleRequest.getObj();
             // terminate waiting logic
@@ -142,23 +142,22 @@ public class HomePage extends AppCompatActivity
             Toast.makeText(HomePage.this, "Logged in but tags not selected.... Select tags first", Toast.LENGTH_LONG).show();
             Intent myIntent = new Intent(HomePage.this, SelectTagPage.class);
             startActivity(myIntent);
-        }*/
-        else if(token == null || token.equalsIgnoreCase("") ){
+        }*/ else if (token == null || token.equalsIgnoreCase("")) {
 
-            RequestTask<ShortArticleDetail[]> unregUserArticleRequest=
+            RequestTask<ShortArticleDetail[]> unregUserArticleRequest =
                     new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON);
-            unregUserArticleRequest.execute(FixedVars.BASE_URL+"/home");
+            unregUserArticleRequest.execute(FixedVars.BASE_URL + "/home");
             // initiate waiting logic
             articleDetails = unregUserArticleRequest.getObj();
             // terminate waiting logic
         }
 
-        if(articleDetails == null)
+        if (articleDetails == null)
             Toast.makeText(HomePage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
-        else{
+        else {
             //If execution is correct and the list of articles is received, then and only then the following will take place
             articleList = new HomePageModel[articleDetails.length];
-            for(int i=0; i < articleDetails.length; i++){
+            for (int i = 0; i < articleDetails.length; i++) {
                 articleList[i] = new HomePageModel(articleDetails[i]);
             }
             hplv = (ListView) findViewById(R.id.home_page_listview);
@@ -218,22 +217,22 @@ public class HomePage extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
 
             case R.id.nav_home_page:
-                Intent home= new Intent(HomePage.this,HomePage.class);
+                Intent home = new Intent(HomePage.this, HomePage.class);
                 startActivity(home);
                 break;
             case R.id.nav_home_profile_page:
-                Intent profile= new Intent(HomePage.this,HomeProfilePage.class);
+                Intent profile = new Intent(HomePage.this, HomeProfilePage.class);
                 startActivity(profile);
                 break;
             case R.id.nav_home_tags_page:
-                Intent tags= new Intent(HomePage.this,HomeTagsPage.class);
+                Intent tags = new Intent(HomePage.this, HomeTagsPage.class);
                 startActivity(tags);
                 break;
             case R.id.nav_home_about_page:
-                Intent about= new Intent(HomePage.this,HomeAboutPage.class);
+                Intent about = new Intent(HomePage.this, HomeAboutPage.class);
                 startActivity(about);
                 break;
         }

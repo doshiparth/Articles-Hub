@@ -4,25 +4,21 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home_page"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_home"
             android:title="Home Page"/>
 
         <item
             android:id="@+id/nav_home_profile_page"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_profile"
             android:title="Your Profile" />
         <item
             android:id="@+id/nav_home_tags_page"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Tags" />
+            android:icon="@drawable/ic_menu_tags"
+            android:title="Manage Your Tags" />
         <item
             android:id="@+id/nav_home_about_page"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="About" />
-        <!--<item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" /> -->
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="About us" />
     </group>
 
     <!--<item android:title="Communicate">
