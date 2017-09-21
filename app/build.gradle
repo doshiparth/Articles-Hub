@@ -37,7 +37,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    //compile 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
     compile 'com.android.support:design:24.2.1'
@@ -45,5 +44,4 @@ dependencies {
 
     //My Libraries
     compile 'com.github.NeelPatel21:Articles-hub-android-api:v2.0.1'
-    //compile 'com.miguelcatalan:materialsearchview:1.4.0'
 }

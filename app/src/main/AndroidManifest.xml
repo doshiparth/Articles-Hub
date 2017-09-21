@@ -41,9 +41,14 @@
 
         <service android:name=".HomePageRefreshService" />
 
-        <activity android:name=".SelectTagPage"
+        <activity
+            android:name=".SelectTagPage"
             android:label="Select Tags"
+            android:parentActivityName=".SignupPage"
             android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parthdoshi.articleshub.SignupPage" />
 
         </activity>
         <activity
@@ -56,8 +61,13 @@
                 android:value="com.example.parthdoshi.articleshub.SelectTagPage" />
         </activity>
 
-        <activity android:name=".ArticleDisplayPage">
-
+        <activity
+            android:name=".ArticleDisplayPage"
+            android:label="Read Article"
+            android:parentActivityName=".HomePage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parthdoshi.articleshub.HomePage" />
         </activity>
 
         <activity
@@ -75,11 +85,32 @@
             android:label="@string/title_activity_home_tags_page"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".EditDetailPage" />
+        <activity
+            android:name=".EditDetailPage"
+            android:label="Edit Your Details"
+            android:parentActivityName=".HomeProfilePage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parthdoshi.articleshub.HomeProfilePage" />
+        </activity>
 
-        <activity android:name=".WriteArticlePage" />
+        <activity
+            android:name=".WriteArticlePage"
+            android:label="Write a new article"
+            android:parentActivityName=".HomePage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parthdoshi.articleshub.HomePage" />
+        </activity>
 
-        <activity android:name=".EditArticlePage" />
+        <activity
+            android:name=".EditArticlePage"
+            android:label="Edit your article"
+            android:parentActivityName=".ArticleDisplayPage">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parthdoshi.articleshub.ArticleDisplayPage" />
+        </activity>
 
     </application>
 

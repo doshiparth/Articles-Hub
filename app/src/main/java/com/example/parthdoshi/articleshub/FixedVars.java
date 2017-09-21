@@ -3,6 +3,7 @@ package com.example.parthdoshi.articleshub;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FixedVars {
 
@@ -16,18 +17,11 @@ public class FixedVars {
     public static final String PREF_NAME = "tokenInfo";
 
 
+    //The static list of the tags selected by the user maintained for further editing
+    public static List<String> listSelected = new ArrayList<>();
+
+
     //The base URL for server connection
     public static final String BASE_URL = "https://articleshub.herokuapp.com/api";
-
-    //To check if the current user has selected some tags
-    public static Boolean TAG_SELECTED_FLAG = false;
-
-    //The list of fixed tags
-    public static ArrayList<String> TAG_LIST = new ArrayList<>();
-
-    public static ArrayList<String> addTag(String tag){
-        TAG_LIST.add(tag);
-        return TAG_LIST;
-    }
 
 }

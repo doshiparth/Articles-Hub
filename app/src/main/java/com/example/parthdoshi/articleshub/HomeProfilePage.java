@@ -14,7 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
 import com.neel.articleshubapi.restapi.beans.UserDetail;
@@ -52,20 +54,27 @@ public class HomeProfilePage extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Checking for internet connection
-        if (NetworkStatus.getInstance(this).isOnline())
-            setContentView(R.layout.activity_home_profile_page);
-        else
-            NetworkStatus.getInstance(this).buildDialog(this).show();
-
         //Getting data from SharedPreferences
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Checking if the user has a profile or not
+        if (token.isEmpty()) {
+            Toast.makeText(HomeProfilePage.this, "You need to be a logged in user to access the profile page", Toast.LENGTH_LONG).show();
+            Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);
+            startActivity(myIntent);
+        } else {
+
+            //Checking for internet connection
+            if (NetworkStatus.getInstance(this).isOnline())
+                setContentView(R.layout.activity_home_profile_page);
+            else
+                NetworkStatus.getInstance(this).buildDialog(this).show();
+
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,62 +85,64 @@ public class HomeProfilePage extends AppCompatActivity
             }
         });*/
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
 
-        //Below is the original code for displaying content on HomeProfilePage
+            //Below is the original code for displaying content on HomeProfilePage
 
-        profileHeading = (TextView) findViewById(R.id.text_profile_page_heading);
-        userEmailID = (TextView) findViewById(R.id.text_profile_page_emailid);
-        userFname = (TextView) findViewById(R.id.text_profile_page_userfname);
-        userLname = (TextView) findViewById(R.id.text_profile_page_userlname);
-        userInfo = (TextView) findViewById(R.id.text_profile_page_userinfo);
-        editDetailButton = (Button) findViewById(R.id.btn_edit_detail);
-        logoutButton = (Button) findViewById(R.id.btn_logout);
+            profileHeading = (TextView) findViewById(R.id.text_profile_page_heading);
+            userEmailID = (TextView) findViewById(R.id.text_profile_page_emailid);
+            userFname = (TextView) findViewById(R.id.text_profile_page_userfname);
+            userLname = (TextView) findViewById(R.id.text_profile_page_userlname);
+            userInfo = (TextView) findViewById(R.id.text_profile_page_userinfo);
+            editDetailButton = (Button) findViewById(R.id.btn_edit_detail);
+            logoutButton = (Button) findViewById(R.id.btn_logout);
 
-        RequestTask<UserDetail> rt =
-                new RequestTask<>(UserDetail.class, HttpMethod.GET, CONTENT_TYPE_JSON);
-        rt.execute(FixedVars.BASE_URL+"/user/"+userName);
-        // initiate waiting logic
-        ud = rt.getObj();
-        // terminate waiting logic
+            RequestTask<UserDetail> rt =
+                    new RequestTask<>(UserDetail.class, HttpMethod.GET, CONTENT_TYPE_JSON);
+            rt.execute(FixedVars.BASE_URL + "/user/" + userName);
+            // initiate waiting logic
+            ud = rt.getObj();
+            // terminate waiting logic
 
-        ufname = ud.getFirstName();
-        ulname = ud.getLastName();
-        uinfo = ud.getInfo();
-        uemailid = ud.getEmailId();
+            ufname = ud.getFirstName();
+            ulname = ud.getLastName();
+            uinfo = ud.getInfo();
+            uemailid = ud.getEmailId();
 
-        profileHeading.setText(""+userName+"'s Profile");
-        userEmailID.setText(uemailid);
-        userFname.setText(ufname);
-        userLname.setText(ulname);
-        userInfo.setText(uinfo);
+            profileHeading.setText("" + userName + "'s Profile");
+            userEmailID.setText(uemailid);
+            userFname.setText(ufname);
+            userLname.setText(ulname);
+            userInfo.setText(uinfo);
 
-        editDetailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(HomeProfilePage.this, EditDetailPage.class);
-                startActivity(myIntent);
-            }
-        });
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RequestTask<String> logoutRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
-                        new HeaderTools.EntryImp("token", token));
-                logoutRequest.execute(FixedVars.BASE_URL+"/authentication/"+ud.getUserName());
-                editor.clear();
-                editor.apply();
-                Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);
-                startActivity(myIntent);
-            }
-        });
+            editDetailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myIntent = new Intent(HomeProfilePage.this, EditDetailPage.class);
+                    startActivity(myIntent);
+                }
+            });
+            logoutButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RequestTask<String> logoutRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
+                            new HeaderTools.EntryImp("token", token));
+                    logoutRequest.execute(FixedVars.BASE_URL + "/authentication/" + ud.getUserName());
+                    editor.clear();
+                    editor.apply();
+                    FixedVars.listSelected.clear();
+                    Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);
+                    startActivity(myIntent);
+                }
+            });
+        }
     }
 
     @Override

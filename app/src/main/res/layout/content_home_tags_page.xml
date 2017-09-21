@@ -9,10 +9,60 @@
     tools:showIn="@layout/app_bar_home_tags_page">
 
     <TextView
-        android:id="@+id/tags_page_text"
+        android:id="@+id/home_select_page_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:text="Modify your tags"/>
+
+    <RelativeLayout
+        android:id="@+id/home_select_page_inner_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tags page"
-        android:textSize="20sp" />
+        android:orientation="vertical"
+        android:layout_below="@+id/home_select_page_instruction">
+
+        <EditText
+            android:id="@+id/home_txt_user_search"
+            android:layout_width="220dp"
+            android:layout_height="30dp"
+            android:background="@color/accent"
+            android:layout_alignBaseline="@+id/home_btn_user_search"
+            android:layout_alignBottom="@+id/home_btn_user_search"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:id="@+id/home_btn_user_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignRight="@+id/home_txt_user_search"
+            android:text="Search for this tag" />
+
+        <ListView
+            android:id="@+id/home_select_page_listview"
+            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/home_btn_user_search"
+            android:divider="#806326"
+            android:dividerHeight="1dp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/home_select_page_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_page_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/home_select_page_inner_layout"
+        android:onClick="goToHome"/>
 
 </RelativeLayout>

@@ -118,6 +118,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
         });
         commentText = (EditText)findViewById(R.id.edit_comment);
         commentButton = (Button)findViewById(R.id.btn_comment);
+        commentEditButton = (Button) findViewById(R.id.btn_edit_comment);
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
