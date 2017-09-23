@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:text="Heading"
+        android:text="Article Heading"
+        android:gravity="center"
         android:textSize="35sp" />
 
 

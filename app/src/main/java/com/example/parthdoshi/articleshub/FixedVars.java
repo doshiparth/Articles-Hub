@@ -18,7 +18,7 @@ public class FixedVars {
 
 
     //The static list of the tags selected by the user maintained for further editing
-    public static List<String> listSelected = new ArrayList<>();
+    //List<String> listSelected = new ArrayList<>();
 
 
     //The base URL for server connection

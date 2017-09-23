@@ -14,17 +14,18 @@ class ArticlesListCustomAdapter extends ArrayAdapter {
     //Context context;
 
     public ArticlesListCustomAdapter(@NonNull Context context, ArticlesListModel[] ArticleList) {
-        super(context, R.layout.activity_home_page_custom_row, ArticleList);
+        super(context, R.layout.activity_articles_list_custom_row, ArticleList);
         //this.context = context;
         //this.ArticleList = resource;
     }
 
+    @NonNull
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         //LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        //convertView = inflater.inflate(R.layout.activity_home_page_custom_row, parent, false);
+        //convertView = inflater.inflate(R.layout.activity_articles_list_custom_row, parent, false);
         ArticlesListModel currentArticle = (ArticlesListModel) getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_home_page_custom_row, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_articles_list_custom_row, parent, false);
         }
         TextView articleHeading = (TextView) convertView.findViewById(R.id.text_article_heading);
         TextView articleMetadata = (TextView) convertView.findViewById(R.id.text_article_metadata);

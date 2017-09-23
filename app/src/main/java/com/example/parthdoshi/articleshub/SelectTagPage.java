@@ -46,9 +46,7 @@ public class SelectTagPage extends AppCompatActivity {
     Boolean NO_SELECTION_FLAG = true;
     Boolean TAG_ALREADY_PRESENT = false;
 
-    //List<String> listSource = new ArrayList<>();
-    //List<String> listFound = new ArrayList<>();
-
+    List<String> listSelected = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +103,7 @@ public class SelectTagPage extends AppCompatActivity {
 
         lv_selected = (ListView) findViewById(R.id.select_page_listview);
         //lv_selected.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, FixedVars.listSelected);
+        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
         lv_selected.setAdapter(selectedAdapter);
 
         userSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +119,7 @@ public class SelectTagPage extends AppCompatActivity {
 
                 if (status == HttpStatus.OK && tag != null) {
                     //To check if the tag user has selected is already present in his selection list
-                    for (String addedTag : FixedVars.listSelected) {
+                    for (String addedTag : listSelected) {
                         if ((usersTag.equals(addedTag))) {
                             Toast.makeText(SelectTagPage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
                             TAG_ALREADY_PRESENT = true;
@@ -129,9 +127,9 @@ public class SelectTagPage extends AppCompatActivity {
                     }
                     //If the tag is not already present and is available in the Database, ENTER it into the list
                     if (!TAG_ALREADY_PRESENT) {
-                        FixedVars.listSelected.add(tag.getTagName());
+                        listSelected.add(tag.getTagName());
                         userSearchText.setText("");
-                        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, FixedVars.listSelected);
+                        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
                         lv_selected.setAdapter(selectedAdapter);
                         NO_SELECTION_FLAG = false;
                     }
@@ -147,9 +145,9 @@ public class SelectTagPage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 //Remove the selected tag from the list
-                FixedVars.listSelected.remove(FixedVars.listSelected.get(i));
+                listSelected.remove(listSelected.get(i));
 
-                ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, FixedVars.listSelected);
+                ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
                 lv_selected.setAdapter(selectedAdapter);
             }
         });
@@ -300,15 +298,15 @@ public class SelectTagPage extends AppCompatActivity {
 
         //Sending user's favorite tags to the server
 
-        if (!FixedVars.listSelected.isEmpty()) {
-            for (String str : FixedVars.listSelected) {
+        if (!listSelected.isEmpty()) {
+            for (String str : listSelected) {
                 System.out.println("Selected tags");
                 System.out.println(str);
             }
-            TagDetail[] tagDetails = new TagDetail[FixedVars.listSelected.size()];
-            for (int i = 0; i < FixedVars.listSelected.size(); i++) {
+            TagDetail[] tagDetails = new TagDetail[listSelected.size()];
+            for (int i = 0; i < listSelected.size(); i++) {
                 TagDetail tagDetail = new TagDetail();
-                tagDetail.setTagName(FixedVars.listSelected.get(i));
+                tagDetail.setTagName(listSelected.get(i));
                 tagDetails[i] = tagDetail;
             }
             AddRequestTask<String, TagDetail[]> rt = new AddRequestTask<String, TagDetail[]>(String.class,

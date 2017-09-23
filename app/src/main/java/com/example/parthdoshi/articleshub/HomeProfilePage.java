@@ -137,7 +137,7 @@ public class HomeProfilePage extends AppCompatActivity
                     logoutRequest.execute(FixedVars.BASE_URL + "/authentication/" + ud.getUserName());
                     editor.clear();
                     editor.apply();
-                    FixedVars.listSelected.clear();
+                    //listSelected.clear();
                     Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);
                     startActivity(myIntent);
                 }

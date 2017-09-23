@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,8 +29,8 @@ import com.neel.articleshubapi.restapi.request.RequestTask;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
@@ -50,7 +51,7 @@ public class HomeTagsPage extends AppCompatActivity
     Boolean NO_SELECTION_FLAG = true;
     Boolean TAG_ALREADY_PRESENT = false;
 
-    //List<String> listSelected = new ArrayList<>();
+    List<String> listSelected = new ArrayList<>();
 
 
     @Override
@@ -99,8 +100,23 @@ public class HomeTagsPage extends AppCompatActivity
             navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
-            lv_selected = (ListView) findViewById(R.id.home_select_page_listview);
-            ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(HomeTagsPage.this, android.R.layout.simple_list_item_1, FixedVars.listSelected);
+            lv_selected = (ListView) findViewById(R.id.home_select_tag_page_listview);
+
+            RequestTask<TagDetail[]> usersTagRequest = new RequestTask<>(TagDetail[].class, HttpMethod.GET,
+                    HeaderTools.CONTENT_TYPE_JSON,
+                    HeaderTools.makeAuth(token));
+            usersTagRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/favorite-tags");
+            // initiate waiting logic
+            TagDetail[] tags = usersTagRequest.getObj();
+            // terminate waiting logic
+            //HttpStatus status = usersTagRequest.getHttpStatus();
+
+            //Log.i("GetTags", tags[0].toString());
+            //FixedVars.listSelected.add(tags.getTagName());
+            for (TagDetail tag : tags) {
+                listSelected.add(tag.getTagName());
+            }
+            ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(HomeTagsPage.this, android.R.layout.simple_list_item_1, listSelected);
             lv_selected.setAdapter(selectedAdapter);
 
             userSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +132,7 @@ public class HomeTagsPage extends AppCompatActivity
 
                     if (status == HttpStatus.OK && tag != null) {
                         //To check if the tag user has selected is already present in his selection list
-                        for (String addedTag : FixedVars.listSelected) {
+                        for (String addedTag : listSelected) {
                             if ((usersTag.equals(addedTag))) {
                                 Toast.makeText(HomeTagsPage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
                                 TAG_ALREADY_PRESENT = true;
@@ -124,9 +140,9 @@ public class HomeTagsPage extends AppCompatActivity
                         }
                         //If the tag is not already present and is available in the Database, ENTER it into the list
                         if (!TAG_ALREADY_PRESENT) {
-                            FixedVars.listSelected.add(tag.getTagName());
+                            listSelected.add(tag.getTagName());
                             userSearchText.setText("");
-                            ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(HomeTagsPage.this, android.R.layout.simple_list_item_1, FixedVars.listSelected);
+                            ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(HomeTagsPage.this, android.R.layout.simple_list_item_1, listSelected);
                             lv_selected.setAdapter(selectedAdapter);
                             NO_SELECTION_FLAG = false;
                         }
@@ -141,9 +157,9 @@ public class HomeTagsPage extends AppCompatActivity
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                     //Remove the selected tag from the list
-                    FixedVars.listSelected.remove(FixedVars.listSelected.get(i));
+                    listSelected.remove(listSelected.get(i));
 
-                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(HomeTagsPage.this, android.R.layout.simple_list_item_1, FixedVars.listSelected);
+                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(HomeTagsPage.this, android.R.layout.simple_list_item_1, listSelected);
                     lv_selected.setAdapter(selectedAdapter);
                 }
             });
@@ -160,15 +176,15 @@ public class HomeTagsPage extends AppCompatActivity
 
         //Sending user's favorite tags to the server
 
-        if (!FixedVars.listSelected.isEmpty()) {
-            for (String str : FixedVars.listSelected) {
+        if (!listSelected.isEmpty()) {
+            for (String str : listSelected) {
                 System.out.println("Selected tags");
                 System.out.println(str);
             }
-            TagDetail[] tagDetails = new TagDetail[FixedVars.listSelected.size()];
-            for (int i = 0; i < FixedVars.listSelected.size(); i++) {
+            TagDetail[] tagDetails = new TagDetail[listSelected.size()];
+            for (int i = 0; i < listSelected.size(); i++) {
                 TagDetail tagDetail = new TagDetail();
-                tagDetail.setTagName(FixedVars.listSelected.get(i));
+                tagDetail.setTagName(listSelected.get(i));
                 tagDetails[i] = tagDetail;
             }
             AddRequestTask<String, TagDetail[]> rt = new AddRequestTask<String, TagDetail[]>(String.class,
