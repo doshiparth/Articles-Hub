@@ -49,6 +49,8 @@ public class HomeArticlesPage extends AppCompatActivity
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
+        aplv = (ListView) findViewById(R.id.articles_page_listview);
+
         //Checking if the user has a profile or not
         if (token.isEmpty()) {
             Toast.makeText(HomeArticlesPage.this, "You need to be a logged in user to access the profile page", Toast.LENGTH_LONG).show();
@@ -108,8 +110,10 @@ public class HomeArticlesPage extends AppCompatActivity
             for (int i = 0; i < articleDetails.length; i++) {
                 articleList[i] = new ArticlesListModel(articleDetails[i]);
             }
-            aplv = (ListView) findViewById(R.id.articles_page_listview);
-            Log.i("articleList", aplv.toString());
+            if (aplv == null)
+                Log.i("aplv", "aplv is null");
+            else
+                Log.i("articleList", aplv.toString());
             ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomeArticlesPage.this, articleList);
             aplv.setAdapter(articlesListCustomAdapter);
 
