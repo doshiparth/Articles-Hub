@@ -6,11 +6,14 @@
             android:id="@+id/nav_home_page"
             android:icon="@drawable/ic_menu_home"
             android:title="Home Page"/>
-
         <item
             android:id="@+id/nav_home_profile_page"
             android:icon="@drawable/ic_menu_profile"
             android:title="Your Profile" />
+        <item
+            android:id="@+id/nav_home_articles_page"
+            android:icon="@drawable/ic_menu_home"
+            android:title="Manage Your Articles"/>
         <item
             android:id="@+id/nav_home_tags_page"
             android:icon="@drawable/ic_menu_tags"

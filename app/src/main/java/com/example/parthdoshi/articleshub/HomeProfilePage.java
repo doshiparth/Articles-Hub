@@ -62,7 +62,7 @@ public class HomeProfilePage extends AppCompatActivity
 
         //Checking if the user has a profile or not
         if (token.isEmpty()) {
-            Toast.makeText(HomeProfilePage.this, "You need to be a logged in user to access the profile page", Toast.LENGTH_LONG).show();
+            Toast.makeText(HomeProfilePage.this, "You need to be a logged in user to access your profile page", Toast.LENGTH_LONG).show();
             Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);
             startActivity(myIntent);
         } else {
@@ -191,6 +191,10 @@ public class HomeProfilePage extends AppCompatActivity
             case R.id.nav_home_profile_page:
                 Intent profile = new Intent(HomeProfilePage.this, HomeProfilePage.class);
                 startActivity(profile);
+                break;
+            case R.id.nav_home_articles_page:
+                Intent articles = new Intent(HomeProfilePage.this, HomeArticlesPage.class);
+                startActivity(articles);
                 break;
             case R.id.nav_home_tags_page:
                 Intent tags = new Intent(HomeProfilePage.this, HomeTagsPage.class);

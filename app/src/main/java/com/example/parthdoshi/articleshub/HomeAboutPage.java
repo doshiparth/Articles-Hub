@@ -101,6 +101,10 @@ public class HomeAboutPage extends AppCompatActivity
                 Intent profile = new Intent(HomeAboutPage.this, HomeProfilePage.class);
                 startActivity(profile);
                 break;
+            case R.id.nav_home_articles_page:
+                Intent articles = new Intent(HomeAboutPage.this, HomeArticlesPage.class);
+                startActivity(articles);
+                break;
             case R.id.nav_home_tags_page:
                 Intent tags = new Intent(HomeAboutPage.this, HomeTagsPage.class);
                 startActivity(tags);

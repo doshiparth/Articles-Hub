@@ -3,19 +3,19 @@ package com.example.parthdoshi.articleshub;
 import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
 
-public class HomePageModel {
+public class ArticlesListModel {
     //private String articleHeading;
     //private String articleMetadata;
     private ShortArticleDetail articleDetail;
 
-    public HomePageModel() {
+    public ArticlesListModel() {
     }
 
-    public HomePageModel(ShortArticleDetail articleDetail){
+    public ArticlesListModel(ShortArticleDetail articleDetail){
         this.articleDetail=articleDetail;
     }
 
-    /*public HomePageModel(String articleHeading, String articleMetadata) {
+    /*public ArticlesListModel(String articleHeading, String articleMetadata) {
         this.articleHeading = articleHeading;
         this.articleMetadata = articleMetadata;
     }*/

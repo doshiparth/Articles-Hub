@@ -104,7 +104,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.parthdoshi.articleshub.ArticleDisplayPage" />
         </activity>
-        <activity android:name=".ViewWrittenArticlePage"></activity>
+        <activity
+            android:name=".HomeArticlesPage"
+            android:label="@string/title_activity_home_articles_page"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

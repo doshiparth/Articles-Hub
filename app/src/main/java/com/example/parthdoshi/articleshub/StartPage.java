@@ -32,6 +32,7 @@ public class StartPage extends AppCompatActivity {
             Intent myIntent = new Intent(StartPage.this, HomePage.class);
             startActivity(myIntent);
             Toast.makeText(StartPage.this, "Welcome again "+userName, Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 

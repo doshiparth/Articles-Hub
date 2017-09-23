@@ -36,7 +36,7 @@ public class HomePage extends AppCompatActivity
     NavigationView navigationView;
     Toolbar toolbar = null;
 
-    HomePageModel[] articleList;
+    ArticlesListModel[] articleList;
     ListView hplv;
     //String[] selectedTags;
     String token = null, userName = null;
@@ -100,19 +100,19 @@ public class HomePage extends AppCompatActivity
         progressDialog.dismiss();
 
         /*
-        ArticleList[0] = new HomePageModel("Article 0", "This is the metadata description of Article 0");
-        ArticleList[1] = new HomePageModel("Article 1", "This is the metadata description of Article 1");
-        ArticleList[2] = new HomePageModel("Article 2", "This is the metadata description of Article 2");
-        ArticleList[3] = new HomePageModel("Article 3", "This is the metadata description of Article 3");
-        ArticleList[4] = new HomePageModel("Article 4", "This is the metadata description of Article 4");
-        ArticleList[5] = new HomePageModel("Article 5", "This is the metadata description of Article 5");
-        ArticleList[6] = new HomePageModel("Article 6", "This is the metadata description of Article 6");
-        ArticleList[7] = new HomePageModel("Article 7", "This is the metadata description of Article 7");
-        ArticleList[8] = new HomePageModel("Article 8", "This is the metadata description of Article 8");
-        ArticleList[9] = new HomePageModel("Article 9", "This is the metadata description of Article 9");
-        ArticleList[10] = new HomePageModel("Article 10", "This is the metadata description of Article 10");
-        ArticleList[11] = new HomePageModel("Article 11", "This is the metadata description of Article 11");
-        ArticleList[12] = new HomePageModel("Article 12", "This is the metadata description of Article 12");
+        ArticleList[0] = new ArticlesListModel("Article 0", "This is the metadata description of Article 0");
+        ArticleList[1] = new ArticlesListModel("Article 1", "This is the metadata description of Article 1");
+        ArticleList[2] = new ArticlesListModel("Article 2", "This is the metadata description of Article 2");
+        ArticleList[3] = new ArticlesListModel("Article 3", "This is the metadata description of Article 3");
+        ArticleList[4] = new ArticlesListModel("Article 4", "This is the metadata description of Article 4");
+        ArticleList[5] = new ArticlesListModel("Article 5", "This is the metadata description of Article 5");
+        ArticleList[6] = new ArticlesListModel("Article 6", "This is the metadata description of Article 6");
+        ArticleList[7] = new ArticlesListModel("Article 7", "This is the metadata description of Article 7");
+        ArticleList[8] = new ArticlesListModel("Article 8", "This is the metadata description of Article 8");
+        ArticleList[9] = new ArticlesListModel("Article 9", "This is the metadata description of Article 9");
+        ArticleList[10] = new ArticlesListModel("Article 10", "This is the metadata description of Article 10");
+        ArticleList[11] = new ArticlesListModel("Article 11", "This is the metadata description of Article 11");
+        ArticleList[12] = new ArticlesListModel("Article 12", "This is the metadata description of Article 12");
         */
         swippy.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -156,21 +156,23 @@ public class HomePage extends AppCompatActivity
             Toast.makeText(HomePage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
         else {
             //If execution is correct and the list of articles is received, then and only then the following will take place
-            articleList = new HomePageModel[articleDetails.length];
+            articleList = new ArticlesListModel[articleDetails.length];
             for (int i = 0; i < articleDetails.length; i++) {
-                articleList[i] = new HomePageModel(articleDetails[i]);
+                articleList[i] = new ArticlesListModel(articleDetails[i]);
             }
             hplv = (ListView) findViewById(R.id.home_page_listview);
-            HomePageCustomAdapter homePageCustomAdapter = new HomePageCustomAdapter(HomePage.this, articleList);
-            hplv.setAdapter(homePageCustomAdapter);
+            ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomePage.this, articleList);
+            hplv.setAdapter(articlesListCustomAdapter);
+
+            Log.i("articleList", hplv.toString());
 
             hplv.setOnItemClickListener(
                     new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            //String articleHeading = articleList[i].getArticleHeading();
                             Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
                             myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
+                            myIntent.putExtra("ArticleAuthor", false);
                             startActivity(myIntent);
                             //finish();
                         }
@@ -226,6 +228,10 @@ public class HomePage extends AppCompatActivity
             case R.id.nav_home_profile_page:
                 Intent profile = new Intent(HomePage.this, HomeProfilePage.class);
                 startActivity(profile);
+                break;
+            case R.id.nav_home_articles_page:
+                Intent articles = new Intent(HomePage.this, HomeArticlesPage.class);
+                startActivity(articles);
                 break;
             case R.id.nav_home_tags_page:
                 Intent tags = new Intent(HomePage.this, HomeTagsPage.class);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,8 +49,7 @@ public class WriteArticlePage extends AppCompatActivity {
     String title = "";
     String singleTag = "";
     Set<String> tags = new HashSet<>();
-    List<String> content = new ArrayList<>();
-
+    String[] content;
     SharedPreferences sharedPref;
     String token = null;
     String userName = null;
@@ -58,90 +58,106 @@ public class WriteArticlePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Checking for internet connection
-        if (NetworkStatus.getInstance(this).isOnline())
-            setContentView(R.layout.activity_write_article_page);
-        else
-            NetworkStatus.getInstance(this).buildDialog(this).show();
-
-        //Getting user details from the shared preferences file
+        //Getting data from SharedPreferences
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
-        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
-        newArticleTitleText = (EditText) findViewById(R.id.txt_write_article_title);
-        newArticleContentText = (EditText) findViewById(R.id.txt_write_article_content);
-        newArticleTagsText = (TextView) findViewById(R.id.txt_write_article_selected_tags);
-        publishArticleButton = (Button) findViewById(R.id.publish_button);
+        //Checking if the user has a profile or not
+        if (token.isEmpty()) {
+            Toast.makeText(WriteArticlePage.this, "You need to be a logged in user to write a new article", Toast.LENGTH_LONG).show();
+            Intent myIntent = new Intent(WriteArticlePage.this, StartPage.class);
+            startActivity(myIntent);
+        } else {
 
-        userSearchText = (EditText) findViewById(R.id.txt_user_search);
-        userSearchButton = (Button) findViewById(R.id.btn_user_search);
+            //Checking for internet connection
+            if (NetworkStatus.getInstance(this).isOnline())
+                setContentView(R.layout.activity_write_article_page);
+            else
+                NetworkStatus.getInstance(this).buildDialog(this).show();
 
 
-        //Storing data into local variables
-        title = newArticleTitleText.getText().toString();
-        for (int i = 0; i < newArticleContentText.length(); i++)
-            content.add(i, newArticleContentText.getText().toString().substring(i, i));
+            newArticleTitleText = (EditText) findViewById(R.id.txt_write_article_title);
+            newArticleContentText = (EditText) findViewById(R.id.txt_write_article_content);
+            newArticleTagsText = (TextView) findViewById(R.id.txt_write_article_selected_tags);
+            publishArticleButton = (Button) findViewById(R.id.publish_button);
 
-        userSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String usersTag = userSearchText.getText().toString().trim().toLowerCase();
-                RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
-                tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
-                // initiate waiting logic
-                TagDetail tag = tagRead.getObj();
-                // terminate waiting logic
-                HttpStatus status = tagRead.getHttpStatus();
+            userSearchText = (EditText) findViewById(R.id.txt_user_search);
+            userSearchButton = (Button) findViewById(R.id.btn_user_search);
 
-                if (status == HttpStatus.OK && tag != null) {
-                    //To check if the tag user has selected is already present in his selection list
-                    for (String addedTag : listAdded) {
-                        if ((usersTag.equals(addedTag))) {
-                            Toast.makeText(WriteArticlePage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
-                            TAG_ALREADY_PRESENT = true;
+
+            //Storing data into local variables
+            title = newArticleTitleText.getText().toString();
+
+            //splits the string based on string
+            content = newArticleContentText.getText().toString().split("\n");
+
+            userSearchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String usersTag = userSearchText.getText().toString().trim().toLowerCase();
+                    RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
+                    tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
+                    // initiate waiting logic
+                    TagDetail tag = tagRead.getObj();
+                    // terminate waiting logic
+                    HttpStatus status = tagRead.getHttpStatus();
+
+                    if (status == HttpStatus.OK && tag != null) {
+                        //To check if the tag user has selected is already present in his selection list
+                        for (String addedTag : listAdded) {
+                            if ((usersTag.equals(addedTag))) {
+                                Toast.makeText(WriteArticlePage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
+                                TAG_ALREADY_PRESENT = true;
+                            }
                         }
-                    }
-                    //If the tag is not already present and is available in the Database, ENTER it into the list
-                    if (!TAG_ALREADY_PRESENT) {
-                        userSearchText.setText("");
-                        tags.add(usersTag);
-                        singleTag = singleTag + usersTag + ", ";
-                        newArticleTagsText.setText(singleTag);
-                        listAdded.add(usersTag);
-                        NO_SELECTION_FLAG = false;
-                    }
-                } else if (usersTag.equals(""))
-                    Toast.makeText(WriteArticlePage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(WriteArticlePage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
-            }
-        });
+                        //If the tag is not already present and is available in the Database, ENTER it into the list
+                        if (!TAG_ALREADY_PRESENT) {
+                            userSearchText.setText("");
+                            tags.add(usersTag);
+                            singleTag = singleTag + usersTag + ", ";
+                            newArticleTagsText.setText(singleTag);
+                            listAdded.add(usersTag);
+                            NO_SELECTION_FLAG = false;
+                        }
+                    } else if (usersTag.equals(""))
+                        Toast.makeText(WriteArticlePage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(WriteArticlePage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
+                }
+            });
 
-        publishArticleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArticleDetail article = new ArticleDetail();
-                article.setAuthor(userName);
-                article.setTitle(title);
-                article.setTag(tags);
-                Log.i("Tags",tags.toString());
-                Log.i("Title",title);
-                article.setContent(content);
-                AddRequestTask<String, ArticleDetail> createArticleRequest = new AddRequestTask<String, ArticleDetail>(String.class,
-                        article, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth(token));
-                createArticleRequest.execute(FixedVars.BASE_URL + "/article");
-                //HttpStatus status = createArticleRequest.getHttpStatus();
+            publishArticleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArticleDetail article = new ArticleDetail();
+                    article.setAuthor(userName);
+                    article.setTitle(title);
+                    article.setTag(tags);
+                    Log.i("Tags", tags.toString());
+                    Log.i("Title", title);
+                    ArrayList<String> contentList = new ArrayList<>();
+                    int i =0;
+                    while(!(content[i].isEmpty())) {
+                        contentList.add(content[i]);
+                        i++;
+                    }
+                    article.setContent(contentList);
+                    AddRequestTask<String, ArticleDetail> createArticleRequest = new AddRequestTask<String, ArticleDetail>(String.class,
+                            article, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
+                            HeaderTools.makeAuth(token));
+                    createArticleRequest.execute(FixedVars.BASE_URL + "/article");
+                    //HttpStatus status = createArticleRequest.getHttpStatus();
 
                 //if (status == HttpStatus.CREATED) {
-                    Toast.makeText(WriteArticlePage.this, "Article created", Toast.LENGTH_LONG).show();
-                    Intent myIntent = new Intent(WriteArticlePage.this, ViewWrittenArticlePage.class);
+                    Toast.makeText(WriteArticlePage.this, "Article created... \nGo to \"Manage your articles\" to view your created article", Toast.LENGTH_LONG).show();
+                    Intent myIntent = new Intent(WriteArticlePage.this, HomePage.class);
                     startActivity(myIntent);
-                //} else
+                    //} else
                     //Toast.makeText(WriteArticlePage.this, "Error!! Article not created", Toast.LENGTH_LONG).show();
 
-            }
-        });
+                }
+            });
+        }
     }
 }

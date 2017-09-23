@@ -42,6 +42,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
     EditText commentText;
     Button commentButton;
     Button commentEditButton;
+    Button articleEditButton;
     String token = null, userName = null;
     ShortArticleDetail[] articleDetails;
     SharedPreferences sharedPref;
@@ -51,7 +52,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connection
-        if(NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline())
             setContentView(R.layout.activity_article_display_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
@@ -63,35 +64,40 @@ public class ArticleDisplayPage extends AppCompatActivity {
         articleDate = (TextView) findViewById(R.id.text_article_date);
         articleTag = (TextView) findViewById(R.id.text_article_tag);
         articleContent = (TextView) findViewById(R.id.text_article_content);
+        articleEditButton = (Button) findViewById(R.id.btn_edit_article);
 
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
         Bundle articleData = getIntent().getExtras();
-        if(articleData==null){
+        if (articleData == null) {
             return;
         }
 
-        String articleLink = articleData.getString("ArticleLink");
+        final String articleLink = articleData.getString("ArticleLink");
+        Boolean articleAuthor = articleData.getBoolean("ArticleAuthor");
 
-        RequestTask<ArticleDetail> rt=new RequestTask<>(ArticleDetail.class,CONTENT_TYPE_JSON);
+        if(articleAuthor)
+            articleEditButton.setVisibility(View.VISIBLE);
+
+        RequestTask<ArticleDetail> rt = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
         rt.execute(articleLink);
-        final ArticleDetail article=rt.getObj();
+        final ArticleDetail article = rt.getObj();
 
         tagArray = new String[article.getTag().size()];
-        Iterator<String> itr1= article.getTag().iterator();
-        for(int i=0;i<tagArray.length;i++)
-            tagArray[i]= itr1.next();
-        for(int i=0;i<tagArray.length;i++)
-            tagString += tagArray[i]+", ";
+        Iterator<String> itr1 = article.getTag().iterator();
+        for (int i = 0; i < tagArray.length; i++)
+            tagArray[i] = itr1.next();
+        for (String aTagArray : tagArray)
+            tagString += aTagArray + ", ";
 
         contentArray = new String[article.getContent().size()];
-        Iterator<String> itr2= article.getContent().iterator();
-        for(int i=0;i<contentArray.length;i++)
-            contentArray[i]= itr2.next();
-        for(int i=0;i<contentArray.length;i++)
-            contentString += contentArray[i]+"\n";
+        Iterator<String> itr2 = article.getContent().iterator();
+        for (int i = 0; i < contentArray.length; i++)
+            contentArray[i] = itr2.next();
+        for (String aContentArray : contentArray)
+            contentString += aContentArray + "." + "\n";
 
         articleTitle.setText(article.getTitle());
         authorName.setText(article.getAuthor());
@@ -104,44 +110,42 @@ public class ArticleDisplayPage extends AppCompatActivity {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestTask<String> likeRequest=new RequestTask<String>(String.class, HttpMethod.POST,
+                RequestTask<String> likeRequest = new RequestTask<String>(String.class, HttpMethod.POST,
                         HeaderTools.CONTENT_TYPE_JSON,
                         HeaderTools.makeAuth(token));
-                likeRequest.execute(FixedVars.BASE_URL+"/user/"+userName+"/like/"+article.getArticleId());
+                likeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
                 HttpStatus status = likeRequest.getHttpStatus();
 
-                if(status == HttpStatus.ACCEPTED)
+                if (status == HttpStatus.ACCEPTED)
                     Toast.makeText(ArticleDisplayPage.this, "You liked this article", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
             }
         });
-        commentText = (EditText)findViewById(R.id.edit_comment);
-        commentButton = (Button)findViewById(R.id.btn_comment);
+        commentText = (EditText) findViewById(R.id.edit_comment);
+        commentButton = (Button) findViewById(R.id.btn_comment);
         commentEditButton = (Button) findViewById(R.id.btn_edit_comment);
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(commentText.getText().toString().isEmpty()){
+                if (commentText.getText().toString().isEmpty()) {
                     Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     CommentDetail comment = new CommentDetail();
                     comment.setArticleId(article.getArticleId());
                     comment.setUserName(userName);
                     comment.setContent(String.valueOf(commentText.getText()));
-                    AddRequestTask<String,CommentDetail> commentRequest=new AddRequestTask<String, CommentDetail>(String.class,
+                    AddRequestTask<String, CommentDetail> commentRequest = new AddRequestTask<String, CommentDetail>(String.class,
                             comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
-                    commentRequest.execute(FixedVars.BASE_URL+"/comment");
+                    commentRequest.execute(FixedVars.BASE_URL + "/comment");
                     HttpStatus status = commentRequest.getHttpStatus();
-                    if(status == HttpStatus.CREATED){
+                    if (status == HttpStatus.CREATED) {
                         Toast.makeText(ArticleDisplayPage.this, "Your comment has been successfully posted", Toast.LENGTH_LONG).show();
                         commentText.setEnabled(false);
                         commentButton.setEnabled(false);
                         commentEditButton.setEnabled(true);
-                    }
-                    else
+                    } else
                         Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
                 }
             }
@@ -152,6 +156,14 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 commentText.setEnabled(true);
                 commentButton.setEnabled(true);
                 commentEditButton.setEnabled(false);
+            }
+        });
+        articleEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(ArticleDisplayPage.this, EditArticlePage.class);
+                startActivity(myIntent);
+                myIntent.putExtra("ArticleLink", articleLink);
             }
         });
     }
