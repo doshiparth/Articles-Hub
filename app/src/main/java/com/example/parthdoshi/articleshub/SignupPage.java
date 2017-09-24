@@ -97,6 +97,7 @@ public class SignupPage extends AppCompatActivity {
         signupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                noTokenErrorText.setError(null);
                 progressDialog.show();
                 attemptLogin();
             }

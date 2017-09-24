@@ -91,6 +91,7 @@ public class LoginPage extends AppCompatActivity {
         loginPageButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                noTokenErrorText.setError(null);
                 attemptLogin();
             }
         });

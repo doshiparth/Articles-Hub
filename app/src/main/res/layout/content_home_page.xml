@@ -18,8 +18,7 @@
             android:id="@+id/home_page_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="#806326"
-            android:dividerHeight="1dp" />
+            android:layout_margin="5dp"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

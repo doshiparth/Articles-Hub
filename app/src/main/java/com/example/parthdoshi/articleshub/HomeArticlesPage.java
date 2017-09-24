@@ -32,7 +32,7 @@ public class HomeArticlesPage extends AppCompatActivity
     Toolbar toolbar = null;
 
     //UI References
-    ListView aplv;
+    ListView articlesPageListView;
 
     ArticlesListModel[] articleList;
 
@@ -85,55 +85,50 @@ public class HomeArticlesPage extends AppCompatActivity
 
             //Main code for displaying list of articles created by that user
 
-            loadArticles();
-        }
-    }
+            articlesPageListView = (ListView) findViewById(R.id.articles_page_list_view);
+            RequestTask<ShortArticleDetail[]> articlesRequest =
+                    new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET,
+                            HeaderTools.CONTENT_TYPE_JSON,
+                            HeaderTools.makeAuth(token));
+            articlesRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/articles");
+            // initiate waiting logic
+            articleDetails = articlesRequest.getObj();
+            // terminate waiting logic
 
-    public void loadArticles() {
+            if (articleDetails == null)
+                Toast.makeText(HomeArticlesPage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
+            else {
+                //If execution is correct and the list of articles is received, then and only then the following will take place
+                //Log.i("Articles List", articleList.toString());
+                articleList = new ArticlesListModel[articleDetails.length];
+                for (int i = 0; i < articleDetails.length; i++) {
+                    articleList[i] = new ArticlesListModel(articleDetails[i]);
+                }
+                if (articlesPageListView == null)
+                    Log.i("aplv", "aplv is null");
+                else
+                    Log.i("articleList", articlesPageListView.toString());
+                ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomeArticlesPage.this, articleList);
+                if (articlesListCustomAdapter.isEmpty())
+                    Log.i("CustomAdapter", "articlesListCustomAdapter is null");
+                else
+                    Log.i("CustomAdapter", articlesListCustomAdapter.toString());
 
-        //Below is the original code for displaying content on HomeArticlesPage
-        RequestTask<ShortArticleDetail[]> articlesRequest =
-                new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET,
-                        HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth(token));
-        articlesRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/articles");
-        // initiate waiting logic
-        articleDetails = articlesRequest.getObj();
-        // terminate waiting logic
+                articlesPageListView.setAdapter(articlesListCustomAdapter);
 
-        if (articleDetails == null)
-            Toast.makeText(HomeArticlesPage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
-        else {
-            //If execution is correct and the list of articles is received, then and only then the following will take place
-            articleList = new ArticlesListModel[articleDetails.length];
-            for (int i = 0; i < articleDetails.length; i++) {
-                articleList[i] = new ArticlesListModel(articleDetails[i]);
-            }
-            aplv = (ListView)findViewById(R.id.articles_page_listview);
-            if (aplv == null)
-                Log.i("aplv", "aplv is null");
-            else
-                Log.i("articleList", aplv.toString());
-            ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomeArticlesPage.this, articleList);
-            if (articlesListCustomAdapter.isEmpty())
-                Log.i("CustomAdapter", "articlesListCustomAdapter is null");
-            else
-                Log.i("CustomAdapter", articlesListCustomAdapter.toString());
-            aplv.setAdapter(articlesListCustomAdapter);
-
-
-            aplv.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
-                            myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
-                            myIntent.putExtra("ArticleAuthor", true);
-                            startActivity(myIntent);
-                            //finish();
+                articlesPageListView.setOnItemClickListener(
+                        new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
+                                myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
+                                myIntent.putExtra("ArticleAuthor", true);
+                                startActivity(myIntent);
+                                //finish();
+                            }
                         }
-                    }
-            );
+                );
+            }
         }
     }
 

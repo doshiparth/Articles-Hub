@@ -109,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/edit_comment"
                 android:layout_below="@+id/edit_comment"
-                android:enabled="false"
                 android:text="Edit Comment"
                 android:visibility="gone" />
 

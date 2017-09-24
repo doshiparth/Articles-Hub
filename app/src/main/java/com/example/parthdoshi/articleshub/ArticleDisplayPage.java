@@ -116,10 +116,10 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 likeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
                 HttpStatus status = likeRequest.getHttpStatus();
 
-                if (status == HttpStatus.ACCEPTED)
-                    Toast.makeText(ArticleDisplayPage.this, "You liked this article", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
+                //if (status == HttpStatus.ACCEPTED)
+                    Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_LONG).show();
+                //else
+                //    Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
             }
         });
         commentText = (EditText) findViewById(R.id.edit_comment);
@@ -140,13 +140,13 @@ public class ArticleDisplayPage extends AppCompatActivity {
                             HeaderTools.makeAuth(token));
                     commentRequest.execute(FixedVars.BASE_URL + "/comment");
                     HttpStatus status = commentRequest.getHttpStatus();
-                    if (status == HttpStatus.CREATED) {
-                        Toast.makeText(ArticleDisplayPage.this, "Your comment has been successfully posted", Toast.LENGTH_LONG).show();
+                    //if (status == HttpStatus.CREATED) {
+                        Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_LONG).show();
+                        commentButton.setVisibility(View.GONE);
+                        commentEditButton.setVisibility(View.VISIBLE);
                         commentText.setEnabled(false);
-                        commentButton.setEnabled(false);
-                        commentEditButton.setEnabled(true);
-                    } else
-                        Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
+                    //} else
+                    //    Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -154,8 +154,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 commentText.setEnabled(true);
-                commentButton.setEnabled(true);
-                commentEditButton.setEnabled(false);
+                commentButton.setVisibility(View.VISIBLE);
+                commentEditButton.setVisibility(View.GONE);
             }
         });
         articleEditButton.setOnClickListener(new View.OnClickListener() {
