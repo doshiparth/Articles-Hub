@@ -49,7 +49,6 @@ public class HomeArticlesPage extends AppCompatActivity
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
 
-        aplv = (ListView) findViewById(R.id.articles_page_listview);
 
         //Checking if the user has a profile or not
         if (token.isEmpty()) {
@@ -110,11 +109,16 @@ public class HomeArticlesPage extends AppCompatActivity
             for (int i = 0; i < articleDetails.length; i++) {
                 articleList[i] = new ArticlesListModel(articleDetails[i]);
             }
+            aplv = (ListView)findViewById(R.id.articles_page_listview);
             if (aplv == null)
                 Log.i("aplv", "aplv is null");
             else
                 Log.i("articleList", aplv.toString());
             ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomeArticlesPage.this, articleList);
+            if (articlesListCustomAdapter.isEmpty())
+                Log.i("CustomAdapter", "articlesListCustomAdapter is null");
+            else
+                Log.i("CustomAdapter", articlesListCustomAdapter.toString());
             aplv.setAdapter(articlesListCustomAdapter);
 
 
