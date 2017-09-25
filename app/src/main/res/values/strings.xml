@@ -51,5 +51,5 @@
     <string name="invalid_login_credentials">Invalid Login Credentials</string>
     <string name="prompt_info">Enter your info (Optional)</string>
     <string name="invalid_or_empty_details">Invalid details entered</string>
-    <string name="string_tag_page_suggestions">Some common suggested tags are : Game, Programming, Study, Science, Fashion, News, Movie etc.\nIf you don\'t find your tag here, you can make a request for adding new tags by clicking the request tags button in our \"Contact Us\" Page.\nClick on any of the selected tags from the list below to remove that tag.</string>
+    <string name="string_tag_page_suggestions">Some common suggested tags are : Game, Programming, Study, Science, Fashion, News, Movie etc.\nIf you don\'t find your tag here, you can make a request for adding new tags by clicking the request tags button in our \"Contact Us\" Page.\nClick on any of the selected tags from the list below to remove that particular tag.</string>
 </resources>

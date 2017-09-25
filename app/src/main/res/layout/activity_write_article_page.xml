@@ -49,10 +49,19 @@
                 android:text="Search for this tag" />
 
             <TextView
+                android:id="@+id/txt_write_article_suggestions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/txt_user_search"
+                android:text="@string/string_tag_page_suggestions"/>
+
+            <TextView
                 android:id="@+id/txt_write_article_selected_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_user_search"
+                android:layout_below="@+id/txt_write_article_suggestions"
                 android:layout_margin="15dp"
                 android:textSize="20sp"/>
 
@@ -66,7 +75,7 @@
                 android:ems="10"
                 android:hint="Write your article here"
                 android:inputType="textMultiLine"
-                android:minLines="6" />
+                android:minLines="3" />
 
         </RelativeLayout>
     </ScrollView>
