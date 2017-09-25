@@ -114,20 +114,28 @@ public class HomeArticlesPage extends AppCompatActivity
                 else
                     Log.i("CustomAdapter", articlesListCustomAdapter.toString());
 
-                articlesPageListView.setAdapter(articlesListCustomAdapter);
+                try {
 
-                articlesPageListView.setOnItemClickListener(
-                        new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
-                                myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
-                                myIntent.putExtra("ArticleAuthor", true);
-                                startActivity(myIntent);
-                                //finish();
+                    articlesPageListView.setAdapter(articlesListCustomAdapter);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    articlesPageListView.setOnItemClickListener(
+                            new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
+                                    myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
+                                    myIntent.putExtra("ArticleAuthor", true);
+                                    startActivity(myIntent);
+                                    //finish();
+                                }
                             }
-                        }
-                );
+                    );
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
