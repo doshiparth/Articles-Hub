@@ -46,11 +46,20 @@
             android:layout_alignRight="@+id/home_txt_user_search"
             android:text="Search for this tag" />
 
+        <TextView
+            android:id="@+id/manage_tag_page_suggestions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@+id/home_txt_user_search"
+            android:text="@string/string_tag_page_suggestions"/>
+
         <ListView
             android:id="@+id/home_select_tag_page_listview"
             android:layout_height="fill_parent"
             android:layout_width="match_parent"
-            android:layout_below="@+id/home_btn_user_search"
+            android:layout_below="@+id/manage_tag_page_suggestions"
             android:divider="#806326"
             android:dividerHeight="1dp" />
 

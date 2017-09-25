@@ -130,15 +130,12 @@ public class WriteArticlePage extends AppCompatActivity {
     public void publishArticle(View v1){
 
         ArticleDetail article = new ArticleDetail();
-        article.setAuthor(userName);
 
         //Storing data into local variables
         title = newArticleTitleText.getText().toString();
         Log.i("Title before publish", title);
-        article.setTitle(title);
-        article.setTag(tags);
         Log.i("Tags", tags.toString());
-        Log.i("Title", title);
+        //Log.i("Title", title);
         //splits the string based on string
         content = newArticleContentText.getText().toString().split("\n");
         ArrayList<String> contentList = new ArrayList<>();
@@ -150,19 +147,30 @@ public class WriteArticlePage extends AppCompatActivity {
         if(contentList.isEmpty()){
             Log.i("ContentList", "content list is empty");
         }
-        article.setContent(contentList);
-        AddRequestTask<String, ArticleDetail> createArticleRequest = new AddRequestTask<String, ArticleDetail>(String.class,
-                article, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
-                HeaderTools.makeAuth(token));
-        createArticleRequest.execute(FixedVars.BASE_URL + "/article");
-        //HttpStatus status = createArticleRequest.getHttpStatus();
+        if (title.equals(""))
+            newArticleTitleText.setError(getString(R.string.error_field_required));
+        else if (tags.isEmpty())
+            newArticleTagsText.setError(getString(R.string.error_field_required));
+        else if (contentList.isEmpty())
+            newArticleContentText.setError(getString(R.string.error_field_required));
+        else {
+            article.setAuthor(userName);
+            article.setContent(contentList);
+            article.setTitle(title);
+            article.setTag(tags);
+            AddRequestTask<String, ArticleDetail> createArticleRequest = new AddRequestTask<String, ArticleDetail>(String.class,
+                    article, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
+                    HeaderTools.makeAuth(token));
+            createArticleRequest.execute(FixedVars.BASE_URL + "/article");
+            //HttpStatus status = createArticleRequest.getHttpStatus();
 
-        //if (status == HttpStatus.CREATED) {
-        Intent myIntent = new Intent(WriteArticlePage.this, HomePage.class);
-        startActivity(myIntent);
-        Toast.makeText(WriteArticlePage.this, "Article created... \nGo to \"Manage your articles\" to view your created article", Toast.LENGTH_LONG).show();
-        finish();
-        //} else
-        //Toast.makeText(WriteArticlePage.this, "Error!! Article not created", Toast.LENGTH_LONG).show();
+            //if (status == HttpStatus.CREATED) {
+            Intent myIntent = new Intent(WriteArticlePage.this, HomePage.class);
+            startActivity(myIntent);
+            Toast.makeText(WriteArticlePage.this, "Article created... \nGo to \"Manage your articles\" to view your created article", Toast.LENGTH_LONG).show();
+            finish();
+            //} else
+            //Toast.makeText(WriteArticlePage.this, "Error!! Article not created", Toast.LENGTH_LONG).show();
+        }
     }
 }

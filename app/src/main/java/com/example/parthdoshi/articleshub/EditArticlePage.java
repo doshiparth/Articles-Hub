@@ -164,20 +164,28 @@ public class EditArticlePage extends AppCompatActivity {
                 Log.i("author", "author old " + articleOld.getAuthor());
                 Log.i("article id", "author ID old " + articleOld.getArticleId());
 
-                articleNew.setAuthor(articleOld.getAuthor());
-                articleNew.setTitle(title);
-                articleNew.setArticleId(articleOld.getArticleId());
-                articleNew.setDate(articleOld.getDate());
-                articleNew.setTag(newTags);
-                articleNew.setContent(contentList);
+                if (title.equals(""))
+                    newArticleTitleText.setError(getString(R.string.error_field_required));
+                else if (newTags.isEmpty())
+                    newArticleTagsText.setError(getString(R.string.error_field_required));
+                else if (contentList.isEmpty())
+                    newArticleContentText.setError(getString(R.string.error_field_required));
+                else {
+                    articleNew.setAuthor(articleOld.getAuthor());
+                    articleNew.setTitle(title);
+                    articleNew.setArticleId(articleOld.getArticleId());
+                    articleNew.setDate(articleOld.getDate());
+                    articleNew.setTag(newTags);
+                    articleNew.setContent(contentList);
 
-                Log.i("new article", "new " + articleNew.getAuthor());
+                    Log.i("new article", "new " + articleNew.getAuthor());
 
-                AddRequestTask<String, ArticleDetail> rt6 = new AddRequestTask<String, ArticleDetail>(String.class,
-                        articleNew, HttpMethod.PUT, HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth(token));
-                rt6.execute(FixedVars.BASE_URL + "/article/" + articleNew.getArticleId());
-                rt6.getObj();
+                    AddRequestTask<String, ArticleDetail> editArticleRequest = new AddRequestTask<String, ArticleDetail>(String.class,
+                            articleNew, HttpMethod.PUT, HeaderTools.CONTENT_TYPE_JSON,
+                            HeaderTools.makeAuth(token));
+                    editArticleRequest.execute(FixedVars.BASE_URL + "/article/" + articleNew.getArticleId());
+                    editArticleRequest.getObj();
+                }
             }
         });
 
@@ -193,6 +201,7 @@ public class EditArticlePage extends AppCompatActivity {
                 Toast.makeText(EditArticlePage.this, "Article deleted", Toast.LENGTH_LONG).show();
                 Intent myIntent = new Intent(EditArticlePage.this, ArticleDisplayPage.class);
                 startActivity(myIntent);
+                finish();
             }
         });
     }
