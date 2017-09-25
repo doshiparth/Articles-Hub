@@ -27,7 +27,7 @@
                 android:ems="10"
                 android:gravity="center"
                 android:hint="Enter Article's Title"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName|textCapSentences|textMultiLine" />
 
             <EditText
                 android:id="@+id/txt_user_search"
@@ -37,6 +37,7 @@
                 android:layout_alignBottom="@+id/btn_user_search"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/txt_write_article_title"
+                android:inputType="textCapWords"
                 android:background="@color/accent" />
 
             <Button
@@ -74,7 +75,7 @@
                 android:layout_marginTop="31dp"
                 android:ems="10"
                 android:hint="Write your article here"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:minLines="3" />
 
         </RelativeLayout>
