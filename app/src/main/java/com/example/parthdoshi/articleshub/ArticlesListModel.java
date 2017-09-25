@@ -27,8 +27,8 @@ public class ArticlesListModel {
     //    this.articleHeading = articleHeading;
     //}
 
-    public String getArticleMetadata() {
-        return "none";
+    public String getArticleAuthorName() {
+        return articleDetail.getAuthor();
     }
 
     public String getArticleDate() {
