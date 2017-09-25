@@ -13,7 +13,9 @@ class ArticlesListCustomAdapter extends ArrayAdapter {
     //ArticlesListModel[] ArticleList = null;
     //Context context;
 
-    String authorName;
+    private String date = "";
+    private String authorName = "";
+
     ArticlesListCustomAdapter(@NonNull Context context, ArticlesListModel[] ArticleList) {
         super(context, R.layout.activity_articles_list_custom_row, ArticleList);
         //this.context = context;
@@ -32,9 +34,10 @@ class ArticlesListCustomAdapter extends ArrayAdapter {
         TextView articleAuthorName = (TextView) convertView.findViewById(R.id.text_article_author_name);
         TextView articleDate = (TextView) convertView.findViewById(R.id.text_article_card_date);
         articleHeading.setText(currentArticle.getArticleHeading());
-        authorName = "By "+currentArticle.getArticleAuthorName();
+        authorName = "By " + currentArticle.getArticleAuthorName();
         articleAuthorName.setText(authorName);
-        articleDate.setText(currentArticle.getArticleDate());
+        date = "On " + currentArticle.getArticleDate();
+        articleDate.setText(date);
 
         return convertView;
     }

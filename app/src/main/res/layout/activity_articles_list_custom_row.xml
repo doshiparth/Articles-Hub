@@ -24,26 +24,28 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentStart="true"
                 android:layout_margin="5dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="Article Heading"
-                android:textSize="35sp" />
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/text_article_card_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="15dp"
+                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/text_article_heading"
-                android:text="Article's date"/>
+                android:text="Article's date"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/text_article_author_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/text_article_card_date"
-                android:layout_margin="5dp"
+                android:layout_below="@+id/text_article_heading"
+                android:layout_margin="15dp"
                 android:text="Author name"
                 android:textSize="20sp" />
 
