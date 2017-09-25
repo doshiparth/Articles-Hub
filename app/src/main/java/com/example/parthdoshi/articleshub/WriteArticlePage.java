@@ -161,7 +161,7 @@ public class WriteArticlePage extends AppCompatActivity {
         Intent myIntent = new Intent(WriteArticlePage.this, HomePage.class);
         startActivity(myIntent);
         Toast.makeText(WriteArticlePage.this, "Article created... \nGo to \"Manage your articles\" to view your created article", Toast.LENGTH_LONG).show();
-        //finish();
+        finish();
         //} else
         //Toast.makeText(WriteArticlePage.this, "Error!! Article not created", Toast.LENGTH_LONG).show();
     }

@@ -13,7 +13,7 @@ class ArticlesListCustomAdapter extends ArrayAdapter {
     //ArticlesListModel[] ArticleList = null;
     //Context context;
 
-    public ArticlesListCustomAdapter(@NonNull Context context, ArticlesListModel[] ArticleList) {
+    ArticlesListCustomAdapter(@NonNull Context context, ArticlesListModel[] ArticleList) {
         super(context, R.layout.activity_articles_list_custom_row, ArticleList);
         //this.context = context;
         //this.ArticleList = resource;
@@ -29,8 +29,10 @@ class ArticlesListCustomAdapter extends ArrayAdapter {
         }
         TextView articleHeading = (TextView) convertView.findViewById(R.id.text_article_heading);
         TextView articleMetadata = (TextView) convertView.findViewById(R.id.text_article_metadata);
+        TextView articleDate = (TextView) convertView.findViewById(R.id.text_article_card_date);
         articleHeading.setText(currentArticle.getArticleHeading());
         articleMetadata.setText(currentArticle.getArticleMetadata());
+        articleDate.setText(currentArticle.getArticleDate());
 
         return convertView;
     }

@@ -153,7 +153,7 @@ public class HomePage extends AppCompatActivity
         }
 
         if (articleDetails == null)
-            Toast.makeText(HomePage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
+            Toast.makeText(HomePage.this, "Error!!! No articles to display \n Please check your internet connection", Toast.LENGTH_LONG).show();
         else {
             //If execution is correct and the list of articles is received, then and only then the following will take place
             articleList = new ArticlesListModel[articleDetails.length];

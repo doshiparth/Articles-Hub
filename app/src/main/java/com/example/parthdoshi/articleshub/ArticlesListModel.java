@@ -1,6 +1,5 @@
 package com.example.parthdoshi.articleshub;
 
-import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
 
 public class ArticlesListModel {
@@ -30,6 +29,10 @@ public class ArticlesListModel {
 
     public String getArticleMetadata() {
         return "none";
+    }
+
+    public String getArticleDate() {
+        return articleDetail.getDate();
     }
 
     //public void setArticleMetadata(String articleMetadata) {

@@ -1,14 +1,10 @@
 package com.example.parthdoshi.articleshub;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-
-import android.os.AsyncTask;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -35,9 +31,9 @@ public class LoginPage extends AppCompatActivity {
     /**
      * A dummy authentication store containing known user names and passwords.
 
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "doshiparth007@gmail.com:123456", "neel.patel.2012.np@gmail.com:123456", "foo@example.com:hello", "bar@example.com:world"
-    };
+     private static final String[] DUMMY_CREDENTIALS = new String[]{
+     "doshiparth007@gmail.com:123456", "neel.patel.2012.np@gmail.com:123456", "foo@example.com:hello", "bar@example.com:world"
+     };
      */
 
     // UI references.

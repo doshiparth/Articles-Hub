@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
-import com.neel.articleshubapi.restapi.beans.UserDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
@@ -46,6 +45,12 @@ public class ArticleDisplayPage extends AppCompatActivity {
     String token = null, userName = null;
     ShortArticleDetail[] articleDetails;
     SharedPreferences sharedPref;
+
+    //Final String variables to show data in a better way
+    String finalAuthorName = "";
+    String finalTags = "";
+    String finalDate = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +104,13 @@ public class ArticleDisplayPage extends AppCompatActivity {
         for (String aContentArray : contentArray)
             contentString += aContentArray + "." + "\n";
 
+        finalAuthorName = "Written by "+article.getAuthor();
+        finalTags = "Tags : "+tagString;
+        finalDate = "Last modified on "+article.getDate();
         articleTitle.setText(article.getTitle());
-        authorName.setText(article.getAuthor());
-        articleTag.setText(tagString);
-        articleDate.setText(article.getDate());
+        authorName.setText(finalAuthorName);
+        articleTag.setText(finalTags);
+        articleDate.setText(finalDate);
         articleContent.setText(contentString);
         //for(String s : article.getContent())
         //    Log.i("doshi",s);
@@ -117,7 +125,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 HttpStatus status = likeRequest.getHttpStatus();
 
                 //if (status == HttpStatus.ACCEPTED)
-                    Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_LONG).show();
+                Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_LONG).show();
                 //else
                 //    Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
             }
@@ -141,10 +149,10 @@ public class ArticleDisplayPage extends AppCompatActivity {
                     commentRequest.execute(FixedVars.BASE_URL + "/comment");
                     HttpStatus status = commentRequest.getHttpStatus();
                     //if (status == HttpStatus.CREATED) {
-                        Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_LONG).show();
-                        commentButton.setVisibility(View.GONE);
-                        commentEditButton.setVisibility(View.VISIBLE);
-                        commentText.setEnabled(false);
+                    Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_LONG).show();
+                    commentButton.setVisibility(View.GONE);
+                    commentEditButton.setVisibility(View.VISIBLE);
+                    commentText.setEnabled(false);
                     //} else
                     //    Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
                 }
