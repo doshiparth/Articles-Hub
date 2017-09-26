@@ -117,7 +117,7 @@ public class HomeProfilePage extends AppCompatActivity
             uinfo = ud.getInfo();
             uemailid = ud.getEmailId();
 
-            profileHeading.setText("" + userName + "'s Profile");
+            profileHeading.setText("" + ufname + "'s Profile");
             userEmailID.setText(uemailid);
             userFname.setText(ufname);
             userLname.setText(ulname);

@@ -114,13 +114,13 @@ public class HomeArticlesPage extends AppCompatActivity
                 else
                     Log.i("CustomAdapter", articlesListCustomAdapter.toString());
 
-                try {
+                //try {
 
                     articlesPageListView.setAdapter(articlesListCustomAdapter);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-                try {
+                //} catch (NullPointerException e) {
+                //    e.printStackTrace();
+                //}
+                //try {
                     articlesPageListView.setOnItemClickListener(
                             new AdapterView.OnItemClickListener() {
                                 @Override
@@ -133,9 +133,9 @@ public class HomeArticlesPage extends AppCompatActivity
                                 }
                             }
                     );
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+                //} catch (NullPointerException e) {
+                //    e.printStackTrace();
+                //}
             }
         }
     }

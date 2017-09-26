@@ -120,12 +120,13 @@ public class EditDetailPage extends AppCompatActivity {
                 }
                 // Check if the password field is empty.
                 //if (!TextUtils.isEmpty(password)) {
+                /*
                 if (password.matches("")) {
                     passwordText.setError(getString(R.string.error_field_required));
                     focusView = passwordText;
                     cancel = true;
                 }
-
+                */
                 //Only makes a call to the REST Server API if none of the required fields are empty
                 if (cancel) {
                     // There was an error; don't attempt login and focus the first

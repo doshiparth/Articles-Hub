@@ -26,6 +26,7 @@ import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
@@ -65,6 +66,7 @@ public class HomePage extends AppCompatActivity
         progressDialog.setMessage("Registering you as our new user");
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
+        //progressDialog.setProgress(0);
 
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
@@ -79,7 +81,6 @@ public class HomePage extends AppCompatActivity
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //        .setAction("Action", null).show();
-
                 Intent myIntent = new Intent(HomePage.this, WriteArticlePage.class);
                 startActivity(myIntent);
             }
@@ -95,9 +96,8 @@ public class HomePage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         swippy = (SwipeRefreshLayout) findViewById(R.id.home_page_swippy);
 
-        progressDialog.show();
         loadHomePage();
-        progressDialog.dismiss();
+        //progressDialog.dismiss();
 
         /*
         ArticleList[0] = new ArticlesListModel("Article 0", "This is the metadata description of Article 0");
@@ -125,7 +125,6 @@ public class HomePage extends AppCompatActivity
     }
 
     public void loadHomePage() {
-
         //Below is the original code for displaying content on HomePage
 
         if (token != null && !token.equalsIgnoreCase("")) {
@@ -135,8 +134,11 @@ public class HomePage extends AppCompatActivity
                             HeaderTools.makeAuth(token));
             regUserArticleRequest.execute(FixedVars.BASE_URL + "/home/" + userName);
             // initiate waiting logic
+            progressDialog.show();
             articleDetails = regUserArticleRequest.getObj();
+            HttpStatus status = regUserArticleRequest.getHttpStatus();
             // terminate waiting logic
+            progressDialog.dismiss();
 
         }/*else if(token != null && !FixedVars.TAG_SELECTED_FLAG) {
             Toast.makeText(HomePage.this, "Logged in but tags not selected.... Select tags first", Toast.LENGTH_LONG).show();
@@ -149,6 +151,10 @@ public class HomePage extends AppCompatActivity
             unregUserArticleRequest.execute(FixedVars.BASE_URL + "/home");
             // initiate waiting logic
             articleDetails = unregUserArticleRequest.getObj();
+            HttpStatus status = unregUserArticleRequest.getHttpStatus();
+            if (status == HttpStatus.OK) {
+                progressDialog.dismiss();
+            }
             // terminate waiting logic
         }
 
