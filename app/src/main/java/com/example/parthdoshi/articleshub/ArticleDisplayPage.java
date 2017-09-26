@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
@@ -37,10 +38,10 @@ public class ArticleDisplayPage extends AppCompatActivity {
     String contentArray[];
     String contentString = "";
     TextView articleTag;
-    Button likeButton;
+    ToggleButton likeButton;
     EditText commentText;
-    Button commentButton;
-    Button commentEditButton;
+    ToggleButton commentButton;
+    Button commentDeleteButton;
     Button articleEditButton;
     String token = null, userName = null;
     ShortArticleDetail[] articleDetails;
@@ -83,7 +84,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
         final String articleLink = articleData.getString("ArticleLink");
         Boolean articleAuthor = articleData.getBoolean("ArticleAuthor");
 
-        if(articleAuthor)
+        if (articleAuthor)
             articleEditButton.setVisibility(View.VISIBLE);
 
         RequestTask<ArticleDetail> rt = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
@@ -104,9 +105,9 @@ public class ArticleDisplayPage extends AppCompatActivity {
         for (String aContentArray : contentArray)
             contentString += aContentArray + "." + "\n";
 
-        finalAuthorName = "Written by "+article.getAuthor();
-        finalTags = "Tags : "+tagString;
-        finalDate = "Last modified on "+article.getDate();
+        finalAuthorName = "Written by " + article.getAuthor();
+        finalTags = "Tags : " + tagString;
+        finalDate = "Last modified on " + article.getDate();
         articleTitle.setText(article.getTitle());
         authorName.setText(finalAuthorName);
         articleTag.setText(finalTags);
@@ -114,56 +115,67 @@ public class ArticleDisplayPage extends AppCompatActivity {
         articleContent.setText(contentString);
         //for(String s : article.getContent())
         //    Log.i("doshi",s);
-        likeButton = (Button) findViewById(R.id.btn_like);
+        likeButton = (ToggleButton) findViewById(R.id.btn_like);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestTask<String> likeRequest = new RequestTask<String>(String.class, HttpMethod.POST,
-                        HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth(token));
-                likeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
-                HttpStatus status = likeRequest.getHttpStatus();
-
-                //if (status == HttpStatus.ACCEPTED)
-                Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_LONG).show();
-                //else
-                //    Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
-            }
-        });
-        commentText = (EditText) findViewById(R.id.edit_comment);
-        commentButton = (Button) findViewById(R.id.btn_comment);
-        commentEditButton = (Button) findViewById(R.id.btn_edit_comment);
-        commentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (commentText.getText().toString().isEmpty()) {
-                    Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_LONG).show();
-                } else {
-                    CommentDetail comment = new CommentDetail();
-                    comment.setArticleId(article.getArticleId());
-                    comment.setUserName(userName);
-                    comment.setContent(String.valueOf(commentText.getText()));
-                    AddRequestTask<String, CommentDetail> commentRequest = new AddRequestTask<String, CommentDetail>(String.class,
-                            comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
+                if (likeButton.isChecked()) {
+                    RequestTask<String> likeRequest = new RequestTask<String>(String.class, HttpMethod.POST,
+                            HeaderTools.CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
-                    commentRequest.execute(FixedVars.BASE_URL + "/comment");
-                    HttpStatus status = commentRequest.getHttpStatus();
-                    //if (status == HttpStatus.CREATED) {
-                    Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_LONG).show();
-                    commentButton.setVisibility(View.GONE);
-                    commentEditButton.setVisibility(View.VISIBLE);
-                    commentText.setEnabled(false);
-                    //} else
-                    //    Toast.makeText(ArticleDisplayPage.this, "Error!! Unable to like", Toast.LENGTH_LONG).show();
+                    likeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
+                    Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_SHORT).show();
+                } else {
+                    RequestTask<String> unlikeRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
+                            HeaderTools.CONTENT_TYPE_JSON,
+                            HeaderTools.makeAuth(token));
+                    unlikeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
+                    Toast.makeText(ArticleDisplayPage.this, "Like removed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        commentEditButton.setOnClickListener(new View.OnClickListener() {
+        commentText = (EditText) findViewById(R.id.edit_comment);
+        commentButton = (ToggleButton) findViewById(R.id.btn_comment);
+        commentDeleteButton = (Button) findViewById(R.id.btn_delete_comment);
+        commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (commentButton.isChecked()) {
+                    if (commentText.getText().toString().isEmpty()) {
+                        Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_SHORT).show();
+                        commentButton.setChecked(false);
+                    } else {
+                        CommentDetail comment = new CommentDetail();
+                        comment.setArticleId(article.getArticleId());
+                        comment.setUserName(userName);
+                        comment.setContent(String.valueOf(commentText.getText()));
+                        AddRequestTask<String, CommentDetail> commentRequest = new AddRequestTask<String, CommentDetail>(String.class,
+                                comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
+                                HeaderTools.makeAuth(token));
+                        commentRequest.execute(FixedVars.BASE_URL + "/comment");
+                        Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_SHORT).show();
+                        commentDeleteButton.setVisibility(View.VISIBLE);
+                        commentText.setEnabled(false);
+                    }
+                } else {
+                    commentText.setEnabled(true);
+                }
+
+            }
+        });
+        commentDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommentDetail comment = new CommentDetail();
+                RequestTask<String> deleteCommentRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
+                        HeaderTools.CONTENT_TYPE_JSON,
+                        HeaderTools.makeAuth(token));
+                deleteCommentRequest.execute(FixedVars.BASE_URL + "/comment/" + comment.getCommentId());
+                Toast.makeText(ArticleDisplayPage.this, "Comment deleted", Toast.LENGTH_SHORT).show();
+                commentText.setText("");
                 commentText.setEnabled(true);
                 commentButton.setVisibility(View.VISIBLE);
-                commentEditButton.setVisibility(View.GONE);
+                commentDeleteButton.setVisibility(View.GONE);
             }
         });
         articleEditButton.setOnClickListener(new View.OnClickListener() {
