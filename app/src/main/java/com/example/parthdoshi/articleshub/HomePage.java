@@ -214,7 +214,8 @@ public class HomePage extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_help) {
-            return true;
+            Intent myIntent = new Intent(HomePage.this, HelpPage.class);
+            startActivity(myIntent);
         }
 
         return super.onOptionsItemSelected(item);

@@ -234,7 +234,8 @@ public class HomeTagsPage extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_help) {
-            return true;
+            Intent myIntent = new Intent(HomeTagsPage.this, HelpPage.class);
+            startActivity(myIntent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -250,22 +251,27 @@ public class HomeTagsPage extends AppCompatActivity
             case R.id.nav_home_page:
                 Intent home = new Intent(HomeTagsPage.this, HomePage.class);
                 startActivity(home);
+                finish();
                 break;
             case R.id.nav_home_profile_page:
                 Intent profile = new Intent(HomeTagsPage.this, HomeProfilePage.class);
                 startActivity(profile);
+                finish();
                 break;
             case R.id.nav_home_articles_page:
                 Intent articles = new Intent(HomeTagsPage.this, HomeArticlesPage.class);
                 startActivity(articles);
+                finish();
                 break;
             case R.id.nav_home_tags_page:
                 Intent tags = new Intent(HomeTagsPage.this, HomeTagsPage.class);
                 startActivity(tags);
+                finish();
                 break;
             case R.id.nav_home_about_page:
                 Intent about = new Intent(HomeTagsPage.this, HomeAboutPage.class);
                 startActivity(about);
+                finish();
                 break;
         }
 

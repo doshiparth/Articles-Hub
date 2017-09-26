@@ -169,6 +169,10 @@ public class HomeArticlesPage extends AppCompatActivity
             Intent myIntent = new Intent(HomeArticlesPage.this, EditArticlePage.class);
             startActivity(myIntent);
         }
+        else if (id == R.id.action_help){
+            Intent myIntent = new Intent(HomeArticlesPage.this, HelpPage.class);
+            startActivity(myIntent);
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -182,22 +186,27 @@ public class HomeArticlesPage extends AppCompatActivity
             case R.id.nav_home_page:
                 Intent home = new Intent(HomeArticlesPage.this, HomePage.class);
                 startActivity(home);
+                finish();
                 break;
             case R.id.nav_home_profile_page:
                 Intent profile = new Intent(HomeArticlesPage.this, HomeProfilePage.class);
                 startActivity(profile);
+                finish();
                 break;
             case R.id.nav_home_articles_page:
                 Intent articles = new Intent(HomeArticlesPage.this, HomeArticlesPage.class);
                 startActivity(articles);
+                finish();
                 break;
             case R.id.nav_home_tags_page:
                 Intent tags = new Intent(HomeArticlesPage.this, HomeTagsPage.class);
                 startActivity(tags);
+                finish();
                 break;
             case R.id.nav_home_about_page:
                 Intent about = new Intent(HomeArticlesPage.this, HomeAboutPage.class);
                 startActivity(about);
+                finish();
                 break;
         }
 

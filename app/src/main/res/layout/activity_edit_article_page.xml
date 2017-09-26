@@ -25,7 +25,7 @@
                 android:ems="10"
                 android:gravity="center"
                 android:hint="Enter Article's Title"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName|textCapSentences|textMultiLine|textNoSuggestions" />
 
             <EditText
                 android:id="@+id/edit_txt_user_search"
@@ -35,6 +35,7 @@
                 android:layout_alignBottom="@+id/edit_btn_user_search"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/txt_edit_article_title"
+                android:inputType="textCapWords|textNoSuggestions"
                 android:background="@color/accent" />
 
             <Button
@@ -72,8 +73,8 @@
                 android:layout_marginTop="31dp"
                 android:ems="10"
                 android:hint="Write your article here"
-                android:inputType="textMultiLine"
-                android:minLines="6" />
+                android:inputType="textMultiLine|textCapSentences|textNoSuggestions"
+                android:minLines="3" />
 
         </RelativeLayout>
     </ScrollView>

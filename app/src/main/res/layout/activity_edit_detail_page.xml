@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your first name"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textCapWords"
             android:maxLines="1" />
 
     </android.support.design.widget.TextInputLayout>
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your last name"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textCapWords"
             android:maxLines="1" />
 
     </android.support.design.widget.TextInputLayout>
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_info"
-            android:inputType="textMultiLine|textNoSuggestions" />
+            android:inputType="textMultiLine|textNoSuggestions|textCapSentences" />
 
     </android.support.design.widget.TextInputLayout>
 
