@@ -15,28 +15,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:text="Modify your tags"
         android:textAlignment="center"
-        android:textStyle="bold"
-        android:text="Modify your tags"/>
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/home_select_page_inner_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/home_select_page_instruction">
+        android:layout_below="@+id/home_select_page_instruction"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/home_txt_user_search"
             android:layout_width="220dp"
             android:layout_height="30dp"
-            android:background="@color/accent"
             android:layout_alignBaseline="@+id/home_btn_user_search"
             android:layout_alignBottom="@+id/home_btn_user_search"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:background="@color/divider" />
 
         <Button
             android:id="@+id/home_btn_user_search"
@@ -50,15 +50,15 @@
             android:id="@+id/manage_tag_page_suggestions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/home_txt_user_search"
             android:layout_margin="10dp"
             android:layout_marginBottom="5dp"
-            android:layout_below="@+id/home_txt_user_search"
-            android:text="@string/string_tag_page_suggestions"/>
+            android:text="@string/string_tag_page_suggestions" />
 
         <ListView
             android:id="@+id/home_select_tag_page_listview"
-            android:layout_height="fill_parent"
             android:layout_width="match_parent"
+            android:layout_height="fill_parent"
             android:layout_below="@+id/manage_tag_page_suggestions"
             android:divider="#806326"
             android:dividerHeight="1dp" />
@@ -69,10 +69,10 @@
         android:id="@+id/home_select_page_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/select_page_button"
+        android:layout_alignBottom="@+id/home_select_page_inner_layout"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignBottom="@+id/home_select_page_inner_layout"
-        android:onClick="goToHome"/>
+        android:onClick="goToHome"
+        android:text="@string/select_page_button" />
 
 </RelativeLayout>

@@ -18,13 +18,32 @@
         android:textSize="30sp" />
 
     <TextView
+        android:id="@+id/about_page_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/about_page_text"
         android:layout_marginTop="20dp"
-        android:text="@string/about_description"
+        android:layout_marginBottom="20dp"
+        android:text="@string/about_page_description"
         android:textSize="20sp" />
 
+    <EditText
+        android:id="@+id/txt_user_search_add_tag"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:hint="Tag Request"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/about_page_content"
+        android:background="@color/divider"
+        android:inputType="textCapWords|textNoSuggestions" />
+
+    <Button
+        android:id="@+id/btn_user_search_add_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/txt_user_search_add_tag"
+        android:text="Request to add this tag" />
     <!--<com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="wrap_content"

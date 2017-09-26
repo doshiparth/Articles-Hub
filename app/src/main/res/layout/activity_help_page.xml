@@ -6,23 +6,108 @@
     android:layout_height="match_parent"
     tools:context="com.example.parthdoshi.articleshub.HelpPage">
 
-    <TextView
-        android:id="@+id/txt_help_page_title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Help Page"
-        android:layout_margin="10dp"
-        android:layout_marginBottom="5dp"
-        android:textSize="30sp"
-        android:gravity="center"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/txt_help_page_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Help text"
-        android:layout_margin="10dp"
-        android:textSize="20sp"
-        android:layout_below="@id/txt_help_page_title"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_help_page_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:layout_marginBottom="40dp"
+                android:gravity="center"
+                android:text="Some Common Q&amp;A"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/txt_help_page_q1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_help_page_title"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@string/help_page_q1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_help_page_a1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_help_page_q1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/help_page_a1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_help_page_q2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_help_page_a1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/help_page_q1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_help_page_a2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_help_page_q2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/help_page_a1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_help_page_q3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_help_page_a2"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/help_page_q1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_help_page_a3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_help_page_q3"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/help_page_a1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_help_page_q4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_help_page_a3"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/help_page_q1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_help_page_a4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_help_page_q4"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/help_page_a1"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

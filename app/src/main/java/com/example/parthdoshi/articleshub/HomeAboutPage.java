@@ -13,6 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.neel.articleshubapi.restapi.beans.TagDetail;
+import com.neel.articleshubapi.restapi.request.RequestTask;
+
+import org.springframework.http.HttpStatus;
+
+import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class HomeAboutPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -20,6 +31,8 @@ public class HomeAboutPage extends AppCompatActivity
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar = null;
+    EditText newTagSearchBox;
+    Button newTagReqBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +65,29 @@ public class HomeAboutPage extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        newTagSearchBox = (EditText) findViewById(R.id.txt_user_search_add_tag);
+        newTagReqBtn = (Button) findViewById(R.id.btn_user_search_add_tag);
+        newTagReqBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String usersTag = newTagSearchBox.getText().toString().trim().toLowerCase();
+                RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
+                tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
+                // initiate waiting logic
+                TagDetail tag = tagRead.getObj();
+                // terminate waiting logic
+                HttpStatus status = tagRead.getHttpStatus();
+
+                if (status == HttpStatus.OK && tag != null) {
+                    //To check if the tag user has selected is already present in his selection list
+                    Toast.makeText(HomeAboutPage.this, "This tag is already present in the database.\n" +
+                            "You can use this tag by selecting it anytime.", Toast.LENGTH_LONG).show();
+                    //If the tag is not already present and is available in the Database, ENTER it into the list
+                } else
+                    Toast.makeText(HomeAboutPage.this, "The request for adding "+usersTag+" into our database has been successfully registered", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
