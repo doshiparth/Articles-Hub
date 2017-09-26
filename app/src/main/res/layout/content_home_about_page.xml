@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="About Articles Hub"
+        android:gravity="center"
         android:textSize="30sp" />
 
     <TextView
@@ -25,15 +26,24 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:text="@string/about_page_description"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/txt_add_tag_instruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/about_page_content"
+        android:text="@string/tag_req_instruction"
+        android:textSize="22sp"/>
 
     <EditText
         android:id="@+id/txt_user_search_add_tag"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:hint="Tag Request"
+        android:layout_margin="10dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/about_page_content"
+        android:layout_below="@+id/txt_add_tag_instruction"
         android:background="@color/divider"
         android:inputType="textCapWords|textNoSuggestions" />
 
@@ -42,13 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
         android:layout_below="@+id/txt_user_search_add_tag"
-        android:text="Request to add this tag" />
-    <!--<com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />-->
+        android:text="Request" />
 
 </RelativeLayout>

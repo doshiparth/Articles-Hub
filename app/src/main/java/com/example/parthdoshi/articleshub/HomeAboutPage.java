@@ -82,10 +82,13 @@ public class HomeAboutPage extends AppCompatActivity
                 if (status == HttpStatus.OK && tag != null) {
                     //To check if the tag user has selected is already present in his selection list
                     Toast.makeText(HomeAboutPage.this, "This tag is already present in the database.\n" +
-                            "You can use this tag by selecting it anytime.", Toast.LENGTH_LONG).show();
-                    //If the tag is not already present and is available in the Database, ENTER it into the list
+                            "Use it directly or request for some other tag that is not present in our database",
+                            Toast.LENGTH_LONG).show();
                 } else
-                    Toast.makeText(HomeAboutPage.this, "The request for adding "+usersTag+" into our database has been successfully registered", Toast.LENGTH_LONG).show();
+                    Toast.makeText(HomeAboutPage.this, "The request for adding "+usersTag+" into our database has been " +
+                            "successfully registered.\nWe'll verify it and add it to our database as soon as possible",
+                            Toast.LENGTH_LONG).show();
+                newTagSearchBox.setText("");
             }
         });
     }
