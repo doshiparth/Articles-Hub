@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 public class StartPage extends AppCompatActivity {
 
     SharedPreferences sharedPref;
@@ -23,6 +25,9 @@ public class StartPage extends AppCompatActivity {
             setContentView(R.layout.activity_start_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
+
+        Calligrapher calligrapher = new Calligrapher(StartPage.this);
+        calligrapher.setFont(StartPage.this, FixedVars.FONT_NAME, true);
 
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");

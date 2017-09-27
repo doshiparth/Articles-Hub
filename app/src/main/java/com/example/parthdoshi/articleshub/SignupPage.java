@@ -23,6 +23,8 @@ import com.neel.articleshubapi.restapi.request.HeaderTools;
 
 import org.springframework.http.HttpMethod;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 /**
  * A signup screen that lets new user register using email address
  */
@@ -59,6 +61,9 @@ public class SignupPage extends AppCompatActivity {
             setContentView(R.layout.activity_signup_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
+
+        Calligrapher calligrapher = new Calligrapher(SignupPage.this);
+        calligrapher.setFont(SignupPage.this, FixedVars.FONT_NAME, true);
 
         //Initializing ProgressDialog
         progressDialog = new ProgressDialog(SignupPage.this);

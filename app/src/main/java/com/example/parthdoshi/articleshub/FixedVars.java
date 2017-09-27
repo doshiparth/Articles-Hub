@@ -24,4 +24,6 @@ public class FixedVars {
     //The base URL for server connection
     public static final String BASE_URL = "https://articleshub.herokuapp.com/api";
 
+    public static final String FONT_NAME = "ExoRegular.ttf";
+
 }

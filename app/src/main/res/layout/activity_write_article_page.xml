@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:background="@drawable/gradient_background"
     tools:context="com.example.parthdoshi.articleshub.WriteArticlePage">
 
     <ScrollView
@@ -23,11 +23,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:ems="10"
                 android:gravity="center"
                 android:hint="Enter Article's Title"
-                android:inputType="textPersonName|textCapSentences|textMultiLine|textNoSuggestions" />
+                android:inputType="textMultiLine|textCapSentences|textNoSuggestions" />
 
             <EditText
                 android:id="@+id/txt_user_search"
@@ -37,6 +37,8 @@
                 android:layout_alignBottom="@+id/btn_user_search"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/txt_write_article_title"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
                 android:background="@color/divider"
                 android:inputType="textCapWords|textNoSuggestions" />
 
@@ -47,15 +49,19 @@
                 android:layout_alignEnd="@+id/txt_user_search"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/txt_write_article_title"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="30dp"
                 android:text="Search for this tag" />
 
             <TextView
                 android:id="@+id/txt_write_article_suggestions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_user_search"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/btn_user_search"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="15sp"
                 android:text="@string/string_tag_page_suggestions" />
 
             <TextView
@@ -63,7 +69,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_write_article_suggestions"
-                android:layout_margin="15dp"
+                android:layout_margin="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
                 android:textSize="20sp" />
 
             <EditText
@@ -72,7 +81,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_write_article_selected_tags"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="31dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:ems="10"
                 android:hint="Write your article here"
                 android:inputType="textMultiLine|textCapSentences|textNoSuggestions"

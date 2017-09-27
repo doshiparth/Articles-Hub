@@ -44,6 +44,9 @@ dependencies {
     compile 'com.github.NeelPatel21:Articles-hub-android-api:v2.0.1'
     testCompile 'junit:junit:4.12'
 
+    //For custom fonts
+    compile 'me.anwarshahriar:calligrapher:1.0'
+
     //Animators
     //compile 'com.wang.avi:library:2.1.3'
 

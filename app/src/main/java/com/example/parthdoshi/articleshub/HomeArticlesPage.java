@@ -24,6 +24,8 @@ import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpMethod;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 public class HomeArticlesPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,6 +45,9 @@ public class HomeArticlesPage extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Calligrapher calligrapher = new Calligrapher(HomeArticlesPage.this);
+        calligrapher.setFont(HomeArticlesPage.this, FixedVars.FONT_NAME, true);
 
         //Getting data from SharedPreferences
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);

@@ -23,6 +23,8 @@ import com.neel.articleshubapi.restapi.request.HeaderTools;
 
 import org.springframework.http.HttpMethod;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 /**
  * A login screen that offers login via username and password.
  */
@@ -56,6 +58,9 @@ public class LoginPage extends AppCompatActivity {
             setContentView(R.layout.activity_login_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
+
+        Calligrapher calligrapher = new Calligrapher(LoginPage.this);
+        calligrapher.setFont(LoginPage.this, FixedVars.FONT_NAME, true);
 
         //Initializing ProgressDialog
         progressDialog = new ProgressDialog(LoginPage.this);

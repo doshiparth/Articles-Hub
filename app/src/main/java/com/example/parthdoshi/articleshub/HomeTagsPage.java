@@ -32,6 +32,8 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class HomeTagsPage extends AppCompatActivity
@@ -57,6 +59,9 @@ public class HomeTagsPage extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Calligrapher calligrapher = new Calligrapher(HomeTagsPage.this);
+        calligrapher.setFont(HomeTagsPage.this, FixedVars.FONT_NAME, true);
 
         //Getting user details from the shared preferences file
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);

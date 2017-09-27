@@ -23,6 +23,8 @@ import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpStatus;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class HomeAboutPage extends AppCompatActivity
@@ -44,6 +46,8 @@ public class HomeAboutPage extends AppCompatActivity
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
+        Calligrapher calligrapher = new Calligrapher(HomeAboutPage.this);
+        calligrapher.setFont(HomeAboutPage.this, FixedVars.FONT_NAME, true);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

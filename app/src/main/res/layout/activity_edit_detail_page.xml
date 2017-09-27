@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:background="@drawable/gradient_background"
     tools:context="com.example.parthdoshi.articleshub.EditDetailPage">
 
     <android.support.design.widget.TextInputLayout
@@ -17,6 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your first name"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:inputType="textNoSuggestions|textCapWords"
             android:maxLines="1" />
 
@@ -31,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your last name"
+            android:layout_margin="10dp"
             android:inputType="textNoSuggestions|textCapWords"
             android:maxLines="1" />
 
@@ -60,6 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_email"
+            android:layout_margin="10dp"
             android:inputType="textEmailAddress|textNoSuggestions"
             android:maxLines="1" />
 
@@ -74,6 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_info"
+            android:layout_margin="10dp"
             android:inputType="textMultiLine|textNoSuggestions|textCapSentences" />
 
     </android.support.design.widget.TextInputLayout>
@@ -90,6 +97,7 @@
             android:imeActionId="@+id/signup"
             android:imeActionLabel="@string/action_sign_up_short"
             android:imeOptions="actionSend"
+            android:layout_margin="10dp"
             android:inputType="textPassword|textNoSuggestions"
             android:maxLines="1" />
 
@@ -102,6 +110,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Save Changes"
+        android:gravity="center"
+        android:layout_margin="10dp"
         android:textStyle="bold" />
 
 

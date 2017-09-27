@@ -26,6 +26,8 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Iterator;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class ArticleDisplayPage extends AppCompatActivity {
@@ -62,6 +64,9 @@ public class ArticleDisplayPage extends AppCompatActivity {
             setContentView(R.layout.activity_article_display_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
+
+        Calligrapher calligrapher = new Calligrapher(ArticleDisplayPage.this);
+        calligrapher.setFont(ArticleDisplayPage.this, FixedVars.FONT_NAME, true);
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.layout_article_display_page);
         relativeLayout.requestFocus();
@@ -103,7 +108,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
         for (int i = 0; i < contentArray.length; i++)
             contentArray[i] = itr2.next();
         for (String aContentArray : contentArray)
-            contentString += aContentArray + "." + "\n";
+            contentString += aContentArray + "\n";
 
         finalAuthorName = "Written by " + article.getAuthor();
         finalTags = "Tags : " + tagString;

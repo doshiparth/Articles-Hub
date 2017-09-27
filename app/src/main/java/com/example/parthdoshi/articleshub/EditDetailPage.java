@@ -21,6 +21,8 @@ import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpMethod;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class EditDetailPage extends AppCompatActivity {
@@ -43,6 +45,9 @@ public class EditDetailPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Calligrapher calligrapher = new Calligrapher(EditDetailPage.this);
+        calligrapher.setFont(EditDetailPage.this, FixedVars.FONT_NAME, true);
 
         //Checking for internet connection
         if(NetworkStatus.getInstance(this).isOnline())

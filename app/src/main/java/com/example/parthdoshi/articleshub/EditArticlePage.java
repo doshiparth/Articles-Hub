@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class EditArticlePage extends AppCompatActivity {
@@ -65,6 +67,9 @@ public class EditArticlePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Calligrapher calligrapher = new Calligrapher(EditArticlePage.this);
+        calligrapher.setFont(EditArticlePage.this, FixedVars.FONT_NAME, true);
 
         //Checking for internet connection
         if (NetworkStatus.getInstance(this).isOnline())

@@ -31,6 +31,8 @@ import com.neel.articleshubapi.restapi.request.RequestTask;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 
@@ -57,6 +59,9 @@ public class SelectTagPage extends AppCompatActivity {
             setContentView(R.layout.activity_select_tag_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
+
+        Calligrapher calligrapher = new Calligrapher(SelectTagPage.this);
+        calligrapher.setFont(SelectTagPage.this, FixedVars.FONT_NAME, true);
 
         //Code to display and manage the search view in the toolbar
         //Toolbar toolbar = (Toolbar)findViewById(R.id.search_toolbar);

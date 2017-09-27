@@ -26,6 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import me.anwarshahriar.calligrapher.Calligrapher;
+
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
 public class WriteArticlePage extends AppCompatActivity {
@@ -46,7 +48,7 @@ public class WriteArticlePage extends AppCompatActivity {
 
     //Local variables to send through the REST Api
     String title = "";
-    String singleTag = "";
+    String singleTag = "Tags: ";
     Set<String> tags = new HashSet<>();
     String[] content;
     SharedPreferences sharedPref;
@@ -56,6 +58,9 @@ public class WriteArticlePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Calligrapher calligrapher = new Calligrapher(WriteArticlePage.this);
+        calligrapher.setFont(WriteArticlePage.this, FixedVars.FONT_NAME, true);
 
         //Getting data from SharedPreferences
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
@@ -83,6 +88,7 @@ public class WriteArticlePage extends AppCompatActivity {
 
             userSearchText = (EditText) findViewById(R.id.txt_user_search);
             userSearchButton = (Button) findViewById(R.id.btn_user_search);
+            newArticleTagsText.setText(singleTag);
 
             userSearchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,7 +133,7 @@ public class WriteArticlePage extends AppCompatActivity {
         }
     }
 
-    public void publishArticle(View v1){
+    public void publishArticle(View v1) {
 
         ArticleDetail article = new ArticleDetail();
 
@@ -136,15 +142,15 @@ public class WriteArticlePage extends AppCompatActivity {
         Log.i("Title before publish", title);
         Log.i("Tags", tags.toString());
         //Log.i("Title", title);
-        //splits the string based on string
-        content = newArticleContentText.getText().toString().split("\n");
+        //splits the string after each new line
+        content = newArticleContentText.getText().toString().split("\\r?\\n");
         ArrayList<String> contentList = new ArrayList<>();
-        int i =0;
-        while(i < content.length) {
+        int i = 0;
+        while (i < content.length) {
             contentList.add(content[i]);
             i++;
         }
-        if(contentList.isEmpty()){
+        if (contentList.isEmpty()) {
             Log.i("ContentList", "content list is empty");
         }
         if (title.equals(""))
