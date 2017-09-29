@@ -256,6 +256,14 @@ public class HomePage extends AppCompatActivity
                 Intent tags = new Intent(HomePage.this, HomeTagsPage.class);
                 startActivity(tags);
                 break;
+            case R.id.nav_home_comments_page:
+                Intent comments = new Intent(HomePage.this, HomeCommentsPage.class);
+                startActivity(comments);
+                break;
+            case R.id.nav_home_like_history_page:
+                Intent likes = new Intent(HomePage.this, HomeLikeHistoryPage.class);
+                startActivity(likes);
+                break;
             case R.id.nav_home_about_page:
                 Intent about = new Intent(HomePage.this, HomeAboutPage.class);
                 startActivity(about);

@@ -273,6 +273,16 @@ public class HomeTagsPage extends AppCompatActivity
                 startActivity(tags);
                 finish();
                 break;
+            case R.id.nav_home_comments_page:
+                Intent comments = new Intent(HomeTagsPage.this, HomeCommentsPage.class);
+                startActivity(comments);
+                finish();
+                break;
+            case R.id.nav_home_like_history_page:
+                Intent likes = new Intent(HomeTagsPage.this, HomeLikeHistoryPage.class);
+                startActivity(likes);
+                finish();
+                break;
             case R.id.nav_home_about_page:
                 Intent about = new Intent(HomeTagsPage.this, HomeAboutPage.class);
                 startActivity(about);

@@ -19,6 +19,14 @@
             android:icon="@drawable/ic_menu_tags"
             android:title="Manage Your Tags" />
         <item
+            android:id="@+id/nav_home_comments_page"
+            android:icon="@drawable/ic_menu_tags"
+            android:title="Manage Your Comments" />
+        <item
+            android:id="@+id/nav_home_like_history_page"
+            android:icon="@drawable/ic_menu_tags"
+            android:title="Your History" />
+        <item
             android:id="@+id/nav_home_about_page"
             android:icon="@drawable/ic_menu_aboutus"
             android:title="About us" />

@@ -10,22 +10,13 @@ public class ArticlesListModel {
     public ArticlesListModel() {
     }
 
-    public ArticlesListModel(ShortArticleDetail articleDetail){
-        this.articleDetail=articleDetail;
+    public ArticlesListModel(ShortArticleDetail articleDetail) {
+        this.articleDetail = articleDetail;
     }
-
-    /*public ArticlesListModel(String articleHeading, String articleMetadata) {
-        this.articleHeading = articleHeading;
-        this.articleMetadata = articleMetadata;
-    }*/
 
     public String getArticleHeading() {
         return articleDetail.getTitle();
     }
-
-    //public void setArticleHeading(String articleHeading) {
-    //    this.articleHeading = articleHeading;
-    //}
 
     public String getArticleAuthorName() {
         return articleDetail.getAuthor();
@@ -35,11 +26,7 @@ public class ArticlesListModel {
         return articleDetail.getDate();
     }
 
-    //public void setArticleMetadata(String articleMetadata) {
-    //    this.articleMetadata = articleMetadata;
-    //}
-
-    public ShortArticleDetail getShortArticleDetail(){
+    public ShortArticleDetail getShortArticleDetail() {
         return articleDetail;
     }
 }

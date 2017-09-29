@@ -55,4 +55,6 @@
     <string name="help_page_q1">1. What to do if the tag I want to use is not available in the database??</string>
     <string name="help_page_a1">\nIf you want to use a tag that is not in our database, you can make a request for adding new tags through our \"About Us\" Page.</string>
     <string name="tag_req_instruction">Enter a new tag name that is not in our database in the below bar to send us a request for adding it</string>
+    <string name="title_activity_home_comments_page">HomeCommentsPage</string>
+    <string name="title_activity_home_like_history_page">HomeLikeHistoryPage</string>
 </resources>

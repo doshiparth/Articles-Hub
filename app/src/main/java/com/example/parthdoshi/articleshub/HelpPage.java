@@ -15,6 +15,12 @@ public class HelpPage extends AppCompatActivity {
         Calligrapher calligrapher = new Calligrapher(HelpPage.this);
         calligrapher.setFont(HelpPage.this, FixedVars.FONT_NAME, true);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
 
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

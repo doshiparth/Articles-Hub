@@ -147,6 +147,7 @@ public class HomeProfilePage extends AppCompatActivity
                     Intent myIntent = new Intent(HomeProfilePage.this, StartPage.class);
                     startActivity(myIntent);
                     Snackbar.make(view, "You have successfully logged out!!!", Snackbar.LENGTH_LONG).show();
+                    finish();
                 }
             });
         }
@@ -210,6 +211,16 @@ public class HomeProfilePage extends AppCompatActivity
             case R.id.nav_home_tags_page:
                 Intent tags = new Intent(HomeProfilePage.this, HomeTagsPage.class);
                 startActivity(tags);
+                finish();
+                break;
+            case R.id.nav_home_comments_page:
+                Intent comments = new Intent(HomeProfilePage.this, HomeCommentsPage.class);
+                startActivity(comments);
+                finish();
+                break;
+            case R.id.nav_home_like_history_page:
+                Intent likes = new Intent(HomeProfilePage.this, HomeLikeHistoryPage.class);
+                startActivity(likes);
                 finish();
                 break;
             case R.id.nav_home_about_page:

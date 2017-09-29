@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 class ArticlesListCustomAdapter extends ArrayAdapter {
-    //ArticlesListModel[] ArticleList = null;
-    //Context context;
 
     private String date = "";
     private String authorName = "";

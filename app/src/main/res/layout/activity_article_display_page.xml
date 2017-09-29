@@ -86,7 +86,8 @@
                 android:layout_marginTop="22dp"
                 android:elevation="15dp"
                 android:textOff="Like"
-                android:textOn="Liked" />
+                android:textOn="Liked"
+                android:padding="0dp"/>
 
             <TextView
                 android:id="@+id/total_likes"
@@ -119,7 +120,8 @@
                 android:layout_below="@id/edit_comment"
                 android:layout_centerVertical="true"
                 android:textOff="Submit Comment"
-                android:textOn="Edit Comment" />
+                android:textOn="Edit Comment"
+                android:padding="0dp"/>
 
             <Button
                 android:id="@+id/btn_delete_comment"
@@ -128,14 +130,16 @@
                 android:layout_alignEnd="@+id/edit_comment"
                 android:layout_below="@+id/edit_comment"
                 android:text="Delete Comment"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:padding="0dp"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_all_comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btn_comment"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:scrollbars="vertical"/>
 
         </RelativeLayout>
     </ScrollView>

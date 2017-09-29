@@ -157,6 +157,16 @@ public class HomeAboutPage extends AppCompatActivity
                 startActivity(tags);
                 finish();
                 break;
+            case R.id.nav_home_comments_page:
+                Intent comments = new Intent(HomeAboutPage.this, HomeCommentsPage.class);
+                startActivity(comments);
+                finish();
+                break;
+            case R.id.nav_home_like_history_page:
+                Intent likes = new Intent(HomeAboutPage.this, HomeLikeHistoryPage.class);
+                startActivity(likes);
+                finish();
+                break;
             case R.id.nav_home_about_page:
                 Intent about = new Intent(HomeAboutPage.this, HomeAboutPage.class);
                 startActivity(about);
