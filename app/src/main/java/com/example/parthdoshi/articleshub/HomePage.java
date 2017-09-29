@@ -61,6 +61,19 @@ public class HomePage extends AppCompatActivity
         Calligrapher calligrapher = new Calligrapher(HomePage.this);
         calligrapher.setFont(HomePage.this, FixedVars.FONT_NAME, true);
 
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
+
+        Log.i("Home Page Token", token);
+
+        if (userName.equals("")) {
+            Intent myIntent = new Intent(HomePage.this, StartPage.class);
+            startActivity(myIntent);
+            //Toast.makeText(HomePage.this, "Welcome again "+userName, Toast.LENGTH_LONG).show();
+            finish();
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -72,12 +85,6 @@ public class HomePage extends AppCompatActivity
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
         //progressDialog.setProgress(0);
-
-        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
-        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
-        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
-
-        Log.i("Home Page Token", token);
 
         //Floating Button for writing new Article.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

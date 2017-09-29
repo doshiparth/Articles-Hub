@@ -13,7 +13,7 @@ import me.anwarshahriar.calligrapher.Calligrapher;
 public class StartPage extends AppCompatActivity {
 
     SharedPreferences sharedPref;
-    String userName = null, token =null;
+    String userName = null, token = null;
 
 
     @Override
@@ -21,7 +21,7 @@ public class StartPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connection
-        if(NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline())
             setContentView(R.layout.activity_start_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
@@ -32,29 +32,24 @@ public class StartPage extends AppCompatActivity {
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
         token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
-
-        if(!token.equals("")) {
-            Intent myIntent = new Intent(StartPage.this, HomePage.class);
-            startActivity(myIntent);
-            Toast.makeText(StartPage.this, "Welcome again "+userName, Toast.LENGTH_LONG).show();
-            finish();
-        }
     }
 
     //Applying actions on all three buttons
-    public void signinOnClick(View v1){
+    public void signinOnClick(View v1) {
         Intent myIntent = new Intent(StartPage.this, SignupPage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);
         finish();
     }
-    public void loginOnClick(View v2){
+
+    public void loginOnClick(View v2) {
         Intent myIntent = new Intent(StartPage.this, LoginPage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);
         finish();
     }
-    public void skipOnClick(View v3){
+
+    public void skipOnClick(View v3) {
         Intent myIntent = new Intent(StartPage.this, HomePage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);

@@ -13,11 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".StartPage">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".LoginPage"
@@ -50,8 +46,13 @@
         <activity
             android:name=".HomePage"
             android:label="@string/title_activity_home_page"
-            android:theme="@style/AppTheme.NoActionBar">
             android:parentActivityName=".SelectTagPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.parthdoshi.articleshub.SelectTagPage" />
@@ -104,9 +105,9 @@
             android:name=".HomeArticlesPage"
             android:label="@string/title_activity_home_articles_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".HelpPage"
-            android:label="Help Page">
-        </activity>
+        <activity
+            android:name=".HelpPage"
+            android:label="Help Page"></activity>
     </application>
 
 </manifest>
