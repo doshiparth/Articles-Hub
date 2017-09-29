@@ -17,6 +17,7 @@ import android.widget.ToggleButton;
 import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
+import com.neel.articleshubapi.restapi.beans.ShortUserDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
@@ -35,10 +36,12 @@ public class ArticleDisplayPage extends AppCompatActivity {
     TextView authorName;
     TextView articleDate;
     TextView articleContent;
+    TextView articleLikes;
     String tagArray[];
     String tagString = "";
     String contentArray[];
     String contentString = "";
+    String usersComment = "";
     TextView articleTag;
     ToggleButton likeButton;
     EditText commentText;
@@ -46,7 +49,10 @@ public class ArticleDisplayPage extends AppCompatActivity {
     Button commentDeleteButton;
     Button articleEditButton;
     String token = null, userName = null;
-    ShortArticleDetail[] articleDetails;
+    ShortUserDetail[] totalLikesObj;
+    CommentDetail[] usersCommentsObj;
+
+    String singleUser;
     SharedPreferences sharedPref;
 
     //Final String variables to show data in a better way
@@ -76,6 +82,11 @@ public class ArticleDisplayPage extends AppCompatActivity {
         articleTag = (TextView) findViewById(R.id.text_article_tag);
         articleContent = (TextView) findViewById(R.id.text_article_content);
         articleEditButton = (Button) findViewById(R.id.btn_edit_article);
+        likeButton = (ToggleButton) findViewById(R.id.btn_like);
+        articleLikes = (TextView) findViewById(R.id.total_likes);
+        commentText = (EditText) findViewById(R.id.edit_comment);
+        commentButton = (ToggleButton) findViewById(R.id.btn_comment);
+        commentDeleteButton = (Button) findViewById(R.id.btn_delete_comment);
 
         sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
         userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
@@ -110,6 +121,27 @@ public class ArticleDisplayPage extends AppCompatActivity {
         for (String aContentArray : contentArray)
             contentString += aContentArray + "\n";
 
+        //Check if the user has liked this article previously
+        RequestTask<ShortUserDetail[]> getLikesRequest =
+                new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
+        getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
+        totalLikesObj = getLikesRequest.getObj();
+
+        //Check if the user has commented on this article previously
+        RequestTask<CommentDetail[]> getCommentsRequest =
+                new RequestTask<>(CommentDetail[].class, CONTENT_TYPE_JSON);
+        getCommentsRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/comments");
+        usersCommentsObj = getCommentsRequest.getObj();
+
+        for (int i = 0; i < usersCommentsObj.length; i++) {
+            if (usersCommentsObj[i].getUserName().equals(userName)) {
+                usersComment = usersCommentsObj[i].getContent();
+                commentText.setText(usersComment);
+                commentText.setEnabled(false);
+                commentButton.setChecked(true);
+            }
+        }
+
         finalAuthorName = "Written by " + article.getAuthor();
         finalTags = "Tags : " + tagString;
         finalDate = "Last modified on " + article.getDate();
@@ -118,9 +150,17 @@ public class ArticleDisplayPage extends AppCompatActivity {
         articleTag.setText(finalTags);
         articleDate.setText(finalDate);
         articleContent.setText(contentString);
+        articleLikes.setText("Total likes: " + totalLikesObj.length);
+
         //for(String s : article.getContent())
         //    Log.i("doshi",s);
-        likeButton = (ToggleButton) findViewById(R.id.btn_like);
+
+        for (int i = 0; i < totalLikesObj.length; i++) {
+            singleUser = totalLikesObj[i].getUserName();
+            if (singleUser.equals(userName))
+                likeButton.setChecked(true);
+        }
+
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,18 +170,30 @@ public class ArticleDisplayPage extends AppCompatActivity {
                             HeaderTools.makeAuth(token));
                     likeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
                     Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_SHORT).show();
+
+                    RequestTask<ShortUserDetail[]> getLikesRequest =
+                            new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
+                    getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
+                    totalLikesObj = getLikesRequest.getObj();
+                    articleLikes.setText("Total likes: " + totalLikesObj.length);
+
                 } else {
                     RequestTask<String> unlikeRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
                             HeaderTools.CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
                     unlikeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
                     Toast.makeText(ArticleDisplayPage.this, "Like removed", Toast.LENGTH_SHORT).show();
+
+                    RequestTask<ShortUserDetail[]> getLikesRequest =
+                            new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
+                    getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
+                    totalLikesObj = getLikesRequest.getObj();
+                    articleLikes.setText("Total likes: " + totalLikesObj.length);
+
                 }
             }
         });
-        commentText = (EditText) findViewById(R.id.edit_comment);
-        commentButton = (ToggleButton) findViewById(R.id.btn_comment);
-        commentDeleteButton = (Button) findViewById(R.id.btn_delete_comment);
+
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,8 +216,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
                     }
                 } else {
                     commentText.setEnabled(true);
+                    commentDeleteButton.setVisibility(View.VISIBLE);
                 }
-
             }
         });
         commentDeleteButton.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +231,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 Toast.makeText(ArticleDisplayPage.this, "Comment deleted", Toast.LENGTH_SHORT).show();
                 commentText.setText("");
                 commentText.setEnabled(true);
-                commentButton.setVisibility(View.VISIBLE);
+                commentButton.setChecked(true);
                 commentDeleteButton.setVisibility(View.GONE);
             }
         });
