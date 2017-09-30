@@ -2,13 +2,14 @@ package com.example.parthdoshi.articleshub;
 
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
 
-class CommentListModel {
-    //String usersComment;
-    //String usersName;
-    //String commentDate;
+/**
+ * Created by Parth on 30-09-2017.
+ */
+
+public class CommentsPageListModel {
     private CommentDetail commentDetail;
 
-    public CommentListModel(CommentDetail commentDetail){
+    public CommentsPageListModel(CommentDetail commentDetail){
         this.commentDetail = commentDetail;
     }
 
@@ -16,11 +17,11 @@ class CommentListModel {
         return commentDetail.getContent();
     }
 
-    public String getUsersName() {
-        return commentDetail.getUserName();
-    }
-
     public String getCommentDate() {
         return commentDetail.getDate();
+    }
+
+    public String getCommentTime() {
+        return commentDetail.getTime();
     }
 }

@@ -32,7 +32,7 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
 
     @Override
     public int getItemCount() {
-        return 0;
+        return commentList.length;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

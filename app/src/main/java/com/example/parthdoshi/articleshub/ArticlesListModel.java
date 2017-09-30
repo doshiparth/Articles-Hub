@@ -7,9 +7,6 @@ public class ArticlesListModel {
     //private String articleMetadata;
     private ShortArticleDetail articleDetail;
 
-    public ArticlesListModel() {
-    }
-
     public ArticlesListModel(ShortArticleDetail articleDetail) {
         this.articleDetail = articleDetail;
     }

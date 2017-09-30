@@ -77,15 +77,6 @@ public class HomePage extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Initializing ProgressDialog
-        progressDialog = new ProgressDialog(HomePage.this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setTitle("Please wait");
-        progressDialog.setMessage("Registering you as our new user");
-        progressDialog.setCancelable(false);
-        progressDialog.setIndeterminate(true);
-        //progressDialog.setProgress(0);
-
         //Floating Button for writing new Article.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +99,16 @@ public class HomePage extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         swippy = (SwipeRefreshLayout) findViewById(R.id.home_page_swippy);
 
+        //Initializing ProgressDialog
+        progressDialog = new ProgressDialog(HomePage.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setMessage("Registering you as our new user");
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
+
+        progressDialog.show();
         loadHomePage();
-        //progressDialog.dismiss();
 
         /*
         ArticleList[0] = new ArticlesListModel("Article 0", "This is the metadata description of Article 0");
@@ -139,65 +138,64 @@ public class HomePage extends AppCompatActivity
     public void loadHomePage() {
         //Below is the original code for displaying content on HomePage
 
-        if (token != null && !token.equalsIgnoreCase("")) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (token != null && !token.equalsIgnoreCase("")) {
 
-            RequestTask<ShortArticleDetail[]> regUserArticleRequest =
-                    new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON,
-                            HeaderTools.makeAuth(token));
-            regUserArticleRequest.execute(FixedVars.BASE_URL + "/home/" + userName);
-            // initiate waiting logic
-            progressDialog.show();
-            articleDetails = regUserArticleRequest.getObj();
-            HttpStatus status = regUserArticleRequest.getHttpStatus();
-            // terminate waiting logic
-            progressDialog.dismiss();
-
-        }/*else if(token != null && !FixedVars.TAG_SELECTED_FLAG) {
+                    RequestTask<ShortArticleDetail[]> regUserArticleRequest =
+                            new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON,
+                                    HeaderTools.makeAuth(token));
+                    regUserArticleRequest.execute(FixedVars.BASE_URL + "/home/" + userName);
+                    articleDetails = regUserArticleRequest.getObj();
+                }/*else if(token != null && !FixedVars.TAG_SELECTED_FLAG) {
             Toast.makeText(HomePage.this, "Logged in but tags not selected.... Select tags first", Toast.LENGTH_LONG).show();
             Intent myIntent = new Intent(HomePage.this, SelectTagPage.class);
             startActivity(myIntent);
         }*/ else if (token == null || token.equalsIgnoreCase("")) {
 
-            RequestTask<ShortArticleDetail[]> unregUserArticleRequest =
-                    new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON);
-            unregUserArticleRequest.execute(FixedVars.BASE_URL + "/home");
-            // initiate waiting logic
-            articleDetails = unregUserArticleRequest.getObj();
-            HttpStatus status = unregUserArticleRequest.getHttpStatus();
-            if (status == HttpStatus.OK) {
-                progressDialog.dismiss();
-            }
-            // terminate waiting logic
-        }
+                    RequestTask<ShortArticleDetail[]> unregUserArticleRequest =
+                            new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET, CONTENT_TYPE_JSON);
+                    unregUserArticleRequest.execute(FixedVars.BASE_URL + "/home");
+                    // initiate waiting logic
+                    articleDetails = unregUserArticleRequest.getObj();
+                }
 
-        if (articleDetails == null)
-            Toast.makeText(HomePage.this, "Error!!! No articles to display \n Please check your internet connection", Toast.LENGTH_LONG).show();
-        else {
-            //If execution is correct and the list of articles is received, then and only then the following will take place
-            articleList = new ArticlesListModel[articleDetails.length];
-            for (int i = 0; i < articleDetails.length; i++) {
-                articleList[i] = new ArticlesListModel(articleDetails[i]);
-            }
-            hplv = (ListView) findViewById(R.id.home_page_listview);
-            ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomePage.this, articleList);
-            hplv.setAdapter(articlesListCustomAdapter);
-
-            Log.i("articleList", hplv.toString());
-
-            hplv.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
-                            myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
-                            myIntent.putExtra("ArticleAuthor", false);
-                            startActivity(myIntent);
-                            //finish();
-                        }
+                if (articleDetails == null)
+                    Toast.makeText(HomePage.this, "Error!!! No articles to display \n Please check your internet connection", Toast.LENGTH_LONG).show();
+                else {
+                    //If execution is correct and the list of articles is received, then and only then the following will take place
+                    articleList = new ArticlesListModel[articleDetails.length];
+                    for (int i = 0; i < articleDetails.length; i++) {
+                        articleList[i] = new ArticlesListModel(articleDetails[i]);
                     }
-            );
-        }
-        swippy.setRefreshing(false);
+                    hplv = (ListView) findViewById(R.id.home_page_listview);
+                    ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomePage.this, articleList);
+                    hplv.setAdapter(articlesListCustomAdapter);
+
+                    Log.i("articleList", hplv.toString());
+
+                    hplv.setOnItemClickListener(
+                            new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
+                                    myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
+                                    myIntent.putExtra("ArticleAuthor", false);
+                                    startActivity(myIntent);
+                                    //finish();
+                                }
+                            }
+                    );
+                }
+                swippy.setRefreshing(false);
+                try{
+                    progressDialog.dismiss();
+                }catch (final Exception e){
+                    Log.i("-----------","Exception in thread");
+                }
+            }
+        });
     }
 
     @Override
