@@ -28,6 +28,10 @@ import me.anwarshahriar.calligrapher.Calligrapher;
 public class HomeCommentsPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    DrawerLayout drawer;
+    NavigationView navigationView;
+    Toolbar toolbar = null;
+
     String token = null, userName = null;
     SharedPreferences sharedPref;
 
@@ -70,16 +74,16 @@ public class HomeCommentsPage extends AppCompatActivity
             else
                 NetworkStatus.getInstance(this).buildDialog(this).show();
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -102,7 +106,7 @@ public class HomeCommentsPage extends AppCompatActivity
                 Toast.makeText(HomeCommentsPage.this, "Sorry!! No comments to display", Toast.LENGTH_LONG).show();
                 Log.i("Check received comments", "No Comments by this user");
             } else {
-                Log.i("First comment", allComments[0].getContent());
+                //Log.i("First comment", allComments[0].getContent());
                 commentList = new CommentsPageListModel[allComments.length];
                 for (int i = 0; i < allComments.length; i++) {
                     commentList[i] = new CommentsPageListModel(allComments[i]);

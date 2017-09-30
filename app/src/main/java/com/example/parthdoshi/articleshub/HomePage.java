@@ -56,27 +56,29 @@ public class HomePage extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
+
+
         //Checking for internet connection
         if (NetworkStatus.getInstance(this).isOnline())
             setContentView(R.layout.activity_home_page);
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
-        Calligrapher calligrapher = new Calligrapher(HomePage.this);
-        calligrapher.setFont(HomePage.this, FixedVars.FONT_NAME, true);
-
-        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
-        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
-        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
-
-        Log.i("Home Page Token", token);
-
         if (userName.equals("")) {
             Intent myIntent = new Intent(HomePage.this, StartPage.class);
             startActivity(myIntent);
-            //Toast.makeText(HomePage.this, "Welcome again "+userName, Toast.LENGTH_LONG).show();
             finish();
-        }
+        } else
+            Toast.makeText(HomePage.this, "Welcome again " + userName, Toast.LENGTH_LONG).show();
+
+        Calligrapher calligrapher = new Calligrapher(HomePage.this);
+        calligrapher.setFont(HomePage.this, FixedVars.FONT_NAME, true);
+
+        Log.i("Home Page Token", token);
+
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,12 +101,13 @@ public class HomePage extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         hprv = (RecyclerView) findViewById(R.id.home_page_recycler_view);
         layoutManager = new LinearLayoutManager(HomePage.this);
         hprv.setLayoutManager(layoutManager);
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
         swippy = (SwipeRefreshLayout) findViewById(R.id.home_page_swippy);
 
         //Initializing ProgressDialog
@@ -176,12 +179,11 @@ public class HomePage extends AppCompatActivity
                     articleList = new ArticlesListModel[articleDetails.length];
                     for (int i = 0; i < articleDetails.length; i++) {
                         articleList[i] = new ArticlesListModel(articleDetails[i]);
-                    }
 
-                    adapter = new ArticlesListCustomAdapter(HomePage.this, articleList);
-                    hprv.setAdapter(adapter);
+                        adapter = new ArticlesListCustomAdapter(HomePage.this, articleList);
+                        hprv.setAdapter(adapter);
 
-                    Log.i("articleList", hprv.toString());
+                        Log.i("articleList", hprv.toString());
 
                     /*hprv.setOnItemClickListener(
                             new AdapterView.OnItemClickListener() {
@@ -195,6 +197,7 @@ public class HomePage extends AppCompatActivity
                                 }
                             }
                     );*/
+                    }
                 }
                 swippy.setRefreshing(false);
                 try {
