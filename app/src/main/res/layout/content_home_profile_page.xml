@@ -13,25 +13,36 @@
         android:id="@+id/text_profile_page_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="F-name's Profile"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Fname's Profile"
         android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="35sp" />
+        android:textSize="35sp"
+        android:textStyle="bold" />
 
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/text_profile_page_heading">
+        android:layout_below="@+id/text_profile_page_heading"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="25dp"
+        android:alignmentMode="alignBounds"
+        android:textAlignment="center">
 
         <TextView
             android:id="@+id/text_profile_page_emailid_static"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_row="1"
-            android:text="Email ID - "
+            android:text="Email ID"
             android:textSize="20sp" />
 
         <TextView
@@ -39,7 +50,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_row="1"
             android:text="Email ID"
             android:textSize="20sp" />
@@ -49,8 +63,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_row="2"
-            android:text="First Name - "
+            android:text="First Name"
             android:textSize="20sp" />
 
         <TextView
@@ -58,6 +76,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_row="2"
             android:text="First Name"
             android:textSize="20sp" />
@@ -67,8 +89,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_row="3"
-            android:text="Last Name - "
+            android:text="Last Name"
             android:textSize="20sp" />
 
         <TextView
@@ -76,6 +102,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_row="3"
             android:text="Last Name"
             android:textSize="20sp" />
@@ -85,8 +115,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_row="4"
-            android:text="Your Description - "
+            android:text="Your Description"
             android:textSize="20sp" />
 
         <TextView
@@ -94,6 +128,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_row="4"
             android:text="Your Description"
             android:textSize="20sp" />

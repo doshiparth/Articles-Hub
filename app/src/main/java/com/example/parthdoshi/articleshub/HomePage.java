@@ -71,8 +71,8 @@ public class HomePage extends AppCompatActivity
             Intent myIntent = new Intent(HomePage.this, StartPage.class);
             startActivity(myIntent);
             finish();
-        } else
-            Toast.makeText(HomePage.this, "Welcome again " + userName, Toast.LENGTH_LONG).show();
+        } //else
+          //  Toast.makeText(HomePage.this, "Welcome again " + userName, Toast.LENGTH_LONG).show();
 
         Calligrapher calligrapher = new Calligrapher(HomePage.this);
         calligrapher.setFont(HomePage.this, FixedVars.FONT_NAME, true);

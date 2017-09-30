@@ -171,7 +171,7 @@ public class HomeArticlesPage extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.edit_article, menu);
+        getMenuInflater().inflate(R.menu.home_page, menu);
         return true;
     }
 
@@ -183,10 +183,7 @@ public class HomeArticlesPage extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_edit_article) {
-            Intent myIntent = new Intent(HomeArticlesPage.this, EditArticlePage.class);
-            startActivity(myIntent);
-        } else if (id == R.id.action_help) {
+        if (id == R.id.action_help) {
             Intent myIntent = new Intent(HomeArticlesPage.this, HelpPage.class);
             startActivity(myIntent);
         }
