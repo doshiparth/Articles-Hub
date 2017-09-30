@@ -1,7 +1,6 @@
 package com.example.parthdoshi.articleshub;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -47,7 +46,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
     EditText commentText;
     ToggleButton commentButton;
     Button commentDeleteButton;
-    Button articleEditButton;
 
     //For Recycler View
     RecyclerView aprv;
@@ -88,7 +86,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
         articleDate = (TextView) findViewById(R.id.text_article_date);
         articleTag = (TextView) findViewById(R.id.text_article_tag);
         articleContent = (TextView) findViewById(R.id.text_article_content);
-        articleEditButton = (Button) findViewById(R.id.btn_edit_article);
         likeButton = (ToggleButton) findViewById(R.id.btn_like);
         articleLikes = (TextView) findViewById(R.id.total_likes);
         commentText = (EditText) findViewById(R.id.edit_comment);
@@ -110,10 +107,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
         }
 
         final String articleLink = articleData.getString("ArticleLink");
-        Boolean articleAuthor = articleData.getBoolean("ArticleAuthor");
-
-        if (articleAuthor)
-            articleEditButton.setVisibility(View.VISIBLE);
 
         RequestTask<ArticleDetail> rt = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
         rt.execute(articleLink);
@@ -155,7 +148,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
         }
 
         finalAuthorName = "Written by " + article.getAuthor();
-        tagString = tagString.substring(0, tagString.length() - 2) + ".";
+        tagString = tagString.substring(0, tagString.length() - 2);
         finalTags = "Tags : " + tagString;
         finalDate = "Last modified on " + article.getDate();
         articleTitle.setText(article.getTitle());
@@ -260,14 +253,5 @@ public class ArticleDisplayPage extends AppCompatActivity {
 
             Log.i("commentList", aprv.toString());
         }
-
-        articleEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(ArticleDisplayPage.this, EditArticlePage.class);
-                startActivity(myIntent);
-                myIntent.putExtra("ArticleLink", articleLink);
-            }
-        });
     }
 }

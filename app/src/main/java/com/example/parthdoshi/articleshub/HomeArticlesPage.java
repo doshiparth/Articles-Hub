@@ -39,7 +39,7 @@ public class HomeArticlesPage extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
 
-    ArticlesListModel[] articleList;
+    ArticlesEditListModel[] articleList;
 
     //UI References
     TextView heading;
@@ -101,7 +101,6 @@ public class HomeArticlesPage extends AppCompatActivity
             layoutManager = new LinearLayoutManager(HomeArticlesPage.this);
             aprv.setLayoutManager(layoutManager);
 
-
             RequestTask<ShortArticleDetail[]> articlesRequest =
                     new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET,
                             HeaderTools.CONTENT_TYPE_JSON,
@@ -120,17 +119,17 @@ public class HomeArticlesPage extends AppCompatActivity
                 Log.i("Articles List", articleDetails.toString());
                 heading.setVisibility(View.GONE);
                 aprv.setVisibility(View.VISIBLE);
-                articleList = new ArticlesListModel[articleDetails.length];
+                articleList = new ArticlesEditListModel[articleDetails.length];
                 for (int i = 0; i < articleDetails.length; i++) {
-                    articleList[i] = new ArticlesListModel(articleDetails[i]);
+                    articleList[i] = new ArticlesEditListModel(articleDetails[i]);
                 }
                 if (aprv == null)
                     Log.i("aprv", "aprv is null");
                 else
                     Log.i("articleList", aprv.toString());
-                adapter = new ArticlesListCustomAdapter(HomeArticlesPage.this, articleList);
+                adapter = new ArticlesEditListCustomAdapter(HomeArticlesPage.this, articleList);
                 if (adapter.getItemCount() == 0)
-                    Log.i("CustomAdapter", "articlesListCustomAdapter is null");
+                    Log.i("CustomAdapter", "articlesListEditCustomAdapter is null");
                 else
                     Log.i("CustomAdapter", adapter.toString());
 

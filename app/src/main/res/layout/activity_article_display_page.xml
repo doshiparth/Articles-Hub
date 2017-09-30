@@ -251,14 +251,4 @@
             </android.support.v7.widget.CardView>
         </RelativeLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/btn_edit_article"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Edit this article"
-        android:visibility="gone" />
-
-
 </RelativeLayout>
