@@ -141,6 +141,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="All Comments"
                 android:textSize="18sp" />
 
@@ -149,8 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_all_comments"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:scrollbars="vertical"
                 android:textSize="12sp" />
 

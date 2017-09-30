@@ -56,7 +56,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
 
     String token = null, userName = null;
     ShortUserDetail[] totalLikesObj;
-    CommentDetail[] usersCommentsObj;
+    CommentDetail[] articleCommentsObj;
     CommentListModel[] commentList;
 
     String singleUser;
@@ -143,11 +143,11 @@ public class ArticleDisplayPage extends AppCompatActivity {
         RequestTask<CommentDetail[]> getCommentsRequest =
                 new RequestTask<>(CommentDetail[].class, CONTENT_TYPE_JSON);
         getCommentsRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/comments");
-        usersCommentsObj = getCommentsRequest.getObj();
+        articleCommentsObj = getCommentsRequest.getObj();
 
-        for (int i = 0; i < usersCommentsObj.length; i++) {
-            if (usersCommentsObj[i].getUserName().equals(userName)) {
-                usersComment = usersCommentsObj[i].getContent();
+        for (int i = 0; i < articleCommentsObj.length; i++) {
+            if (articleCommentsObj[i].getUserName().equals(userName)) {
+                usersComment = articleCommentsObj[i].getContent();
                 commentText.setText(usersComment);
                 commentText.setEnabled(false);
                 commentButton.setChecked(true);
@@ -249,16 +249,17 @@ public class ArticleDisplayPage extends AppCompatActivity {
             }
         });
 
-        commentList = new CommentListModel[usersCommentsObj.length];
-        for (int i = 0; i < usersCommentsObj.length; i++) {
-            commentList[i] = new CommentListModel(usersCommentsObj[i]);
+        if (!(articleCommentsObj == null)) {
+            commentList = new CommentListModel[articleCommentsObj.length];
+            for (int i = 0; i < articleCommentsObj.length; i++) {
+                commentList[i] = new CommentListModel(articleCommentsObj[i]);
+            }
+            aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
+            adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+            aprv.setAdapter(adapter);
+
+            Log.i("commentList", aprv.toString());
         }
-        aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
-        adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
-        aprv.setAdapter(adapter);
-
-        Log.i("commentList", aprv.toString());
-
 
         articleEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
