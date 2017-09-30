@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
@@ -40,9 +42,12 @@ public class HomeLikeHistoryPage extends AppCompatActivity
     RecyclerView.Adapter adapter;
 
     ArticlesListModel[] articleList;
-    ShortArticleDetail[] articleDetails;
+
+    //UI References
+    TextView heading;
 
     //API Objects
+    ShortArticleDetail[] articleDetails;
 
 
     @Override
@@ -84,6 +89,7 @@ public class HomeLikeHistoryPage extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
 
             //Main code
+            heading = (TextView) findViewById(R.id.txt_no_likes_yet);
             lprv = (RecyclerView) findViewById(R.id.like_page_recycler_view);
             layoutManager = new LinearLayoutManager(HomeLikeHistoryPage.this);
             lprv.setLayoutManager(layoutManager);
@@ -97,9 +103,13 @@ public class HomeLikeHistoryPage extends AppCompatActivity
             getUsersLikes.execute(FixedVars.BASE_URL + "/user/" + userName + "/likes");
             articleDetails = getUsersLikes.getObj();
 
-            if (articleDetails == null)
-                Toast.makeText(HomeLikeHistoryPage.this, "Nothing liked yet", Toast.LENGTH_LONG).show();
-            else {
+            if (articleDetails == null) {
+                heading.setVisibility(View.VISIBLE);
+                lprv.setVisibility(View.GONE);
+                //Toast.makeText(HomeLikeHistoryPage.this, "Nothing liked yet", Toast.LENGTH_LONG).show();
+            } else {
+                heading.setVisibility(View.GONE);
+                lprv.setVisibility(View.VISIBLE);
                 articleList = new ArticlesListModel[articleDetails.length];
                 for (int i = 0; i < articleDetails.length; i++) {
                     articleList[i] = new ArticlesListModel(articleDetails[i]);

@@ -238,7 +238,6 @@ public class HomePage extends AppCompatActivity
             Intent myIntent = new Intent(HomePage.this, HelpPage.class);
             startActivity(myIntent);
         }
-
         return super.onOptionsItemSelected(item);
     }
 

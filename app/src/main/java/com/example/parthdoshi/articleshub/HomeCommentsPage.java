@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
@@ -35,7 +37,7 @@ public class HomeCommentsPage extends AppCompatActivity
     String token = null, userName = null;
     SharedPreferences sharedPref;
 
-    //For Recycler Ciew
+    //For Recycler View
     RecyclerView cprv;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -44,10 +46,8 @@ public class HomeCommentsPage extends AppCompatActivity
     //API Objects
     CommentDetail[] allComments;
 
-    //Global variables
-    String content;
-    String date;
-    String time;
+    //UI References
+    TextView heading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +88,7 @@ public class HomeCommentsPage extends AppCompatActivity
 
 
             //Main Code
+            heading = (TextView) findViewById(R.id.txt_comments_page_heading);
             cprv = (RecyclerView) findViewById(R.id.rv_users_comments);
             layoutManager = new LinearLayoutManager(HomeCommentsPage.this);
             cprv.setLayoutManager(layoutManager);
@@ -103,9 +104,13 @@ public class HomeCommentsPage extends AppCompatActivity
 
             //Printing all the comments of that user
             if (allComments == null) {
-                Toast.makeText(HomeCommentsPage.this, "Sorry!! No comments to display", Toast.LENGTH_LONG).show();
+                heading.setVisibility(View.VISIBLE);
+                cprv.setVisibility(View.GONE);
+                //Toast.makeText(HomeCommentsPage.this, "Sorry!! No comments to display", Toast.LENGTH_LONG).show();
                 Log.i("Check received comments", "No Comments by this user");
             } else {
+                heading.setVisibility(View.GONE);
+                cprv.setVisibility(View.VISIBLE);
                 //Log.i("First comment", allComments[0].getContent());
                 commentList = new CommentsPageListModel[allComments.length];
                 for (int i = 0; i < allComments.length; i++) {
@@ -118,11 +123,6 @@ public class HomeCommentsPage extends AppCompatActivity
                 Log.i("commentList", cprv.toString());
             }
             cprv.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener());
-            for (CommentDetail x : allComments) {
-                content = x.getContent();
-                date = x.getDate();
-                time = x.getTime();
-            }
 
         }
     }

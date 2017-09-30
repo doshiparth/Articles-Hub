@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,14 +34,15 @@ public class HomeArticlesPage extends AppCompatActivity
     NavigationView navigationView;
     Toolbar toolbar = null;
 
-    TextView abcd;
-
     //For Recycler view
     RecyclerView aprv;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
 
     ArticlesListModel[] articleList;
+
+    //UI References
+    TextView heading;
 
     String token = null, userName = null;
     ShortArticleDetail[] articleDetails;
@@ -94,8 +96,7 @@ public class HomeArticlesPage extends AppCompatActivity
 
             //Main code for displaying list of articles created by that user
 
-            abcd = (TextView) findViewById(R.id.articles_page_heading);
-            Log.i("Heading", abcd.toString());
+            heading = (TextView) findViewById(R.id.txt_no_likes_yet);
             aprv = (RecyclerView) findViewById(R.id.articles_page_recycler_view);
             layoutManager = new LinearLayoutManager(HomeArticlesPage.this);
             aprv.setLayoutManager(layoutManager);
@@ -110,11 +111,16 @@ public class HomeArticlesPage extends AppCompatActivity
             articleDetails = articlesRequest.getObj();
             // terminate waiting logic
 
-            if (articleDetails == null)
-                Toast.makeText(HomeArticlesPage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
+            if (articleDetails == null){
+                heading.setVisibility(View.VISIBLE);
+                aprv.setVisibility(View.GONE);
+                //Toast.makeText(HomeArticlesPage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
+            }
             else {
                 //If execution is correct and the list of articles is received, then and only then the following will take place
                 //Log.i("Articles List", articleList.toString());
+                heading.setVisibility(View.GONE);
+                aprv.setVisibility(View.VISIBLE);
                 articleList = new ArticlesListModel[articleDetails.length];
                 for (int i = 0; i < articleDetails.length; i++) {
                     articleList[i] = new ArticlesListModel(articleDetails[i]);
