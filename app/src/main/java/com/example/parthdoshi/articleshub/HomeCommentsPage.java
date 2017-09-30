@@ -88,7 +88,7 @@ public class HomeCommentsPage extends AppCompatActivity
 
 
             //Main Code
-            heading = (TextView) findViewById(R.id.txt_comments_page_heading);
+            heading = (TextView) findViewById(R.id.txt_no_comments_yet);
             cprv = (RecyclerView) findViewById(R.id.rv_users_comments);
             layoutManager = new LinearLayoutManager(HomeCommentsPage.this);
             cprv.setLayoutManager(layoutManager);
@@ -103,7 +103,7 @@ public class HomeCommentsPage extends AppCompatActivity
             // terminate waiting logic
 
             //Printing all the comments of that user
-            if (allComments == null) {
+            if (allComments.length==0) {
                 heading.setVisibility(View.VISIBLE);
                 cprv.setVisibility(View.GONE);
                 //Toast.makeText(HomeCommentsPage.this, "Sorry!! No comments to display", Toast.LENGTH_LONG).show();

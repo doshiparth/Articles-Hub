@@ -103,7 +103,7 @@ public class HomeLikeHistoryPage extends AppCompatActivity
             getUsersLikes.execute(FixedVars.BASE_URL + "/user/" + userName + "/likes");
             articleDetails = getUsersLikes.getObj();
 
-            if (articleDetails == null) {
+            if (articleDetails.length==0) {
                 heading.setVisibility(View.VISIBLE);
                 lprv.setVisibility(View.GONE);
                 //Toast.makeText(HomeLikeHistoryPage.this, "Nothing liked yet", Toast.LENGTH_LONG).show();

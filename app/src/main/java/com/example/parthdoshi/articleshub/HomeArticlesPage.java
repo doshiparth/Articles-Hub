@@ -4,15 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -96,7 +96,7 @@ public class HomeArticlesPage extends AppCompatActivity
 
             //Main code for displaying list of articles created by that user
 
-            heading = (TextView) findViewById(R.id.txt_no_likes_yet);
+            heading = (TextView) findViewById(R.id.txt_no_articles_yet);
             aprv = (RecyclerView) findViewById(R.id.articles_page_recycler_view);
             layoutManager = new LinearLayoutManager(HomeArticlesPage.this);
             aprv.setLayoutManager(layoutManager);
@@ -111,14 +111,13 @@ public class HomeArticlesPage extends AppCompatActivity
             articleDetails = articlesRequest.getObj();
             // terminate waiting logic
 
-            if (articleDetails == null){
+            if (articleDetails.length == 0) {
                 heading.setVisibility(View.VISIBLE);
                 aprv.setVisibility(View.GONE);
                 //Toast.makeText(HomeArticlesPage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
-            }
-            else {
+            } else {
                 //If execution is correct and the list of articles is received, then and only then the following will take place
-                //Log.i("Articles List", articleList.toString());
+                Log.i("Articles List", articleDetails.toString());
                 heading.setVisibility(View.GONE);
                 aprv.setVisibility(View.VISIBLE);
                 articleList = new ArticlesListModel[articleDetails.length];
@@ -137,7 +136,7 @@ public class HomeArticlesPage extends AppCompatActivity
 
                 //try {
 
-                    aprv.setAdapter(adapter);
+                aprv.setAdapter(adapter);
                 //} catch (NullPointerException e) {
                 //    e.printStackTrace();
                 //}
@@ -187,8 +186,7 @@ public class HomeArticlesPage extends AppCompatActivity
         if (id == R.id.action_edit_article) {
             Intent myIntent = new Intent(HomeArticlesPage.this, EditArticlePage.class);
             startActivity(myIntent);
-        }
-        else if (id == R.id.action_help){
+        } else if (id == R.id.action_help) {
             Intent myIntent = new Intent(HomeArticlesPage.this, HelpPage.class);
             startActivity(myIntent);
         }

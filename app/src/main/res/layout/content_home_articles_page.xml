@@ -20,13 +20,13 @@
         android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/txt_no_likes_yet"
+        android:id="@+id/txt_no_articles_yet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="OOPS!!! No articles liked yet"
+        android:text="Looks like you haven't written any articles yet"
         android:textSize="20sp"
         android:visibility="visible" />
 

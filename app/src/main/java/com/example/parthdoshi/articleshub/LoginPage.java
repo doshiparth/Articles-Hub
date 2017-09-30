@@ -93,6 +93,8 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 noTokenErrorText.setError(null);
+                userNameText.setError("");
+                passwordText.setError("");
                 attemptLogin();
             }
         });

@@ -7,16 +7,16 @@
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
     android:padding="5dp"
-    app:cardBackgroundColor="@color/cardview_light_background"
+    app:cardBackgroundColor="#E0E0E0"
     app:cardCornerRadius="0dp"
-    app:cardElevation="5dp">
+    app:cardElevation="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/shadow"
-        android:elevation="15dp">
+        android:elevation="0dp">
 
 
         <TextView
