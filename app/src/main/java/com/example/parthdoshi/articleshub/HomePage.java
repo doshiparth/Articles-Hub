@@ -12,13 +12,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
@@ -26,7 +26,6 @@ import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 
@@ -39,8 +38,13 @@ public class HomePage extends AppCompatActivity
     NavigationView navigationView;
     Toolbar toolbar = null;
 
+    //For recycler view
+    RecyclerView hprv;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.Adapter adapter;
+
     ArticlesListModel[] articleList;
-    ListView hplv;
+
     //String[] selectedTags;
     String token = null, userName = null;
     ShortArticleDetail[] articleDetails;
@@ -94,6 +98,10 @@ public class HomePage extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        hprv = (RecyclerView) findViewById(R.id.home_page_recycler_view);
+        layoutManager = new LinearLayoutManager(HomePage.this);
+        hprv.setLayoutManager(layoutManager);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -169,13 +177,13 @@ public class HomePage extends AppCompatActivity
                     for (int i = 0; i < articleDetails.length; i++) {
                         articleList[i] = new ArticlesListModel(articleDetails[i]);
                     }
-                    hplv = (ListView) findViewById(R.id.home_page_listview);
-                    ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomePage.this, articleList);
-                    hplv.setAdapter(articlesListCustomAdapter);
 
-                    Log.i("articleList", hplv.toString());
+                    adapter = new ArticlesListCustomAdapter(HomePage.this, articleList);
+                    hprv.setAdapter(adapter);
 
-                    hplv.setOnItemClickListener(
+                    Log.i("articleList", hprv.toString());
+
+                    /*hprv.setOnItemClickListener(
                             new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -186,13 +194,13 @@ public class HomePage extends AppCompatActivity
                                     //finish();
                                 }
                             }
-                    );
+                    );*/
                 }
                 swippy.setRefreshing(false);
-                try{
+                try {
                     progressDialog.dismiss();
-                }catch (final Exception e){
-                    Log.i("-----------","Exception in thread");
+                } catch (final Exception e) {
+                    Log.i("-----------", "Exception in thread");
                 }
             }
         });

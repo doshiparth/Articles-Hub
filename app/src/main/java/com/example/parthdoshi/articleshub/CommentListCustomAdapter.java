@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAdapter.MyViewHolder> {
-    private LayoutInflater inflater;
+    //private LayoutInflater inflater;
     private CommentListModel[] commentList;
 
     CommentListCustomAdapter(Context context, CommentListModel[] commentList) {

@@ -1,43 +1,63 @@
 package com.example.parthdoshi.articleshub;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-class ArticlesListCustomAdapter extends ArrayAdapter {
+class ArticlesListCustomAdapter extends RecyclerView.Adapter<ArticlesListCustomAdapter.MyViewHolder> {
+    private Context mContext;
+    private ArticlesListModel[] articleList;
 
-    private String date = "";
-    private String authorName = "";
-
-    ArticlesListCustomAdapter(@NonNull Context context, ArticlesListModel[] ArticleList) {
-        super(context, R.layout.activity_articles_list_custom_row, ArticleList);
-        //this.context = context;
-        //this.ArticleList = resource;
+    ArticlesListCustomAdapter(Context context, ArticlesListModel[] articleList) {
+        this.mContext = context;
+        this.articleList = articleList;
     }
 
-    @NonNull
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        //convertView = inflater.inflate(R.layout.activity_articles_list_custom_row, parent, false);
-        ArticlesListModel currentArticle = (ArticlesListModel) getItem(position);
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_articles_list_custom_row, parent, false);
+    @Override
+    public ArticlesListCustomAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.activity_articles_list_custom_row, parent, false);
+        return (new MyViewHolder(view));
+    }
+
+    @Override
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        holder.articleHeading.setText(articleList[position].getArticleHeading());
+        String authorName = "By " + articleList[position].getArticleAuthorName();
+        holder.articleAuthorName.setText(authorName);
+        String date = "On " + articleList[position].getArticleDate();
+        holder.articleDate.setText(date);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(mContext, ArticleDisplayPage.class);
+                myIntent.putExtra("ArticleLink", articleList[holder.getAdapterPosition()].getShortArticleDetail().getLink());
+                myIntent.putExtra("ArticleAuthor", false);
+                mContext.startActivity(myIntent);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return articleList.length;
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView articleHeading;
+        TextView articleAuthorName;
+        TextView articleDate;
+
+        MyViewHolder(View itemView) {
+            super(itemView);
+            articleHeading = (TextView) itemView.findViewById(R.id.text_article_heading);
+            articleAuthorName = (TextView) itemView.findViewById(R.id.text_article_author_name);
+            articleDate = (TextView) itemView.findViewById(R.id.text_article_card_date);
         }
-        TextView articleHeading = (TextView) convertView.findViewById(R.id.text_article_heading);
-        TextView articleAuthorName = (TextView) convertView.findViewById(R.id.text_article_author_name);
-        TextView articleDate = (TextView) convertView.findViewById(R.id.text_article_card_date);
-        articleHeading.setText(currentArticle.getArticleHeading());
-        authorName = "By " + currentArticle.getArticleAuthorName();
-        articleAuthorName.setText(authorName);
-        date = "On " + currentArticle.getArticleDate();
-        articleDate.setText(date);
-
-        return convertView;
     }
-
 }

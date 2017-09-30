@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,8 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
@@ -33,8 +33,12 @@ public class HomeArticlesPage extends AppCompatActivity
     NavigationView navigationView;
     Toolbar toolbar = null;
 
-    //UI References
-    ListView articlesPageListView;
+    TextView abcd;
+
+    //For Recycler view
+    RecyclerView aprv;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.Adapter adapter;
 
     ArticlesListModel[] articleList;
 
@@ -63,7 +67,7 @@ public class HomeArticlesPage extends AppCompatActivity
         } else {
             //Checking for internet connection
             if (NetworkStatus.getInstance(this).isOnline())
-                setContentView(R.layout.activity_home_profile_page);
+                setContentView(R.layout.activity_home_articles_page);
             else
                 NetworkStatus.getInstance(this).buildDialog(this).show();
 
@@ -90,7 +94,13 @@ public class HomeArticlesPage extends AppCompatActivity
 
             //Main code for displaying list of articles created by that user
 
-            articlesPageListView = (ListView) findViewById(R.id.articles_page_list_view);
+            abcd = (TextView) findViewById(R.id.articles_page_heading);
+            Log.i("Heading", abcd.toString());
+            aprv = (RecyclerView) findViewById(R.id.articles_page_recycler_view);
+            layoutManager = new LinearLayoutManager(HomeArticlesPage.this);
+            aprv.setLayoutManager(layoutManager);
+
+
             RequestTask<ShortArticleDetail[]> articlesRequest =
                     new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET,
                             HeaderTools.CONTENT_TYPE_JSON,
@@ -109,26 +119,24 @@ public class HomeArticlesPage extends AppCompatActivity
                 for (int i = 0; i < articleDetails.length; i++) {
                     articleList[i] = new ArticlesListModel(articleDetails[i]);
                 }
-                if (articlesPageListView == null)
-                    Log.i("aplv", "aplv is null");
+                if (aprv == null)
+                    Log.i("aprv", "aprv is null");
                 else
-                    Log.i("articleList", articlesPageListView.toString());
-                ArticlesListCustomAdapter articlesListCustomAdapter = new ArticlesListCustomAdapter(HomeArticlesPage.this, articleList);
-                if (articlesListCustomAdapter.isEmpty())
+                    Log.i("articleList", aprv.toString());
+                adapter = new ArticlesListCustomAdapter(HomeArticlesPage.this, articleList);
+                if (adapter.getItemCount() == 0)
                     Log.i("CustomAdapter", "articlesListCustomAdapter is null");
                 else
-                    Log.i("CustomAdapter", articlesListCustomAdapter.toString());
+                    Log.i("CustomAdapter", adapter.toString());
 
                 //try {
 
-                    articlesPageListView.setAdapter(articlesListCustomAdapter);
+                    aprv.setAdapter(adapter);
                 //} catch (NullPointerException e) {
                 //    e.printStackTrace();
                 //}
                 //try {
-                    articlesPageListView.setOnItemClickListener(
-                            new AdapterView.OnItemClickListener() {
-                                @Override
+/*                                @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
                                     myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
@@ -140,7 +148,7 @@ public class HomeArticlesPage extends AppCompatActivity
                     );
                 //} catch (NullPointerException e) {
                 //    e.printStackTrace();
-                //}
+*/                //}
             }
         }
     }
