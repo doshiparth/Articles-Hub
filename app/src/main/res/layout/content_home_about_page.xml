@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="About Articles Hub"
-        android:gravity="center"
-        android:focusable="true"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:focusable="true"
         android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:text="About Articles Hub"
         android:textSize="35sp" />
 
     <TextView
@@ -29,10 +29,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/about_page_text"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:text="@string/about_page_description"
         android:textSize="22sp" />
 
@@ -41,25 +41,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/about_page_content"
-        android:text="@string/tag_req_instruction"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:textSize="25sp"/>
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/tag_req_instruction"
+        android:textSize="25sp" />
 
     <EditText
         android:id="@+id/txt_user_search_add_tag"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:hint="Tag Request"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/txt_add_tag_instruction"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:background="@color/divider"
+        android:hint="Tag Request"
         android:inputType="textCapWords|textNoSuggestions" />
 
     <Button
@@ -67,11 +67,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_below="@+id/txt_user_search_add_tag"
-        android:text="Request" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Request"
+        android:theme="@style/TransparentButton" />
 
 </RelativeLayout>

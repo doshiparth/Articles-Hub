@@ -64,7 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/txt_user_search"
             android:layout_alignParentEnd="true"
-            android:text="Search for this tag" />
+            android:text="Search for this tag"
+            android:theme="@style/TransparentButton" />
 
         <TextView
             android:id="@+id/txt_tag_page_suggestions"
@@ -85,10 +86,10 @@
             android:id="@+id/select_page_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbarSize="500dp"
             android:layout_below="@+id/txt_tag_page_suggestions"
             android:divider="#806326"
-            android:dividerHeight="1dp" />
+            android:dividerHeight="1dp"
+            android:scrollbarSize="500dp" />
 
         <!--
         android:divider="#806326"
@@ -125,6 +126,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="goToHome"
-        android:text="@string/select_page_button" />
+        android:text="@string/select_page_button"
+        android:theme="@style/TransparentButton" />
 
 </RelativeLayout>

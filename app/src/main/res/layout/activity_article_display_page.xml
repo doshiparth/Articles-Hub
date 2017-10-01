@@ -118,7 +118,7 @@
                         android:layout_marginTop="30dp"
                         android:text="Article Content"
                         android:textColor="#000"
-                        android:textSize="20sp" />
+                        android:textSize="15sp" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
@@ -148,7 +148,8 @@
                         android:elevation="15dp"
                         android:padding="0dp"
                         android:textOff="Like"
-                        android:textOn="Liked" />
+                        android:textOn="Liked"
+                        android:theme="@style/TransparentButton"/>
 
                     <TextView
                         android:id="@+id/total_likes"
@@ -189,7 +190,8 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:textOff="Submit Comment"
-                        android:textOn="Edit Comment" />
+                        android:textOn="Edit Comment"
+                        android:theme="@style/TransparentButton"/>
 
                     <Button
                         android:id="@+id/btn_delete_comment"
@@ -202,7 +204,8 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:text="Delete Comment"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        android:theme="@style/TransparentButton"/>
 
                 </RelativeLayout>
             </android.support.v7.widget.CardView>

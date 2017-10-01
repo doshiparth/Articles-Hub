@@ -1,6 +1,7 @@
 package com.example.parthdoshi.articleshub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -199,6 +200,32 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 }
             }
         });
+        Log.i("AID----------", Long.toString(article.getArticleId()));
+        articleLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Long aid = article.getArticleId();
+                Intent myIntent = new Intent(ArticleDisplayPage.this, ArticleLikesPage.class);
+                myIntent.putExtra("aid", aid);
+
+                startActivity(myIntent);
+            }
+        });
+
+        if (!(articleCommentsObj == null)) {
+            commentList = new CommentListModel[articleCommentsObj.length];
+            for (int i = 0; i < articleCommentsObj.length; i++) {
+                commentList[i] = new CommentListModel(articleCommentsObj[i]);
+            }
+            aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
+            adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+            aprv.setAdapter(adapter);
+
+            Log.i("commentList", aprv.toString());
+        } else {
+            commentList = null;
+        }
+        Log.i("Comment List's Length", "" + commentList.length);
 
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,7 +234,9 @@ public class ArticleDisplayPage extends AppCompatActivity {
                     if (commentText.getText().toString().isEmpty()) {
                         Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_SHORT).show();
                         commentButton.setChecked(false);
-                    } else {
+                    } else if (token == null)
+                        Toast.makeText(ArticleDisplayPage.this, "You need to be logged in to like this article", Toast.LENGTH_LONG).show();
+                    else {
                         CommentDetail comment = new CommentDetail();
                         comment.setArticleId(article.getArticleId());
                         comment.setUserName(userName);
@@ -219,10 +248,16 @@ public class ArticleDisplayPage extends AppCompatActivity {
                         Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_SHORT).show();
                         commentDeleteButton.setVisibility(View.VISIBLE);
                         commentText.setEnabled(false);
+                        commentList[(commentList.length) + 1] = new CommentListModel(articleCommentsObj[(commentList.length) + 1]);
+                        adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+                        aprv.setAdapter(adapter);
                     }
                 } else {
                     commentText.setEnabled(true);
                     commentDeleteButton.setVisibility(View.VISIBLE);
+                    commentList[commentList.length] = new CommentListModel(articleCommentsObj[commentList.length]);
+                    adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+                    aprv.setAdapter(adapter);
                 }
             }
         });
@@ -239,19 +274,11 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 commentText.setEnabled(true);
                 commentButton.setChecked(true);
                 commentDeleteButton.setVisibility(View.GONE);
+                commentList[commentList.length] = new CommentListModel(articleCommentsObj[commentList.length]);
+                adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+                aprv.setAdapter(adapter);
             }
         });
 
-        if (!(articleCommentsObj == null)) {
-            commentList = new CommentListModel[articleCommentsObj.length];
-            for (int i = 0; i < articleCommentsObj.length; i++) {
-                commentList[i] = new CommentListModel(articleCommentsObj[i]);
-            }
-            aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
-            adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
-            aprv.setAdapter(adapter);
-
-            Log.i("commentList", aprv.toString());
-        }
     }
 }

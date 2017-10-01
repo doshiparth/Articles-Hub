@@ -19,8 +19,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="Modify your tags"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textSize="35sp" />
 
     <RelativeLayout
         android:id="@+id/home_select_page_inner_layout"
@@ -50,7 +49,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:text="Search for this tag" />
+            android:text="Search for this tag"
+            android:theme="@style/TransparentButton" />
 
         <TextView
             android:id="@+id/manage_tag_page_suggestions"
@@ -85,6 +85,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="goToHome"
-        android:text="@string/select_page_button" />
+        android:text="@string/select_page_button"
+        android:theme="@style/TransparentButton" />
 
 </RelativeLayout>

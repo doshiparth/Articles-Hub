@@ -115,7 +115,16 @@
         <activity
             android:name=".HomeLikeHistoryPage"
             android:label="@string/title_activity_home_like_history_page"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ArticleLikesPage"
+            android:label="@string/title_activity_article_likes_page"
+            android:parentActivityName=".ArticleDisplayPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parthdoshi.articleshub.ArticleDisplayPage" />
+        </activity>
     </application>
 
 </manifest>

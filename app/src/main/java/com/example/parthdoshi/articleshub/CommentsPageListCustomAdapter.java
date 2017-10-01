@@ -1,20 +1,26 @@
 package com.example.parthdoshi.articleshub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
-public class CommentsPageListCustomAdapter extends RecyclerView.Adapter<CommentsPageListCustomAdapter.MyViewHolder> {
+class CommentsPageListCustomAdapter extends RecyclerView.Adapter<CommentsPageListCustomAdapter.MyViewHolder> {
+    Context context;
     private LayoutInflater inflater;
     private CommentsPageListModel[] commentList;
+    private String submittedTxt;
+    private String titleTxt;
 
     CommentsPageListCustomAdapter(Context context, CommentsPageListModel[] commentList) {
         //inflater = LayoutInflater.from(context);
         this.commentList = commentList;
+        this.context = context;
     }
 
     @Override
@@ -25,10 +31,19 @@ public class CommentsPageListCustomAdapter extends RecyclerView.Adapter<Comments
     }
 
     @Override
-    public void onBindViewHolder(CommentsPageListCustomAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(CommentsPageListCustomAdapter.MyViewHolder holder, final int position) {
         holder.commentContent.setText(commentList[position].getUsersComment());
-        holder.commentDate.setText(commentList[position].getCommentDate());
-        holder.commentTime.setText(commentList[position].getCommentTime());
+        submittedTxt = "Submitted On " + commentList[position].getCommentDate() + " at " + commentList[position].getCommentTime();
+        holder.commentDate.setText(submittedTxt);
+
+        holder.gotoArticle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(context, ArticleDisplayPage.class);
+                myIntent.putExtra("ArticleLink", commentList[position].getCommentArticleLink().getUrl());
+                context.startActivity(myIntent);
+            }
+        });
     }
 
     @Override
@@ -39,13 +54,13 @@ public class CommentsPageListCustomAdapter extends RecyclerView.Adapter<Comments
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView commentContent;
         TextView commentDate;
-        TextView commentTime;
+        Button gotoArticle;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
             commentContent = (TextView) itemView.findViewById(R.id.txt_comments_page_content);
             commentDate = (TextView) itemView.findViewById(R.id.txt_comments_page_date);
-            commentTime = (TextView) itemView.findViewById(R.id.txt_comments_page_time);
+            gotoArticle = (Button) itemView.findViewById(R.id.btn_gotoarticle);
         }
     }
 }

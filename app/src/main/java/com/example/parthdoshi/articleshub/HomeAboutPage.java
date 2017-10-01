@@ -78,19 +78,17 @@ public class HomeAboutPage extends AppCompatActivity
                 String usersTag = newTagSearchBox.getText().toString().trim().toLowerCase();
                 RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
                 tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
-                // initiate waiting logic
                 TagDetail tag = tagRead.getObj();
-                // terminate waiting logic
                 HttpStatus status = tagRead.getHttpStatus();
 
                 if (status == HttpStatus.OK && tag != null) {
                     //To check if the tag user has selected is already present in his selection list
                     Toast.makeText(HomeAboutPage.this, "This tag is already present in the database.\n" +
-                            "Use it directly or request for some other tag that is not present in our database",
+                            "Use it directly or request for some other tag that is not currently available",
                             Toast.LENGTH_LONG).show();
                 } else
                     Toast.makeText(HomeAboutPage.this, "The request for adding "+usersTag+" into our database has been " +
-                            "successfully registered.\nWe'll verify it and add it to our database as soon as possible",
+                            "successfully registered.\nWe'll verify it and add it as soon as possible",
                             Toast.LENGTH_LONG).show();
                 newTagSearchBox.setText("");
             }

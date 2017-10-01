@@ -63,7 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/text_edit_article_heading"
-            android:text="Edit"/>
+            android:text="Edit"
+            android:theme="@style/TransparentButton" />
 
     </RelativeLayout>
 

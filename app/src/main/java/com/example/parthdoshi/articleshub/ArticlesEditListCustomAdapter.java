@@ -57,7 +57,6 @@ class ArticlesEditListCustomAdapter extends RecyclerView.Adapter<ArticlesEditLis
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView articleHeading;
-        //TextView articleAuthorName;
         TextView articleDate;
         Button editArticle;
 

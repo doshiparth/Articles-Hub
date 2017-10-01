@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/startPageLayout"
     android:layout_width="match_parent"
@@ -47,7 +46,7 @@
         android:layout_marginStart="60dp"
         android:onClick="loginOnClick"
         android:text="@string/startPageLoginButton"
-        android:theme="@style/PinkButton" />
+        android:theme="@style/TransparentButton" />
 
     <Button
         android:id="@+id/startPageSignupButton"
@@ -59,7 +58,7 @@
         android:layout_marginEnd="60dp"
         android:onClick="signinOnClick"
         android:text="@string/startPageSignupButton"
-        android:theme="@style/PinkButton" />
+        android:theme="@style/TransparentButton" />
 
     <Button
         android:id="@+id/button"
@@ -68,20 +67,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/startPageLoginButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="70dp"
         android:onClick="skipOnClick"
         android:text="Go straight to the Home Page"
-        android:theme="@style/PinkButton" />
-<!--
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        style="@style/AVLoadingIndicatorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:indicatorColor="your color"
-        android:layout_below="@id/button"
-        android:layout_marginStart="150dp"
-        app:indicatorName="BallPulseIndicator" />
--->
+        android:theme="@style/TransparentButton" />
+    <!--
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/avi"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:indicatorColor="your color"
+            android:layout_below="@id/button"
+            android:layout_marginStart="150dp"
+            app:indicatorName="BallPulseIndicator" />
+    -->
 </RelativeLayout>

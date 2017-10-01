@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,7 +48,8 @@
                 android:layout_below="@+id/txt_edit_article_title"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="30dp"
-                android:text="Search for this tag" />
+                android:text="Search for this tag"
+                android:theme="@style/TransparentButton" />
 
             <TextView
                 android:id="@+id/txt_edit_article_suggestions"
@@ -59,8 +59,8 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="25dp"
-                android:textSize="15sp"
-                android:text="@string/string_tag_page_suggestions" />
+                android:text="@string/string_tag_page_suggestions"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txt_edit_article_selected_tags"
@@ -95,7 +95,8 @@
                 android:layout_below="@id/txt_edit_article_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="30dp"
-                android:text="Save Changes" />
+                android:text="Save Changes"
+                android:theme="@style/TransparentButton" />
 
             <Button
                 android:id="@+id/delete_article_button"
@@ -105,7 +106,8 @@
                 android:layout_below="@id/txt_edit_article_content"
                 android:layout_marginEnd="25dp"
                 android:layout_marginTop="30dp"
-                android:text="Delete this article" />
+                android:text="Delete this article"
+                android:theme="@style/TransparentButton" />
 
         </RelativeLayout>
     </ScrollView>

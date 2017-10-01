@@ -138,7 +138,7 @@ public class HomePage extends AppCompatActivity
             swippy.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    swippy.setColorSchemeResources(R.color.orange, R.color.indigo, R.color.pink,R.color.icons,
+                    swippy.setColorSchemeResources(R.color.orange, R.color.indigo, R.color.pink, R.color.icons,
                             R.color.green, R.color.blue);
                     loadHomePage();
                 }
@@ -175,7 +175,7 @@ public class HomePage extends AppCompatActivity
 
                 if (articleDetails == null)
                     Toast.makeText(HomePage.this, "Error!!! No articles to display \n Please check your internet connection\n" +
-                            "Or check your selected tags. You must have atleast one tag selected to view related articles",
+                                    "Or check your selected tags. You must have atleast one tag selected to view related articles",
                             Toast.LENGTH_LONG).show();
                 else {
                     //If execution is correct and the list of articles is received, then and only then the following will take place

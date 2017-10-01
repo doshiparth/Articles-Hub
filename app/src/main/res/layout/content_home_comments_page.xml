@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="5dp"
         android:gravity="center"
-        android:text="Your Comments"
+        android:text="Manage Your Comments"
         android:textSize="35sp" />
 
     <TextView
