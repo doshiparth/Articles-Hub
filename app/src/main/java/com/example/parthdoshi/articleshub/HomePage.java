@@ -66,7 +66,7 @@ public class HomePage extends AppCompatActivity
 
             setContentView(R.layout.activity_home_page);
 
-            if (userName.equals("")) {
+            if (userName.equals("") && !FixedVars.SENTFROMSTARTPAGE) {
                 Intent myIntent = new Intent(HomePage.this, StartPage.class);
                 startActivity(myIntent);
                 finish();
@@ -174,7 +174,9 @@ public class HomePage extends AppCompatActivity
                 }
 
                 if (articleDetails == null)
-                    Toast.makeText(HomePage.this, "Error!!! No articles to display \n Please check your internet connection", Toast.LENGTH_LONG).show();
+                    Toast.makeText(HomePage.this, "Error!!! No articles to display \n Please check your internet connection\n" +
+                            "Or check your selected tags. You must have atleast one tag selected to view related articles",
+                            Toast.LENGTH_LONG).show();
                 else {
                     //If execution is correct and the list of articles is received, then and only then the following will take place
                     articleList = new ArticlesListModel[articleDetails.length];

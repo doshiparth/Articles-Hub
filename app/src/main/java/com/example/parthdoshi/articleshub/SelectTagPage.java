@@ -4,25 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-//import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.neel.articleshubapi.restapi.beans.TagDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
@@ -31,14 +31,16 @@ import com.neel.articleshubapi.restapi.request.RequestTask;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.anwarshahriar.calligrapher.Calligrapher;
 
 import static com.neel.articleshubapi.restapi.request.HeaderTools.CONTENT_TYPE_JSON;
 
-
 public class SelectTagPage extends AppCompatActivity {
     //ListView lv_select;
-    ListView lv_selected;
+    SwipeMenuListView lv_selected;
     //MaterialSearchView searchView;
     EditText userSearchText;
     Button userSearchButton;
@@ -106,10 +108,88 @@ public class SelectTagPage extends AppCompatActivity {
         }
         */
 
-        lv_selected = (ListView) findViewById(R.id.select_page_listview);
+        lv_selected = (SwipeMenuListView) findViewById(R.id.select_page_listview);
+        lv_selected.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        lv_selected.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
         //lv_selected.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+        final ListDataAdapter selectedAdapter = new ListDataAdapter();
         lv_selected.setAdapter(selectedAdapter);
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // Create different menus depending on the view type
+                SwipeMenuItem removeItem = new SwipeMenuItem(getApplicationContext());
+                // set item background
+                removeItem.setBackground(new ColorDrawable(Color.rgb(0x30, 0xB1, 0xF5)));
+                // set item width
+                removeItem.setWidth(dp2px(90));
+                // set a icon
+                removeItem.setIcon(R.drawable.ic_action_discard);
+                // add to menu
+                menu.addMenuItem(removeItem);
+                // create "delete" item
+                SwipeMenuItem cancelItem = new SwipeMenuItem(getApplicationContext());
+                // set item background
+                cancelItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+                // set item width
+                cancelItem.setWidth(dp2px(90));
+                // set a icon
+                cancelItem.setIcon(R.drawable.ic_action_cancel);
+                // add to menu
+                menu.addMenuItem(cancelItem);
+            }
+        };
+
+        // set creator
+        lv_selected.setMenuCreator(creator);
+
+        lv_selected.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+
+                switch (index) {
+                    case 0:
+                        //Remove the selected tag from the list
+                        Toast.makeText(SelectTagPage.this, "" + listSelected.get(position) + " deleted", Toast.LENGTH_LONG).show();
+                        listSelected.remove(listSelected.get(position));
+                        lv_selected.setAdapter(selectedAdapter);
+                        break;
+                    case 1:
+                        lv_selected.setAdapter(selectedAdapter);
+                        //Cancel action
+                        //Toast.makeText(SelectTagPage.this, "Tag deleted", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+
+        lv_selected.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+            @Override
+            public void onMenuOpen(int position) {
+
+            }
+
+            @Override
+            public void onMenuClose(int position) {
+
+            }
+        });
+
+        lv_selected.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
+            @Override
+            public void onSwipeStart(int position) {
+
+            }
+
+            @Override
+            public void onSwipeEnd(int position) {
+
+            }
+        });
+
 
         userSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +224,7 @@ public class SelectTagPage extends AppCompatActivity {
                     Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
             }
         });
-
+/*
         lv_selected.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -156,7 +236,7 @@ public class SelectTagPage extends AppCompatActivity {
                 lv_selected.setAdapter(selectedAdapter);
             }
         });
-
+*/
 
         //lv_select = (ListView)findViewById(R.id.select_page_display_listview);
         //lv_select.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -292,6 +372,10 @@ public class SelectTagPage extends AppCompatActivity {
         return true;
     }
 
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
+    }
 
     public void goToHome(View v) {
         //Converting ArrayList to list of strings
@@ -331,6 +415,45 @@ public class SelectTagPage extends AppCompatActivity {
             finish();
         } else {
             Toast.makeText(SelectTagPage.this, "You need to select atleast one tag to go ahead", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class ListDataAdapter extends BaseAdapter {
+
+        ViewHolder holder;
+
+        @Override
+        public int getCount() {
+            return listSelected.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = getLayoutInflater().inflate(R.layout.list_item_tags, parent);
+                holder.mTextview = (TextView) convertView.findViewById(R.id.txt_list_tag_name);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.mTextview.setText(listSelected.get(position));
+            return convertView;
+        }
+
+        class ViewHolder {
+            TextView mTextview;
         }
     }
 }

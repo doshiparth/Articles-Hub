@@ -39,20 +39,17 @@ public class StartPage extends AppCompatActivity {
         Intent myIntent = new Intent(StartPage.this, SignupPage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);
-        finish();
     }
 
     public void loginOnClick(View v2) {
         Intent myIntent = new Intent(StartPage.this, LoginPage.class);
         //myIntent.putExtra("key", value); //Optional parameters
         StartPage.this.startActivity(myIntent);
-        finish();
     }
 
     public void skipOnClick(View v3) {
         Intent myIntent = new Intent(StartPage.this, HomePage.class);
-        //myIntent.putExtra("key", value); //Optional parameters
+        FixedVars.SENTFROMSTARTPAGE = true;
         StartPage.this.startActivity(myIntent);
-        finish();
     }
 }

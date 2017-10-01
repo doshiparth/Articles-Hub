@@ -26,4 +26,5 @@ public class FixedVars {
 
     public static final String FONT_NAME = "ExoRegular.ttf";
 
+    public static boolean SENTFROMSTARTPAGE = false ;
 }
