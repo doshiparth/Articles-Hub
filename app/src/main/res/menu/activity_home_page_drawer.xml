@@ -28,7 +28,7 @@
                 android:title="Manage Your Tags" />
             <item
                 android:id="@+id/nav_home_comments_page"
-                android:icon="@drawable/ic_menu_comments1"
+                android:icon="@drawable/ic_menu_comments"
                 android:title="Manage Your Comments" />
             <item
                 android:id="@+id/nav_home_like_history_page"

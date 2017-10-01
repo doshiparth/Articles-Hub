@@ -174,11 +174,6 @@ public class EditArticlePage extends AppCompatActivity {
                 //splits the string based on string
                 content = newArticleContentText.getText().toString().split("\\r?\\n");
 
-                int i = 0;
-                while (!(content[i].isEmpty())) {
-                    contentList.add(content[i]);
-                    i++;
-                }
 
                 if (title.equals(""))
                     newArticleTitleText.setError(getString(R.string.error_field_required));
