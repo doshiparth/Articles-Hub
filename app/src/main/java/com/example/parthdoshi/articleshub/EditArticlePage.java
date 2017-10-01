@@ -56,7 +56,6 @@ public class EditArticlePage extends AppCompatActivity {
     String tagArray[];
     String contentArray[];
     Set<String> newTags = new HashSet<>();
-    ArrayList<String> contentList = new ArrayList<>();
 
     String[] content = null;
 
@@ -113,8 +112,9 @@ public class EditArticlePage extends AppCompatActivity {
         Iterator<String> itr1 = articleDetail.getTag().iterator();
         for (int i = 0; i < tagArray.length; i++)
             tagArray[i] = itr1.next();
-        for (String aTagArray : tagArray){
+        for (String aTagArray : tagArray) {
             listAdded.add(aTagArray);
+            newTags.add(aTagArray);
             singleTag += aTagArray + ", ";
         }
 
@@ -174,6 +174,15 @@ public class EditArticlePage extends AppCompatActivity {
                 //splits the string based on string
                 content = newArticleContentText.getText().toString().split("\\r?\\n");
 
+                ArrayList<String> contentList = new ArrayList<>();
+                int i = 0;
+                while (i < content.length) {
+                    contentList.add(content[i]);
+                    i++;
+                }
+                if (contentList.isEmpty()) {
+                    Log.i("ContentList", "content list is empty");
+                }
 
                 if (title.equals(""))
                     newArticleTitleText.setError(getString(R.string.error_field_required));
@@ -196,6 +205,10 @@ public class EditArticlePage extends AppCompatActivity {
                             HeaderTools.makeAuth(token));
                     editArticleRequest.execute(FixedVars.BASE_URL + "/article/" + articleDetail.getArticleId());
                     editArticleRequest.getObj();
+
+                    Intent myIntent = new Intent(EditArticlePage.this, HomeArticlesPage.class);
+                    startActivity(myIntent);
+                    finish();
                 }
             }
         });

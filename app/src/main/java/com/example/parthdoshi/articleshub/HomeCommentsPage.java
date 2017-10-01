@@ -153,7 +153,8 @@ public class HomeCommentsPage extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_help) {
-            return true;
+            Intent myIntent = new Intent(HomeCommentsPage.this, HelpPage.class);
+            startActivity(myIntent);
         }
 
         return super.onOptionsItemSelected(item);

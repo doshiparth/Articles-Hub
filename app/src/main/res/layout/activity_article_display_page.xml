@@ -47,7 +47,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:background="@drawable/shadow"
-                    android:elevation="0dp">
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/text_author_name"
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@drawable/shadow"
-                    android:elevation="0dp">
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/text_article_content"
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@drawable/shadow"
-                    android:elevation="0dp">
+                    android:elevation="5dp">
 
                     <ToggleButton
                         android:id="@+id/btn_like"
@@ -220,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@drawable/shadow"
-                    android:elevation="0dp">
+                    android:elevation="5dp">
 
                     <TextView
                         android:id="@+id/txt_all_comments"
