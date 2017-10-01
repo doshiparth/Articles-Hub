@@ -1,18 +1,20 @@
 package com.example.parthdoshi.articleshub;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAdapter.MyViewHolder> {
-    //private LayoutInflater inflater;
+    Context context;
     private CommentListModel[] commentList;
 
     CommentListCustomAdapter(Context context, CommentListModel[] commentList) {
-        //inflater = LayoutInflater.from(context);
+        this.context = context;
         this.commentList = commentList;
     }
 
@@ -28,6 +30,13 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
         holder.commentContent.setText(commentList[position].getUsersComment());
         holder.commentUsername.setText(commentList[position].getUsersName());
         holder.commentDate.setText(commentList[position].getCommentDate());
+        holder.editComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(context, EditCommentPage.class);
+                context.startActivity(myIntent);
+            }
+        });
     }
 
     @Override
@@ -40,19 +49,14 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
         TextView commentContent;
         TextView commentUsername;
         TextView commentDate;
+        Button editComment;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             commentContent = (TextView) itemView.findViewById(R.id.txt_custom_row_comment);
             commentUsername = (TextView) itemView.findViewById(R.id.txt_custom_row_username);
             commentDate = (TextView) itemView.findViewById(R.id.txt_custom_row_date);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
+            editComment =(Button) itemView.findViewById(R.id.btn_edit_comment);
         }
     }
 }

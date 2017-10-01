@@ -67,5 +67,6 @@
     <string name="help_page_a4">A. Currently the tags available for selection ar as follows:\nGame, Tutorial, Study, Fashion,
     Story, News, Movie, AI, Future, Book, Programming, Smartphone, Philosophy and Science.</string>
     <string name="title_activity_article_likes_page">ArticleLikesPage</string>
+    <string name="title_activity_edit_comment_page">EditCommentPage</string>
 
 </resources>

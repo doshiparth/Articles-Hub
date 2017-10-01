@@ -3,24 +3,22 @@ package com.example.parthdoshi.articleshub;
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
 
 class CommentListModel {
-    //String usersComment;
-    //String usersName;
-    //String commentDate;
+
     private CommentDetail commentDetail;
 
-    public CommentListModel(CommentDetail commentDetail){
+    CommentListModel(CommentDetail commentDetail){
         this.commentDetail = commentDetail;
     }
 
-    public String getUsersComment() {
+    String getUsersComment() {
         return commentDetail.getContent();
     }
 
-    public String getUsersName() {
+    String getUsersName() {
         return commentDetail.getUserName();
     }
 
-    public String getCommentDate() {
+    String getCommentDate() {
         return commentDetail.getDate();
     }
 }

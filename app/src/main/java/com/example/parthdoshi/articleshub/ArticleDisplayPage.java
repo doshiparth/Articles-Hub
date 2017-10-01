@@ -200,15 +200,19 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 }
             }
         });
+
         Log.i("AID----------", Long.toString(article.getArticleId()));
+
         articleLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Long aid = article.getArticleId();
-                Intent myIntent = new Intent(ArticleDisplayPage.this, ArticleLikesPage.class);
-                myIntent.putExtra("aid", aid);
+                if (totalLikesObj.length > 0) {
+                    Long aid = article.getArticleId();
+                    Intent myIntent = new Intent(ArticleDisplayPage.this, ArticleLikesPage.class);
+                    myIntent.putExtra("aid", aid);
 
-                startActivity(myIntent);
+                    startActivity(myIntent);
+                }
             }
         });
 
@@ -248,16 +252,16 @@ public class ArticleDisplayPage extends AppCompatActivity {
                         Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_SHORT).show();
                         commentDeleteButton.setVisibility(View.VISIBLE);
                         commentText.setEnabled(false);
-                        commentList[(commentList.length) + 1] = new CommentListModel(articleCommentsObj[(commentList.length) + 1]);
-                        adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
-                        aprv.setAdapter(adapter);
+                        //commentList[(commentList.length) + 1] = new CommentListModel(articleCommentsObj[(commentList.length) + 1]);
+                        //adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+                        //aprv.setAdapter(adapter);
                     }
                 } else {
                     commentText.setEnabled(true);
                     commentDeleteButton.setVisibility(View.VISIBLE);
-                    commentList[commentList.length] = new CommentListModel(articleCommentsObj[commentList.length]);
-                    adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
-                    aprv.setAdapter(adapter);
+                    //commentList[commentList.length] = new CommentListModel(articleCommentsObj[commentList.length]);
+                    //adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+                    //aprv.setAdapter(adapter);
                 }
             }
         });
@@ -274,9 +278,9 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 commentText.setEnabled(true);
                 commentButton.setChecked(true);
                 commentDeleteButton.setVisibility(View.GONE);
-                commentList[commentList.length] = new CommentListModel(articleCommentsObj[commentList.length]);
-                adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
-                aprv.setAdapter(adapter);
+                //commentList[commentList.length] = new CommentListModel(articleCommentsObj[commentList.length]);
+                //adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+                //aprv.setAdapter(adapter);
             }
         });
 

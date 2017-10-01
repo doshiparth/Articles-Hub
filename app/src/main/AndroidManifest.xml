@@ -125,6 +125,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.parthdoshi.articleshub.ArticleDisplayPage" />
         </activity>
+        <activity
+            android:name=".EditCommentPage"
+            android:label="@string/title_activity_edit_comment_page"
+            android:parentActivityName=".ArticleDisplayPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.parthdoshi.articleshub.ArticleDisplayPage" />
+        </activity>
     </application>
 
 </manifest>
