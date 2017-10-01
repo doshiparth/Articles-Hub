@@ -108,9 +108,9 @@ public class ArticleDisplayPage extends AppCompatActivity {
 
         final String articleLink = articleData.getString("ArticleLink");
 
-        RequestTask<ArticleDetail> rt = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
-        rt.execute(articleLink);
-        final ArticleDetail article = rt.getObj();
+        RequestTask<ArticleDetail> getArticleData = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
+        getArticleData.execute(articleLink);
+        final ArticleDetail article = getArticleData.getObj();
 
         tagArray = new String[article.getTag().size()];
         Iterator<String> itr1 = article.getTag().iterator();

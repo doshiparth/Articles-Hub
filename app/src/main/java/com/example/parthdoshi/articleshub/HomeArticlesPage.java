@@ -144,7 +144,6 @@ public class HomeArticlesPage extends AppCompatActivity
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
                                     myIntent.putExtra("ArticleLink", articleList[i].getShortArticleDetail().getLink());
-                                    myIntent.putExtra("ArticleAuthor", true);
                                     startActivity(myIntent);
                                     //finish();
                                 }

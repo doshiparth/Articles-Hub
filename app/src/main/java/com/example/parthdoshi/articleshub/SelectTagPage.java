@@ -139,7 +139,7 @@ public class SelectTagPage extends AppCompatActivity {
                         NO_SELECTION_FLAG = false;
                     }
                 } else if (usersTag.equals(""))
-                    Toast.makeText(SelectTagPage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SelectTagPage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
             }

@@ -1,5 +1,6 @@
 package com.example.parthdoshi.articleshub;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -36,15 +38,14 @@ public class EditArticlePage extends AppCompatActivity {
     EditText newArticleContentText;
     TextView newArticleTagsText;
     Button saveChangesButton;
-
+    Button deleteArticleButton;
     //For Search tag purposes
     EditText userSearchText;
     Button userSearchButton;
-    Button deleteArticleButton;
+
     List<String> listAdded = new ArrayList<>();
 
-    ArticleDetail articleOld;
-    ArticleDetail articleNew;
+    ArticleDetail articleDetail;
 
     Boolean NO_SELECTION_FLAG = true;
     Boolean TAG_ALREADY_PRESENT = false;
@@ -52,13 +53,14 @@ public class EditArticlePage extends AppCompatActivity {
     //Local variables to send through the REST Api
     String title = "";
     String singleTag = "";
+    String tagArray[];
+    String contentArray[];
     Set<String> newTags = new HashSet<>();
     ArrayList<String> contentList = new ArrayList<>();
 
-    String[] oldContent = null;
-    String[] newContent = null;
+    String[] content = null;
 
-    String txt = "";
+    String contentString = "";
 
     SharedPreferences sharedPref;
     String token = null;
@@ -77,6 +79,11 @@ public class EditArticlePage extends AppCompatActivity {
         else
             NetworkStatus.getInstance(this).buildDialog(this).show();
 
+        //Getting data from SharedPreferences
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
+
         Bundle articleData = getIntent().getExtras();
         if (articleData == null) {
             return;
@@ -84,37 +91,46 @@ public class EditArticlePage extends AppCompatActivity {
 
         final String articleLink = articleData.getString("ArticleLink");
 
+        RequestTask<ArticleDetail> getArticleData = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
+        getArticleData.execute(articleLink);
+        articleDetail = getArticleData.getObj();
 
-        RequestTask<ArticleDetail> getArticleRequest = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
-        getArticleRequest.execute(articleLink);
-
-        articleOld = getArticleRequest.getObj();
-
-        articleNew = new ArticleDetail();
+        Log.i("----------ArticleDetail", articleDetail.toString());
 
         newArticleTitleText = (EditText) findViewById(R.id.txt_edit_article_title);
-        newArticleContentText = (EditText) findViewById(R.id.txt_edit_article_content);
-        newArticleTagsText = (TextView) findViewById(R.id.txt_edit_article_selected_tags);
-        saveChangesButton = (Button) findViewById(R.id.btn_edit_article);
-        deleteArticleButton = (Button) findViewById(R.id.delete_article_button);
-
         userSearchText = (EditText) findViewById(R.id.edit_txt_user_search);
         userSearchButton = (Button) findViewById(R.id.edit_btn_user_search);
+        newArticleTagsText = (TextView) findViewById(R.id.txt_edit_article_selected_tags);
+        newArticleContentText = (EditText) findViewById(R.id.txt_edit_article_content);
+        saveChangesButton = (Button) findViewById(R.id.save_edited_changes_button);
+        deleteArticleButton = (Button) findViewById(R.id.delete_article_button);
 
         //Setting the old data into the empty fields
-        newArticleTitleText.setText(articleOld.getTitle());
+        newArticleTitleText.setText(articleDetail.getTitle());
+        Log.i("----------Title", articleDetail.getTitle());
 
-        while (!(articleOld.getTag().iterator().next().isEmpty())) {
-            newTags.add(articleOld.getTag().iterator().next());
-            singleTag = singleTag + articleOld.getTag().iterator().next() + ",";
+        tagArray = new String[articleDetail.getTag().size()];
+        Iterator<String> itr1 = articleDetail.getTag().iterator();
+        for (int i = 0; i < tagArray.length; i++)
+            tagArray[i] = itr1.next();
+        for (String aTagArray : tagArray){
+            listAdded.add(aTagArray);
+            singleTag += aTagArray + ", ";
         }
+
         newArticleTagsText.setText(singleTag);
+        Log.i("----------Tag", singleTag);
 
-        oldContent = (String[]) articleOld.getContent().toArray();
-        for (int i = 0; !(oldContent[i].equals("")); i++) {
-            txt += oldContent[i] + "\n";
-        }
-        newArticleContentText.setText(txt);
+
+        contentArray = new String[articleDetail.getContent().size()];
+        Iterator<String> itr2 = articleDetail.getContent().iterator();
+        for (int i = 0; i < contentArray.length; i++)
+            contentArray[i] = itr2.next();
+        for (String aContentArray : contentArray)
+            contentString += aContentArray + "\n";
+
+        newArticleContentText.setText(contentString);
+        Log.i("----------Content", contentString);
 
         userSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,9 +138,7 @@ public class EditArticlePage extends AppCompatActivity {
                 String usersTag = userSearchText.getText().toString().trim().toLowerCase();
                 RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
                 tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
-                // initiate waiting logic
                 TagDetail tag = tagRead.getObj();
-                // terminate waiting logic
                 HttpStatus status = tagRead.getHttpStatus();
 
                 if (status == HttpStatus.OK && tag != null) {
@@ -145,7 +159,7 @@ public class EditArticlePage extends AppCompatActivity {
                         NO_SELECTION_FLAG = false;
                     }
                 } else if (usersTag.equals(""))
-                    Toast.makeText(EditArticlePage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditArticlePage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(EditArticlePage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
             }
@@ -158,16 +172,13 @@ public class EditArticlePage extends AppCompatActivity {
                 //Storing data into local variables
                 title = newArticleTitleText.getText().toString();
                 //splits the string based on string
-                newContent = newArticleContentText.getText().toString().split("\n");
+                content = newArticleContentText.getText().toString().split("\\r?\\n");
 
                 int i = 0;
-                while (!(newContent[i].isEmpty())) {
-                    contentList.add(newContent[i]);
+                while (!(content[i].isEmpty())) {
+                    contentList.add(content[i]);
                     i++;
                 }
-
-                Log.i("author", "author old " + articleOld.getAuthor());
-                Log.i("article id", "author ID old " + articleOld.getArticleId());
 
                 if (title.equals(""))
                     newArticleTitleText.setError(getString(R.string.error_field_required));
@@ -176,19 +187,19 @@ public class EditArticlePage extends AppCompatActivity {
                 else if (contentList.isEmpty())
                     newArticleContentText.setError(getString(R.string.error_field_required));
                 else {
-                    articleNew.setAuthor(articleOld.getAuthor());
-                    articleNew.setTitle(title);
-                    articleNew.setArticleId(articleOld.getArticleId());
-                    articleNew.setDate(articleOld.getDate());
-                    articleNew.setTag(newTags);
-                    articleNew.setContent(contentList);
+                    articleDetail.setAuthor(articleDetail.getAuthor());
+                    articleDetail.setTitle(title);
+                    articleDetail.setArticleId(articleDetail.getArticleId());
+                    articleDetail.setDate(articleDetail.getDate());
+                    articleDetail.setTag(newTags);
+                    articleDetail.setContent(contentList);
 
-                    Log.i("new article", "new " + articleNew.getAuthor());
+                    Log.i("new article", "new " + articleDetail.getAuthor());
 
                     AddRequestTask<String, ArticleDetail> editArticleRequest = new AddRequestTask<String, ArticleDetail>(String.class,
-                            articleNew, HttpMethod.PUT, HeaderTools.CONTENT_TYPE_JSON,
+                            articleDetail, HttpMethod.PUT, HeaderTools.CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
-                    editArticleRequest.execute(FixedVars.BASE_URL + "/article/" + articleNew.getArticleId());
+                    editArticleRequest.execute(FixedVars.BASE_URL + "/article/" + articleDetail.getArticleId());
                     editArticleRequest.getObj();
                 }
             }
@@ -200,11 +211,11 @@ public class EditArticlePage extends AppCompatActivity {
                 RequestTask<String> deleteArticleRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
                         HeaderTools.ACCEPT_JSON,
                         HeaderTools.makeAuth(token));
-                deleteArticleRequest.execute(FixedVars.BASE_URL + "/article/" + articleOld.getArticleId());
+                deleteArticleRequest.execute(FixedVars.BASE_URL + "/article/" + articleDetail.getArticleId());
                 deleteArticleRequest.getObj();
 
                 Toast.makeText(EditArticlePage.this, "Article deleted", Toast.LENGTH_LONG).show();
-                Intent myIntent = new Intent(EditArticlePage.this, ArticleDisplayPage.class);
+                Intent myIntent = new Intent(EditArticlePage.this, HomeArticlesPage.class);
                 startActivity(myIntent);
                 finish();
             }

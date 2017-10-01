@@ -96,9 +96,7 @@ public class WriteArticlePage extends AppCompatActivity {
                     String usersTag = userSearchText.getText().toString().trim().toLowerCase();
                     RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
                     tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
-                    // initiate waiting logic
                     TagDetail tag = tagRead.getObj();
-                    // terminate waiting logic
                     HttpStatus status = tagRead.getHttpStatus();
 
                     if (status == HttpStatus.OK && tag != null) {
@@ -119,7 +117,7 @@ public class WriteArticlePage extends AppCompatActivity {
                             NO_SELECTION_FLAG = false;
                         }
                     } else if (usersTag.equals(""))
-                        Toast.makeText(WriteArticlePage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(WriteArticlePage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
                     else
                         Toast.makeText(WriteArticlePage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
                 }
@@ -142,6 +140,7 @@ public class WriteArticlePage extends AppCompatActivity {
         Log.i("Title before publish", title);
         Log.i("Tags", tags.toString());
         //Log.i("Title", title);
+
         //splits the string after each new line
         content = newArticleContentText.getText().toString().split("\\r?\\n");
         ArrayList<String> contentList = new ArrayList<>();

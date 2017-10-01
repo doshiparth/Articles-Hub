@@ -152,7 +152,7 @@ public class HomeTagsPage extends AppCompatActivity
                             NO_SELECTION_FLAG = false;
                         }
                     } else if (usersTag.equals(""))
-                        Toast.makeText(HomeTagsPage.this, "Enter something man!!!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(HomeTagsPage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
                     else
                         Toast.makeText(HomeTagsPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
                 }

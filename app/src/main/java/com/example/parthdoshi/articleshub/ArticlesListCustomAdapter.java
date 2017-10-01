@@ -37,7 +37,6 @@ class ArticlesListCustomAdapter extends RecyclerView.Adapter<ArticlesListCustomA
             public void onClick(View v) {
                 Intent myIntent = new Intent(mContext, ArticleDisplayPage.class);
                 myIntent.putExtra("ArticleLink", articleList[holder.getAdapterPosition()].getShortArticleDetail().getLink());
-                myIntent.putExtra("ArticleAuthor", false);
                 mContext.startActivity(myIntent);
             }
         });

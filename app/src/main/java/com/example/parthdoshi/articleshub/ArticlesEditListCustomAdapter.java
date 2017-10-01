@@ -34,6 +34,15 @@ class ArticlesEditListCustomAdapter extends RecyclerView.Adapter<ArticlesEditLis
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent myIntent = new Intent(mContext, ArticleDisplayPage.class);
+                myIntent.putExtra("ArticleLink", articleList[holder.getAdapterPosition()].getShortArticleDetail().getLink());
+                mContext.startActivity(myIntent);
+            }
+        });
+
+        holder.editArticle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent myIntent = new Intent(mContext, EditArticlePage.class);
                 myIntent.putExtra("ArticleLink", articleList[holder.getAdapterPosition()].getShortArticleDetail().getLink());
                 mContext.startActivity(myIntent);
