@@ -178,7 +178,7 @@
                         android:text=""
                         android:textSize="15sp" />
 
-                    <ToggleButton
+                    <Button
                         android:id="@+id/btn_comment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -189,22 +189,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:textOff="Submit Comment"
-                        android:textOn="Edit Comment"
-                        android:theme="@style/TransparentButton"/>
-
-                    <Button
-                        android:id="@+id/btn_delete_comment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/edit_comment"
-                        android:layout_below="@+id/edit_comment"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Delete Comment"
-                        android:visibility="gone"
+                        android:text="Submit Comment"
                         android:theme="@style/TransparentButton"/>
 
                 </RelativeLayout>

@@ -9,13 +9,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.neel.articleshubapi.restapi.beans.CommentDetail;
+
 class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAdapter.MyViewHolder> {
     Context context;
+    CommentDetail[] allComments;
     private CommentListModel[] commentList;
 
-    CommentListCustomAdapter(Context context, CommentListModel[] commentList) {
+    CommentListCustomAdapter(Context context, CommentListModel[] commentList, CommentDetail[] allComments) {
         this.context = context;
         this.commentList = commentList;
+        this.allComments = allComments;
     }
 
     @Override
@@ -26,14 +30,27 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.commentContent.setText(commentList[position].getUsersComment());
         holder.commentUsername.setText(commentList[position].getUsersName());
         holder.commentDate.setText(commentList[position].getCommentDate());
+
+        for (int i = 0; i < commentList.length; i++) {
+            for (int j = 0; j < allComments.length; i++) {
+                if (commentList[i].getUsersName().equals(allComments[j].getUserName()))
+                    holder.editComment.setVisibility(View.VISIBLE);
+                else
+                    holder.editComment.setVisibility(View.GONE);
+            }
+        }
+
         holder.editComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(context, EditCommentPage.class);
+                myIntent.putExtra("cid", commentList[position].getCommentID());
+                myIntent.putExtra("commentContent", commentList[position].getUsersComment());
+                myIntent.putExtra("aid", commentList[position].getArticleID());
                 context.startActivity(myIntent);
             }
         });
@@ -56,7 +73,7 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
             commentContent = (TextView) itemView.findViewById(R.id.txt_custom_row_comment);
             commentUsername = (TextView) itemView.findViewById(R.id.txt_custom_row_username);
             commentDate = (TextView) itemView.findViewById(R.id.txt_custom_row_date);
-            editComment =(Button) itemView.findViewById(R.id.btn_edit_comment);
+            editComment = (Button) itemView.findViewById(R.id.btn_edit_comment);
         }
     }
 }

@@ -45,20 +45,23 @@ public class ArticleDisplayPage extends AppCompatActivity {
     TextView articleTag;
     ToggleButton likeButton;
     EditText commentText;
-    ToggleButton commentButton;
-    Button commentDeleteButton;
+    Button commentButton;
+    //Button commentDeleteButton;
 
     //For Recycler View
     RecyclerView aprv;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
 
-    String token = null, userName = null;
     ShortUserDetail[] totalLikesObj;
     CommentDetail[] articleCommentsObj;
     CommentListModel[] commentList;
 
+    CommentDetail[] allComments;
+
     String singleUser;
+
+    String token = null, userName = null;
     SharedPreferences sharedPref;
 
     //Final String variables to show data in a better way
@@ -90,8 +93,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
         likeButton = (ToggleButton) findViewById(R.id.btn_like);
         articleLikes = (TextView) findViewById(R.id.total_likes);
         commentText = (EditText) findViewById(R.id.edit_comment);
-        commentButton = (ToggleButton) findViewById(R.id.btn_comment);
-        commentDeleteButton = (Button) findViewById(R.id.btn_delete_comment);
+        commentButton = (Button) findViewById(R.id.btn_comment);
+        //commentDeleteButton = (Button) findViewById(R.id.btn_delete_comment);
 
         //Recycler View
         aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
@@ -134,19 +137,18 @@ public class ArticleDisplayPage extends AppCompatActivity {
         totalLikesObj = getLikesRequest.getObj();
 
         //Check if the user has commented on this article previously
-        RequestTask<CommentDetail[]> getCommentsRequest =
+        RequestTask<CommentDetail[]> getArticlesCommentsRequest =
                 new RequestTask<>(CommentDetail[].class, CONTENT_TYPE_JSON);
-        getCommentsRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/comments");
-        articleCommentsObj = getCommentsRequest.getObj();
+        getArticlesCommentsRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/comments");
+        articleCommentsObj = getArticlesCommentsRequest.getObj();
 
-        for (int i = 0; i < articleCommentsObj.length; i++) {
-            if (articleCommentsObj[i].getUserName().equals(userName)) {
-                usersComment = articleCommentsObj[i].getContent();
-                commentText.setText(usersComment);
-                commentText.setEnabled(false);
-                commentButton.setChecked(true);
-            }
-        }
+        //API Request to get all comments for the current user
+        RequestTask<CommentDetail[]> getUsersCommentsRequest = new RequestTask<CommentDetail[]>(CommentDetail[].class, HttpMethod.GET,
+                HeaderTools.CONTENT_TYPE_JSON,
+                HeaderTools.makeAuth(token));
+        getUsersCommentsRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/comments");
+        allComments = getUsersCommentsRequest.getObj();
+
 
         finalAuthorName = "Written by " + article.getAuthor();
         tagString = tagString.substring(0, tagString.length() - 2);
@@ -171,32 +173,37 @@ public class ArticleDisplayPage extends AppCompatActivity {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (likeButton.isChecked()) {
-                    RequestTask<String> likeRequest = new RequestTask<String>(String.class, HttpMethod.POST,
-                            HeaderTools.CONTENT_TYPE_JSON,
-                            HeaderTools.makeAuth(token));
-                    likeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
-                    Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_SHORT).show();
-
-                    RequestTask<ShortUserDetail[]> getLikesRequest =
-                            new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
-                    getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
-                    totalLikesObj = getLikesRequest.getObj();
-                    articleLikes.setText("Total likes: " + totalLikesObj.length);
-
+                if (token == null) {
+                    Toast.makeText(ArticleDisplayPage.this, "You need to be logged in to like this article", Toast.LENGTH_LONG).show();
                 } else {
-                    RequestTask<String> unlikeRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
-                            HeaderTools.CONTENT_TYPE_JSON,
-                            HeaderTools.makeAuth(token));
-                    unlikeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
-                    Toast.makeText(ArticleDisplayPage.this, "Like removed", Toast.LENGTH_SHORT).show();
 
-                    RequestTask<ShortUserDetail[]> getLikesRequest =
-                            new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
-                    getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
-                    totalLikesObj = getLikesRequest.getObj();
-                    articleLikes.setText("Total likes: " + totalLikesObj.length);
+                    if (likeButton.isChecked()) {
+                        RequestTask<String> likeRequest = new RequestTask<String>(String.class, HttpMethod.POST,
+                                HeaderTools.CONTENT_TYPE_JSON,
+                                HeaderTools.makeAuth(token));
+                        likeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
+                        Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_SHORT).show();
 
+                        RequestTask<ShortUserDetail[]> getLikesRequest =
+                                new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
+                        getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
+                        totalLikesObj = getLikesRequest.getObj();
+                        articleLikes.setText("Total likes: " + totalLikesObj.length);
+
+                    } else {
+                        RequestTask<String> unlikeRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
+                                HeaderTools.CONTENT_TYPE_JSON,
+                                HeaderTools.makeAuth(token));
+                        unlikeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
+                        Toast.makeText(ArticleDisplayPage.this, "Like removed", Toast.LENGTH_SHORT).show();
+
+                        RequestTask<ShortUserDetail[]> getLikesRequest =
+                                new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
+                        getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
+                        totalLikesObj = getLikesRequest.getObj();
+                        articleLikes.setText("Total likes: " + totalLikesObj.length);
+
+                    }
                 }
             }
         });
@@ -216,13 +223,14 @@ public class ArticleDisplayPage extends AppCompatActivity {
             }
         });
 
+
         if (!(articleCommentsObj == null)) {
             commentList = new CommentListModel[articleCommentsObj.length];
             for (int i = 0; i < articleCommentsObj.length; i++) {
                 commentList[i] = new CommentListModel(articleCommentsObj[i]);
             }
             aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
-            adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
+            adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList, allComments);
             aprv.setAdapter(adapter);
 
             Log.i("commentList", aprv.toString());
@@ -234,55 +242,26 @@ public class ArticleDisplayPage extends AppCompatActivity {
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (commentButton.isChecked()) {
-                    if (commentText.getText().toString().isEmpty()) {
-                        Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_SHORT).show();
-                        commentButton.setChecked(false);
-                    } else if (token == null)
-                        Toast.makeText(ArticleDisplayPage.this, "You need to be logged in to like this article", Toast.LENGTH_LONG).show();
-                    else {
-                        CommentDetail comment = new CommentDetail();
-                        comment.setArticleId(article.getArticleId());
-                        comment.setUserName(userName);
-                        comment.setContent(String.valueOf(commentText.getText()));
-                        AddRequestTask<String, CommentDetail> commentRequest = new AddRequestTask<String, CommentDetail>(String.class,
-                                comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
-                                HeaderTools.makeAuth(token));
-                        commentRequest.execute(FixedVars.BASE_URL + "/comment");
-                        Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_SHORT).show();
-                        commentDeleteButton.setVisibility(View.VISIBLE);
-                        commentText.setEnabled(false);
-                        //commentList[(commentList.length) + 1] = new CommentListModel(articleCommentsObj[(commentList.length) + 1]);
-                        //adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
-                        //aprv.setAdapter(adapter);
-                    }
-                } else {
-                    commentText.setEnabled(true);
-                    commentDeleteButton.setVisibility(View.VISIBLE);
-                    //commentList[commentList.length] = new CommentListModel(articleCommentsObj[commentList.length]);
+                if (commentText.getText().toString().isEmpty()) {
+                    Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_SHORT).show();
+                } else if (token == null)
+                    Toast.makeText(ArticleDisplayPage.this, "You need to be logged in to comment on this article", Toast.LENGTH_LONG).show();
+                else {
+                    CommentDetail comment = new CommentDetail();
+                    comment.setArticleId(article.getArticleId());
+                    comment.setUserName(userName);
+                    comment.setContent(String.valueOf(commentText.getText()));
+                    AddRequestTask<String, CommentDetail> commentRequest = new AddRequestTask<String, CommentDetail>(String.class,
+                            comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
+                            HeaderTools.makeAuth(token));
+                    commentRequest.execute(FixedVars.BASE_URL + "/comment");
+                    Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_SHORT).show();
+                    //commentDeleteButton.setVisibility(View.VISIBLE);
+                    //commentList[(commentList.length) + 1] = new CommentListModel(articleCommentsObj[(commentList.length) + 1]);
                     //adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
                     //aprv.setAdapter(adapter);
                 }
             }
         });
-        commentDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CommentDetail comment = new CommentDetail();
-                RequestTask<String> deleteCommentRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
-                        HeaderTools.CONTENT_TYPE_JSON,
-                        HeaderTools.makeAuth(token));
-                deleteCommentRequest.execute(FixedVars.BASE_URL + "/comment/" + comment.getCommentId());
-                Toast.makeText(ArticleDisplayPage.this, "Comment deleted", Toast.LENGTH_SHORT).show();
-                commentText.setText("");
-                commentText.setEnabled(true);
-                commentButton.setChecked(true);
-                commentDeleteButton.setVisibility(View.GONE);
-                //commentList[commentList.length] = new CommentListModel(articleCommentsObj[commentList.length]);
-                //adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
-                //aprv.setAdapter(adapter);
-            }
-        });
-
     }
 }
