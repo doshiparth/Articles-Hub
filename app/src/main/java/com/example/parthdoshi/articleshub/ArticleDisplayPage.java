@@ -42,12 +42,10 @@ public class ArticleDisplayPage extends AppCompatActivity {
     String tagString = "";
     String contentArray[];
     String contentString = "";
-    String usersComment = "";
     TextView articleTag;
     ToggleButton likeButton;
     EditText commentText;
     Button commentButton;
-    //Button commentDeleteButton;
 
     //For Recycler View
     RecyclerView aprv;
@@ -68,6 +66,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
     String finalAuthorName = "";
     String finalTags = "";
     String finalDate = "";
+
+    int totalLikes = 0;
 
     String articleLink;
 
@@ -112,6 +112,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
 
             articleLink = articleData.getString("ArticleLink");
 
+            //To get the article's details from the server using articleLink
             RequestTask<ArticleDetail> getArticleData = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
             getArticleData.execute(articleLink);
             final ArticleDetail article = getArticleData.getObj();
@@ -136,7 +137,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
             getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
             totalLikesObj = getLikesRequest.getObj();
 
-            //Get all comments previously done on this article
+            //Get all comments previously done on this article to load them in the list below
             RequestTask<CommentDetail[]> getArticlesCommentsRequest =
                     new RequestTask<>(CommentDetail[].class, CONTENT_TYPE_JSON);
             getArticlesCommentsRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/comments");
@@ -152,6 +153,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
             articleDate.setText(finalDate);
             articleContent.setText(contentString);
             articleLikes.setText("Total likes: " + totalLikesObj.length);
+            totalLikes = totalLikesObj.length;
 
             //for(String s : article.getContent())
             //    Log.i("doshi",s);
@@ -170,30 +172,41 @@ public class ArticleDisplayPage extends AppCompatActivity {
                     } else {
 
                         if (likeButton.isChecked()) {
+                            //Like the article
                             RequestTask<String> likeRequest = new RequestTask<String>(String.class, HttpMethod.POST,
                                     HeaderTools.CONTENT_TYPE_JSON,
                                     HeaderTools.makeAuth(token));
                             likeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
                             Toast.makeText(ArticleDisplayPage.this, "Liked", Toast.LENGTH_SHORT).show();
 
+                            /*
+                            //Update the text next to like button to show perfect number of likes
                             RequestTask<ShortUserDetail[]> getLikesRequest =
                                     new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
                             getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
                             totalLikesObj = getLikesRequest.getObj();
-                            articleLikes.setText("Total likes: " + totalLikesObj.length);
+                            */
+                            totalLikes += 1;
+
+                            articleLikes.setText("Total likes: " + totalLikes);
 
                         } else {
+                            //Reemove like from the article if previously liked
                             RequestTask<String> unlikeRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
                                     HeaderTools.CONTENT_TYPE_JSON,
                                     HeaderTools.makeAuth(token));
                             unlikeRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/like/" + article.getArticleId());
                             Toast.makeText(ArticleDisplayPage.this, "Like removed", Toast.LENGTH_SHORT).show();
 
+                            /*
+                            //Update the text next to like button to show perfect number of likes
                             RequestTask<ShortUserDetail[]> getLikesRequest =
                                     new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
                             getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
                             totalLikesObj = getLikesRequest.getObj();
-                            articleLikes.setText("Total likes: " + totalLikesObj.length);
+                            */
+                            totalLikes -= 1;
+                            articleLikes.setText("Total likes: " + totalLikes);
 
                         }
                     }
@@ -245,6 +258,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
                         comment.setArticleId(article.getArticleId());
                         comment.setUserName(userName);
                         comment.setContent(String.valueOf(commentText.getText()));
+
+                        //Post a comment on that particular article
                         AddRequestTask<String, CommentDetail> commentRequest = new AddRequestTask<String, CommentDetail>(String.class,
                                 comment, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
                                 HeaderTools.makeAuth(token));

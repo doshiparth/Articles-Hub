@@ -2,28 +2,28 @@ package com.example.parthdoshi.articleshub;
 
 import com.neel.articleshubapi.restapi.beans.ShortArticleDetail;
 
-public class ArticlesListModel {
+class ArticlesListModel {
     //private String articleHeading;
     //private String articleMetadata;
     private ShortArticleDetail articleDetail;
 
-    public ArticlesListModel(ShortArticleDetail articleDetail) {
+    ArticlesListModel(ShortArticleDetail articleDetail) {
         this.articleDetail = articleDetail;
     }
 
-    public String getArticleHeading() {
+    String getArticleHeading() {
         return articleDetail.getTitle();
     }
 
-    public String getArticleAuthorName() {
+    String getArticleAuthorName() {
         return articleDetail.getAuthor();
     }
 
-    public String getArticleDate() {
+    String getArticleDate() {
         return articleDetail.getDate();
     }
 
-    public ShortArticleDetail getShortArticleDetail() {
+    ShortArticleDetail getShortArticleDetail() {
         return articleDetail;
     }
 }

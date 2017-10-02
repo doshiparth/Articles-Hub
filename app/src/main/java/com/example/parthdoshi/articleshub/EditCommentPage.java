@@ -103,11 +103,11 @@ public class EditCommentPage extends AppCompatActivity {
             deleteCommentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    RequestTask<String> deleteCommentRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
+                    RequestTask<String> deleteCommentRequest = new RequestTask<>(String.class, HttpMethod.DELETE,
                             HeaderTools.CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
                     deleteCommentRequest.execute(FixedVars.BASE_URL + "/comment/" + cid);
-                    commentText.setText("");
+                    //commentText.setText("");
                     Toast.makeText(EditCommentPage.this, "Comment Deleted", Toast.LENGTH_LONG).show();
                     Intent myIntent = new Intent(EditCommentPage.this, ArticleDisplayPage.class);
                     myIntent.putExtra("ArticleLink", articleLink);

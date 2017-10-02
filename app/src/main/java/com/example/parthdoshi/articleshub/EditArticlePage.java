@@ -39,6 +39,7 @@ public class EditArticlePage extends AppCompatActivity {
     TextView newArticleTagsText;
     Button saveChangesButton;
     Button deleteArticleButton;
+
     //For Search tag purposes
     EditText userSearchText;
     Button userSearchButton;

@@ -41,6 +41,7 @@ public class HomeProfilePage extends AppCompatActivity
     TextView userFname;
     TextView userLname;
     TextView userInfo;
+    TextView uname;
     Button editDetailButton;
     Button logoutButton;
     String token = null, userName = null;
@@ -87,6 +88,7 @@ public class HomeProfilePage extends AppCompatActivity
                 //Below is the original code for displaying content on HomeProfilePage
 
                 profileHeading = (TextView) findViewById(R.id.text_profile_page_heading);
+                uname = (TextView) findViewById(R.id.text_profile_page_uname);
                 userEmailID = (TextView) findViewById(R.id.text_profile_page_emailid);
                 userFname = (TextView) findViewById(R.id.text_profile_page_userfname);
                 userLname = (TextView) findViewById(R.id.text_profile_page_userlname);
@@ -101,6 +103,7 @@ public class HomeProfilePage extends AppCompatActivity
                 ud = rt.getObj();
                 // terminate waiting logic
 
+                uname.setText(userName);
                 ufname = ud.getFirstName();
                 ulname = ud.getLastName();
                 uinfo = ud.getInfo();

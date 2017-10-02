@@ -142,9 +142,10 @@ public class HomePage extends AppCompatActivity
                             R.color.green, R.color.blue);
                     if (NetworkStatus.getInstance(HomePage.this).isOnline()) {
                         loadHomePage();
+                        swippy.setRefreshing(false);
                     } else
                         NetworkStatus.getInstance(HomePage.this).buildDialog(HomePage.this).show();
-                    swippy.setRefreshing(false);
+
                 }
             });
         } else

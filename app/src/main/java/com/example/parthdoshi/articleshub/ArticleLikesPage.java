@@ -47,8 +47,7 @@ public class ArticleLikesPage extends AppCompatActivity {
 
             lv_allUsers = (ListView) findViewById(R.id.list_view_likes_page);
 
-            RequestTask<ShortUserDetail[]> getAllUsersRequest =
-                    new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
+            RequestTask<ShortUserDetail[]> getAllUsersRequest = new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
             getAllUsersRequest.execute(FixedVars.BASE_URL + "/article/" + aid + "/likes");
             allUsers = getAllUsersRequest.getObj();
 
@@ -56,7 +55,7 @@ public class ArticleLikesPage extends AppCompatActivity {
                 listOfUsers.add(singleUser.getUserName());
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ArticleLikesPage.this, android.R.layout.simple_list_item_1, listOfUsers);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(ArticleLikesPage.this, android.R.layout.simple_list_item_1, listOfUsers);
             lv_allUsers.setAdapter(adapter);
         } else
             NetworkStatus.getInstance(this).buildDialog(this).show();

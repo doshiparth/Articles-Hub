@@ -63,7 +63,6 @@ class ArticlesEditListCustomAdapter extends RecyclerView.Adapter<ArticlesEditLis
         MyViewHolder(View itemView) {
             super(itemView);
             articleHeading = (TextView) itemView.findViewById(R.id.text_edit_article_heading);
-            //articleAuthorName = (TextView) itemView.findViewById(R.id.text_article_author_name);
             articleDate = (TextView) itemView.findViewById(R.id.text_edit_article_card_date);
             editArticle = (Button) itemView.findViewById(R.id.btn_edit_article);
         }
