@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.neel.articleshubapi.restapi.beans.ArticleDetail;
 import com.neel.articleshubapi.restapi.beans.CommentDetail;
 import com.neel.articleshubapi.restapi.request.AddRequestTask;
 import com.neel.articleshubapi.restapi.request.HeaderTools;
@@ -29,7 +28,6 @@ public class EditCommentPage extends AppCompatActivity {
     Button deleteCommentButton;
 
     CommentDetail comment;
-    ArticleDetail article;
 
     String token = null, userName = null;
     SharedPreferences sharedPref;
@@ -70,6 +68,7 @@ public class EditCommentPage extends AppCompatActivity {
         Log.i("commentContent--------", commentContent);
 
         commentText.setText(commentContent);
+        commentText.setEnabled(true);
 
         editCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,15 +80,15 @@ public class EditCommentPage extends AppCompatActivity {
 
                     comment.setArticleId(aid);
                     comment.setCommentId(cid);
-                    comment.setContent(commentText.getText().toString());
+                    comment.setContent(String.valueOf(commentText.getText()));
                     comment.setUserName(userName);
 
                     AddRequestTask<String, CommentDetail> commentRequest = new AddRequestTask<String, CommentDetail>(String.class,
                             comment, HttpMethod.PUT, HeaderTools.CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
                     commentRequest.execute(FixedVars.BASE_URL + "/comment/" + cid);
-                    commentText.setText("");
-                    Toast.makeText(EditCommentPage.this, "Comment edited successfully", Toast.LENGTH_LONG).show();
+                    commentText.setEnabled(false);
+                    Toast.makeText(EditCommentPage.this, "Comment Edited Successfully", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -97,13 +96,12 @@ public class EditCommentPage extends AppCompatActivity {
         deleteCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CommentDetail comment = new CommentDetail();
                 RequestTask<String> deleteCommentRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
                         HeaderTools.CONTENT_TYPE_JSON,
                         HeaderTools.makeAuth(token));
                 deleteCommentRequest.execute(FixedVars.BASE_URL + "/comment/" + cid);
                 commentText.setText("");
-                Toast.makeText(EditCommentPage.this, "Comment deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(EditCommentPage.this, "Comment Deleted", Toast.LENGTH_LONG).show();
             }
         });
     }

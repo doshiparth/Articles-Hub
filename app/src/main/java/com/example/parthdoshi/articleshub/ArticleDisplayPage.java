@@ -37,6 +37,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
     TextView articleDate;
     TextView articleContent;
     TextView articleLikes;
+    TextView txtAllComments;
     String tagArray[];
     String tagString = "";
     String contentArray[];
@@ -56,8 +57,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
     ShortUserDetail[] totalLikesObj;
     CommentDetail[] articleCommentsObj;
     CommentListModel[] commentList;
-
-    CommentDetail[] allComments;
 
     String singleUser;
 
@@ -92,9 +91,9 @@ public class ArticleDisplayPage extends AppCompatActivity {
         articleContent = (TextView) findViewById(R.id.text_article_content);
         likeButton = (ToggleButton) findViewById(R.id.btn_like);
         articleLikes = (TextView) findViewById(R.id.total_likes);
-        commentText = (EditText) findViewById(R.id.edit_comment);
+        commentText = (EditText) findViewById(R.id.write_comment);
         commentButton = (Button) findViewById(R.id.btn_comment);
-        //commentDeleteButton = (Button) findViewById(R.id.btn_delete_comment);
+        txtAllComments = (TextView) findViewById(R.id.txt_all_comments);
 
         //Recycler View
         aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
@@ -141,14 +140,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 new RequestTask<>(CommentDetail[].class, CONTENT_TYPE_JSON);
         getArticlesCommentsRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/comments");
         articleCommentsObj = getArticlesCommentsRequest.getObj();
-
-        //API Request to get all comments for the current user
-        RequestTask<CommentDetail[]> getUsersCommentsRequest = new RequestTask<CommentDetail[]>(CommentDetail[].class, HttpMethod.GET,
-                HeaderTools.CONTENT_TYPE_JSON,
-                HeaderTools.makeAuth(token));
-        getUsersCommentsRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/comments");
-        allComments = getUsersCommentsRequest.getObj();
-
 
         finalAuthorName = "Written by " + article.getAuthor();
         tagString = tagString.substring(0, tagString.length() - 2);
@@ -225,16 +216,18 @@ public class ArticleDisplayPage extends AppCompatActivity {
 
 
         if (!(articleCommentsObj == null)) {
+            txtAllComments.setEnabled(true);
             commentList = new CommentListModel[articleCommentsObj.length];
             for (int i = 0; i < articleCommentsObj.length; i++) {
                 commentList[i] = new CommentListModel(articleCommentsObj[i]);
             }
             aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
-            adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList, allComments);
+            adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList, userName);
             aprv.setAdapter(adapter);
 
             Log.i("commentList", aprv.toString());
         } else {
+            txtAllComments.setEnabled(false);
             commentList = null;
         }
         Log.i("Comment List's Length", "" + commentList.length);
@@ -256,10 +249,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
                             HeaderTools.makeAuth(token));
                     commentRequest.execute(FixedVars.BASE_URL + "/comment");
                     Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_SHORT).show();
-                    //commentDeleteButton.setVisibility(View.VISIBLE);
-                    //commentList[(commentList.length) + 1] = new CommentListModel(articleCommentsObj[(commentList.length) + 1]);
-                    //adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList);
-                    //aprv.setAdapter(adapter);
+                    commentText.setText("");
                 }
             }
         });

@@ -3,23 +3,22 @@ package com.example.parthdoshi.articleshub;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.neel.articleshubapi.restapi.beans.CommentDetail;
-
 class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAdapter.MyViewHolder> {
     Context context;
-    CommentDetail[] allComments;
+    String currentUser;
     private CommentListModel[] commentList;
 
-    CommentListCustomAdapter(Context context, CommentListModel[] commentList, CommentDetail[] allComments) {
+    CommentListCustomAdapter(Context context, CommentListModel[] commentList, String currentUser) {
         this.context = context;
         this.commentList = commentList;
-        this.allComments = allComments;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -35,22 +34,21 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
         holder.commentUsername.setText(commentList[position].getUsersName());
         holder.commentDate.setText(commentList[position].getCommentDate());
 
-        for (int i = 0; i < commentList.length; i++) {
-            for (int j = 0; j < allComments.length; i++) {
-                if (commentList[i].getUsersName().equals(allComments[j].getUserName()))
-                    holder.editComment.setVisibility(View.VISIBLE);
-                else
-                    holder.editComment.setVisibility(View.GONE);
-            }
-        }
+        if (commentList[position].getUsersName().equals(currentUser))
+            holder.editComment.setVisibility(View.VISIBLE);
+        else
+            holder.editComment.setVisibility(View.GONE);
 
         holder.editComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(context, EditCommentPage.class);
                 myIntent.putExtra("cid", commentList[position].getCommentID());
+                Log.i("Adapter cid--------", "" + commentList[position].getCommentID());
                 myIntent.putExtra("commentContent", commentList[position].getUsersComment());
+                Log.i("Adapter commentContent", commentList[position].getUsersComment());
                 myIntent.putExtra("aid", commentList[position].getArticleID());
+                Log.i("Adapter aid------", "" + commentList[position].getArticleID());
                 context.startActivity(myIntent);
             }
         });
