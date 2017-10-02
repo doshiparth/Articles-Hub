@@ -4,9 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,34 +29,32 @@ import me.anwarshahriar.calligrapher.Calligrapher;
  */
 public class LoginPage extends AppCompatActivity {
 
+    public String token;
+    Button loginPageButton;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+    ProgressDialog progressDialog;
     /**
      * A dummy authentication store containing known user names and passwords.
-
-     private static final String[] DUMMY_CREDENTIALS = new String[]{
-     "doshiparth007@gmail.com:123456", "neel.patel.2012.np@gmail.com:123456", "foo@example.com:hello", "bar@example.com:world"
-     };
+     * <p>
+     * private static final String[] DUMMY_CREDENTIALS = new String[]{
+     * "doshiparth007@gmail.com:123456", "neel.patel.2012.np@gmail.com:123456", "foo@example.com:hello", "bar@example.com:world"
+     * };
      */
 
     // UI references.
     private EditText userNameText;
     private EditText passwordText;
-    Button loginPageButton;
     private TextView noTokenErrorText;
-    public String token;
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
-    ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connectivity
-        if(NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline()){
             setContentView(R.layout.activity_login_page);
-        else
-            NetworkStatus.getInstance(this).buildDialog(this).show();
+
 
         Calligrapher calligrapher = new Calligrapher(LoginPage.this);
         calligrapher.setFont(LoginPage.this, FixedVars.FONT_NAME, true);
@@ -98,12 +95,14 @@ public class LoginPage extends AppCompatActivity {
                 attemptLogin();
             }
         });
+        } else
+            NetworkStatus.getInstance(this).buildDialog(this).show();
     }
 
-    private void doLogin(UserDetail login){
-        AddRequestTask<String,UserDetail> loginRequest = new AddRequestTask<String, UserDetail>(String.class,
+    private void doLogin(UserDetail login) {
+        AddRequestTask<String, UserDetail> loginRequest = new AddRequestTask<String, UserDetail>(String.class,
                 login, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON, HeaderTools.ACCEPT_TEXT);
-        loginRequest.execute(FixedVars.BASE_URL+"/authentication/"+login.getUserName());
+        loginRequest.execute(FixedVars.BASE_URL + "/authentication/" + login.getUserName());
         progressDialog.setTitle("Please wait");
         progressDialog.setMessage("Loading");
         progressDialog.setCancelable(false);
@@ -164,13 +163,14 @@ public class LoginPage extends AppCompatActivity {
             doLogin(loginObj);
 
             //Checks whether login attempt was successful or not
-            if(token!=null && !token.equalsIgnoreCase("")){
+            if (token != null && !token.equalsIgnoreCase("")) {
 
                 // login successful
                 Log.i("doshi login", token);
 
                 //Saving details for using in other activities using SharedPreferences.
                 editor.putString(FixedVars.PREF_USER_NAME, userNameText.getText().toString());
+                editor.putString(FixedVars.PREF_USER_PASSWORD, passwordText.getText().toString());
                 editor.putString(FixedVars.PREF_LOGIN_TOKEN, token);
                 editor.apply();
 
@@ -178,14 +178,14 @@ public class LoginPage extends AppCompatActivity {
 
                 Toast.makeText(LoginPage.this, "Login Successful", Toast.LENGTH_LONG).show();
 
-                Intent myIntent = new Intent(LoginPage.this, HomePage.class);
+                FixedVars.loggedIn = true;
+                Intent myIntent = new Intent(LoginPage.this, StartPage.class);
                 startActivity(myIntent);
                 finish();
-            }
-            else if(token == null){
+            } else if (token == null) {
                 // login fail
                 Log.i("doshi login", "login fail");
-                noTokenErrorText.setEnabled(true);
+                noTokenErrorText.setVisibility(View.VISIBLE);
                 noTokenErrorText.setText(getString(R.string.invalid_login_credentials));
                 userNameText.requestFocus();
                 passwordText.requestFocus();

@@ -111,6 +111,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/signup_page_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_confirm_password"
                     android:imeActionId="@+id/signup"
                     android:imeActionLabel="@string/action_sign_up_short"
                     android:imeOptions="actionSend"
@@ -135,6 +150,7 @@
                 android:layout_height="wrap_content"
                 android:text="Error Text"
                 android:enabled="false"
+                android:visibility="gone"
                 android:textSize="14sp"/>
 
         </LinearLayout>

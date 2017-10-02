@@ -140,7 +140,11 @@ public class HomePage extends AppCompatActivity
                 public void onRefresh() {
                     swippy.setColorSchemeResources(R.color.orange, R.color.indigo, R.color.pink, R.color.icons,
                             R.color.green, R.color.blue);
-                    loadHomePage();
+                    if (NetworkStatus.getInstance(HomePage.this).isOnline()) {
+                        loadHomePage();
+                    } else
+                        NetworkStatus.getInstance(HomePage.this).buildDialog(HomePage.this).show();
+                    swippy.setRefreshing(false);
                 }
             });
         } else
@@ -202,7 +206,7 @@ public class HomePage extends AppCompatActivity
                     );*/
                     }
                 }
-                swippy.setRefreshing(false);
+
                 try {
                     progressDialog.dismiss();
                 } catch (final Exception e) {

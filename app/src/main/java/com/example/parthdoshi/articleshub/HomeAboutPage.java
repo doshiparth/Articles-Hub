@@ -1,10 +1,9 @@
 package com.example.parthdoshi.articleshub;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,14 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.neel.articleshubapi.restapi.beans.TagDetail;
+import com.neel.articleshubapi.restapi.request.AddRequestTask;
+import com.neel.articleshubapi.restapi.request.HeaderTools;
 import com.neel.articleshubapi.restapi.request.RequestTask;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
@@ -36,6 +38,9 @@ public class HomeAboutPage extends AppCompatActivity
     EditText newTagSearchBox;
     Button newTagReqBtn;
 
+    String token = null, userName = null;
+    SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,17 +54,12 @@ public class HomeAboutPage extends AppCompatActivity
         Calligrapher calligrapher = new Calligrapher(HomeAboutPage.this);
         calligrapher.setFont(HomeAboutPage.this, FixedVars.FONT_NAME, true);
 
+        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -84,13 +84,27 @@ public class HomeAboutPage extends AppCompatActivity
                 if (status == HttpStatus.OK && tag != null) {
                     //To check if the tag user has selected is already present in his selection list
                     Toast.makeText(HomeAboutPage.this, "This tag is already present in the database.\n" +
-                            "Use it directly or request for some other tag that is not currently available",
+                                    "Use it directly or request for some other tag that is not currently available",
                             Toast.LENGTH_LONG).show();
-                } else
-                    Toast.makeText(HomeAboutPage.this, "The request for adding "+usersTag+" into our database has been " +
-                            "successfully registered.\nWe'll verify it and add it as soon as possible",
-                            Toast.LENGTH_LONG).show();
-                newTagSearchBox.setText("");
+                } else {
+                    TagDetail tagToSend = new TagDetail();
+                    tagToSend.setTagName("username");
+
+                    AddRequestTask<String, TagDetail> requestNewTag = new AddRequestTask<String, TagDetail>(String.class,
+                            tagToSend, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
+                            HeaderTools.makeAuth(token));
+                    requestNewTag.execute(FixedVars.BASE_URL + "/tag");
+
+                    HttpStatus status1 = requestNewTag.getHttpStatus();
+
+                    if (status == HttpStatus.CREATED) {
+                        Toast.makeText(HomeAboutPage.this, "The request for adding " + usersTag + " into our database has been " +
+                                        "successfully registered.\nWe'll verify it and add it as soon as possible",
+                                Toast.LENGTH_LONG).show();
+                        newTagSearchBox.setText("");
+                    }else
+                        Toast.makeText(HomeAboutPage.this, "This feature is temporary unavailable. Please try again after some time", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

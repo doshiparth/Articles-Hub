@@ -3,10 +3,9 @@ package com.example.parthdoshi.articleshub;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
 
@@ -21,17 +20,25 @@ public class StartPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connection
-        if (NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline()) {
             setContentView(R.layout.activity_start_page);
-        else
+
+            Calligrapher calligrapher = new Calligrapher(StartPage.this);
+            calligrapher.setFont(StartPage.this, FixedVars.FONT_NAME, true);
+
+            sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+            userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
+            token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
+
+            if (FixedVars.loggedIn) {
+                Intent myIntent = new Intent(StartPage.this, HomePage.class);
+                startActivity(myIntent);
+            } else if (FixedVars.signedUp) {
+                Intent myIntent = new Intent(StartPage.this, SelectTagPage.class);
+                startActivity(myIntent);
+            }
+        } else
             NetworkStatus.getInstance(this).buildDialog(this).show();
-
-        Calligrapher calligrapher = new Calligrapher(StartPage.this);
-        calligrapher.setFont(StartPage.this, FixedVars.FONT_NAME, true);
-
-        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
-        userName = sharedPref.getString(FixedVars.PREF_USER_NAME, "");
-        token = sharedPref.getString(FixedVars.PREF_LOGIN_TOKEN, "");
     }
 
     //Applying actions on all three buttons

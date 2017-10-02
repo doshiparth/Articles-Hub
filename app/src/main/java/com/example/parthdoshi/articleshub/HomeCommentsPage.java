@@ -69,61 +69,61 @@ public class HomeCommentsPage extends AppCompatActivity
             startActivity(myIntent);
         } else {
             //Checking for internet connection
-            if (NetworkStatus.getInstance(this).isOnline())
+            if (NetworkStatus.getInstance(this).isOnline()) {
                 setContentView(R.layout.activity_home_comments_page);
-            else
-                NetworkStatus.getInstance(this).buildDialog(this).show();
 
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+                toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
 
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
+                drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
 
-            navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
+                navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setNavigationItemSelectedListener(this);
 
 
-            //Main Code
-            heading = (TextView) findViewById(R.id.txt_no_comments_yet);
-            cprv = (RecyclerView) findViewById(R.id.rv_users_comments);
-            layoutManager = new LinearLayoutManager(HomeCommentsPage.this);
-            cprv.setLayoutManager(layoutManager);
-
-            //API Request to get all comments for the current user
-            RequestTask<CommentDetail[]> getCommentsRequest = new RequestTask<CommentDetail[]>(CommentDetail[].class, HttpMethod.GET,
-                    HeaderTools.CONTENT_TYPE_JSON,
-                    HeaderTools.makeAuth(token));
-            getCommentsRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/comments");
-            // initiate waiting logic
-            allComments = getCommentsRequest.getObj();
-            // terminate waiting logic
-
-            //Printing all the comments of that user
-            if (allComments.length==0) {
-                heading.setVisibility(View.VISIBLE);
-                cprv.setVisibility(View.GONE);
-                //Toast.makeText(HomeCommentsPage.this, "Sorry!! No comments to display", Toast.LENGTH_LONG).show();
-                Log.i("Check received comments", "No Comments by this user");
-            } else {
-                heading.setVisibility(View.GONE);
-                cprv.setVisibility(View.VISIBLE);
-                //Log.i("First comment", allComments[0].getContent());
-                commentList = new CommentsPageListModel[allComments.length];
-                for (int i = 0; i < allComments.length; i++) {
-                    commentList[i] = new CommentsPageListModel(allComments[i]);
-                }
+                //Main Code
+                heading = (TextView) findViewById(R.id.txt_no_comments_yet);
                 cprv = (RecyclerView) findViewById(R.id.rv_users_comments);
-                adapter = new CommentsPageListCustomAdapter(HomeCommentsPage.this, commentList);
-                cprv.setAdapter(adapter);
+                layoutManager = new LinearLayoutManager(HomeCommentsPage.this);
+                cprv.setLayoutManager(layoutManager);
 
-                Log.i("commentList", cprv.toString());
-            }
-            cprv.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener());
+                //API Request to get all comments for the current user
+                RequestTask<CommentDetail[]> getCommentsRequest = new RequestTask<CommentDetail[]>(CommentDetail[].class, HttpMethod.GET,
+                        HeaderTools.CONTENT_TYPE_JSON,
+                        HeaderTools.makeAuth(token));
+                getCommentsRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/comments");
+                // initiate waiting logic
+                allComments = getCommentsRequest.getObj();
+                // terminate waiting logic
 
+                //Printing all the comments of that user
+                if (allComments.length == 0) {
+                    heading.setVisibility(View.VISIBLE);
+                    cprv.setVisibility(View.GONE);
+                    //Toast.makeText(HomeCommentsPage.this, "Sorry!! No comments to display", Toast.LENGTH_LONG).show();
+                    Log.i("Check received comments", "No Comments by this user");
+                } else {
+                    heading.setVisibility(View.GONE);
+                    cprv.setVisibility(View.VISIBLE);
+                    //Log.i("First comment", allComments[0].getContent());
+                    commentList = new CommentsPageListModel[allComments.length];
+                    for (int i = 0; i < allComments.length; i++) {
+                        commentList[i] = new CommentsPageListModel(allComments[i]);
+                    }
+                    cprv = (RecyclerView) findViewById(R.id.rv_users_comments);
+                    adapter = new CommentsPageListCustomAdapter(HomeCommentsPage.this, commentList);
+                    cprv.setAdapter(adapter);
+
+                    Log.i("commentList", cprv.toString());
+                }
+                cprv.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener());
+
+            } else
+                NetworkStatus.getInstance(this).buildDialog(this).show();
         }
     }
 

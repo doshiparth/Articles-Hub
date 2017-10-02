@@ -6,6 +6,6 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <!-- Overriding sizes of the FAB -->
-    <dimen name="design_fab_size_normal">85dp</dimen>
+    <dimen name="design_fab_size_normal">70dp</dimen>
     <dimen name="design_fab_size_mini">50dp</dimen>
 </resources>

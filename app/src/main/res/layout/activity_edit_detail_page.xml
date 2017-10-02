@@ -3,117 +3,146 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@drawable/app_background"
+    android:orientation="vertical"
     tools:context="com.example.parthdoshi.articleshub.EditDetailPage">
 
-    <android.support.design.widget.TextInputLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/edit_detail_page_fname"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your first name"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:inputType="textNoSuggestions|textCapWords"
-            android:maxLines="1" />
+            android:orientation="vertical">
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edit_detail_page_fname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:hint="Enter your first name"
+                    android:inputType="textNoSuggestions|textCapWords"
+                    android:maxLines="1" />
 
-        <EditText
-            android:id="@+id/edit_detail_page_lname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your last name"
-            android:layout_margin="10dp"
-            android:inputType="textNoSuggestions|textCapWords"
-            android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-<!--
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edit_detail_page_lname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="Enter your last name"
+                    android:inputType="textNoSuggestions|textCapWords"
+                    android:maxLines="1" />
 
-        <EditText
-            android:id="@+id/edit_detail_page_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_username"
-            android:inputType="textNoSuggestions"
-            android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
--->
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <!--
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/edit_detail_page_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_email"
-            android:layout_margin="10dp"
-            android:inputType="textEmailAddress|textNoSuggestions"
-            android:maxLines="1" />
+                    <EditText
+                        android:id="@+id/edit_detail_page_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_username"
+                        android:inputType="textNoSuggestions"
+                        android:maxLines="1" />
 
-    </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>
+            -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edit_detail_page_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="@string/prompt_email"
+                    android:inputType="textEmailAddress|textNoSuggestions"
+                    android:maxLines="1" />
 
-        <EditText
-            android:id="@+id/edit_detail_page_uinfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_info"
-            android:layout_margin="10dp"
-            android:inputType="textMultiLine|textNoSuggestions|textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edit_detail_page_uinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="@string/prompt_info"
+                    android:inputType="textMultiLine|textNoSuggestions|textCapSentences" />
 
-        <EditText
-            android:id="@+id/edit_detail_page_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_password"
-            android:imeActionId="@+id/signup"
-            android:imeActionLabel="@string/action_sign_up_short"
-            android:imeOptions="actionSend"
-            android:layout_margin="10dp"
-            android:inputType="textPassword|textNoSuggestions"
-            android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true">
 
-    <Button
-        android:id="@+id/btn_save_changes"
-        style="?android:textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Save Changes"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:textStyle="bold"
-        android:theme="@style/TransparentButton"/>
+                <EditText
+                    android:id="@+id/edit_detail_page_old_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="Old Password"
+                    android:inputType="textPassword|textNoSuggestions"
+                    android:maxLines="1" />
 
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/edit_detail_page_new_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="New Password (Leave empty if not required)"
+                    android:imeActionId="@+id/signup"
+                    android:imeActionLabel="@string/action_sign_up_short"
+                    android:imeOptions="actionSend"
+                    android:inputType="textPassword|textNoSuggestions" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_save_changes"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="Save Changes"
+                android:textStyle="bold"
+                android:theme="@style/TransparentButton" />
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

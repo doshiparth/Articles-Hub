@@ -66,6 +66,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="TextView"
+            android:visibility="gone"
             android:textSize="14sp" />
 
     </LinearLayout>

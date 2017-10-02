@@ -68,13 +68,11 @@ public class HomeArticlesPage extends AppCompatActivity
             startActivity(myIntent);
         } else {
             //Checking for internet connection
-            if (NetworkStatus.getInstance(this).isOnline())
+            if (NetworkStatus.getInstance(this).isOnline()) {
                 setContentView(R.layout.activity_home_articles_page);
-            else
-                NetworkStatus.getInstance(this).buildDialog(this).show();
 
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+                toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
 /*
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -85,61 +83,61 @@ public class HomeArticlesPage extends AppCompatActivity
                 }
             });
 */
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
+                drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
 
-            navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
+                navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setNavigationItemSelectedListener(this);
 
-            //Main code for displaying list of articles created by that user
+                //Main code for displaying list of articles created by that user
 
-            heading = (TextView) findViewById(R.id.txt_no_articles_yet);
-            aprv = (RecyclerView) findViewById(R.id.articles_page_recycler_view);
-            layoutManager = new LinearLayoutManager(HomeArticlesPage.this);
-            aprv.setLayoutManager(layoutManager);
+                heading = (TextView) findViewById(R.id.txt_no_articles_yet);
+                aprv = (RecyclerView) findViewById(R.id.articles_page_recycler_view);
+                layoutManager = new LinearLayoutManager(HomeArticlesPage.this);
+                aprv.setLayoutManager(layoutManager);
 
-            RequestTask<ShortArticleDetail[]> articlesRequest =
-                    new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET,
-                            HeaderTools.CONTENT_TYPE_JSON,
-                            HeaderTools.makeAuth(token));
-            articlesRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/articles");
-            // initiate waiting logic
-            articleDetails = articlesRequest.getObj();
-            // terminate waiting logic
+                RequestTask<ShortArticleDetail[]> articlesRequest =
+                        new RequestTask<>(ShortArticleDetail[].class, HttpMethod.GET,
+                                HeaderTools.CONTENT_TYPE_JSON,
+                                HeaderTools.makeAuth(token));
+                articlesRequest.execute(FixedVars.BASE_URL + "/user/" + userName + "/articles");
+                // initiate waiting logic
+                articleDetails = articlesRequest.getObj();
+                // terminate waiting logic
 
-            if (articleDetails.length == 0) {
-                heading.setVisibility(View.VISIBLE);
-                aprv.setVisibility(View.GONE);
-                //Toast.makeText(HomeArticlesPage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
-            } else {
-                //If execution is correct and the list of articles is received, then and only then the following will take place
-                Log.i("Articles List", articleDetails.toString());
-                heading.setVisibility(View.GONE);
-                aprv.setVisibility(View.VISIBLE);
-                articleList = new ArticlesEditListModel[articleDetails.length];
-                for (int i = 0; i < articleDetails.length; i++) {
-                    articleList[i] = new ArticlesEditListModel(articleDetails[i]);
-                }
-                if (aprv == null)
-                    Log.i("aprv", "aprv is null");
-                else
-                    Log.i("articleList", aprv.toString());
-                adapter = new ArticlesEditListCustomAdapter(HomeArticlesPage.this, articleList);
-                if (adapter.getItemCount() == 0)
-                    Log.i("CustomAdapter", "articlesListEditCustomAdapter is null");
-                else
-                    Log.i("CustomAdapter", adapter.toString());
+                if (articleDetails.length == 0) {
+                    heading.setVisibility(View.VISIBLE);
+                    aprv.setVisibility(View.GONE);
+                    //Toast.makeText(HomeArticlesPage.this, "Error!!! No articles to display", Toast.LENGTH_LONG).show();
+                } else {
+                    //If execution is correct and the list of articles is received, then and only then the following will take place
+                    Log.i("Articles List", articleDetails.toString());
+                    heading.setVisibility(View.GONE);
+                    aprv.setVisibility(View.VISIBLE);
+                    articleList = new ArticlesEditListModel[articleDetails.length];
+                    for (int i = 0; i < articleDetails.length; i++) {
+                        articleList[i] = new ArticlesEditListModel(articleDetails[i]);
+                    }
+                    if (aprv == null)
+                        Log.i("aprv", "aprv is null");
+                    else
+                        Log.i("articleList", aprv.toString());
+                    adapter = new ArticlesEditListCustomAdapter(HomeArticlesPage.this, articleList);
+                    if (adapter.getItemCount() == 0)
+                        Log.i("CustomAdapter", "articlesListEditCustomAdapter is null");
+                    else
+                        Log.i("CustomAdapter", adapter.toString());
 
-                //try {
+                    //try {
 
-                aprv.setAdapter(adapter);
-                //} catch (NullPointerException e) {
-                //    e.printStackTrace();
-                //}
-                //try {
+                    aprv.setAdapter(adapter);
+                    //} catch (NullPointerException e) {
+                    //    e.printStackTrace();
+                    //}
+                    //try {
 /*                                @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     Intent myIntent = new Intent(getApplicationContext(), ArticleDisplayPage.class);
@@ -152,7 +150,10 @@ public class HomeArticlesPage extends AppCompatActivity
                 //} catch (NullPointerException e) {
                 //    e.printStackTrace();
 */                //}
-            }
+                }
+
+            } else
+                NetworkStatus.getInstance(this).buildDialog(this).show();
         }
     }
 

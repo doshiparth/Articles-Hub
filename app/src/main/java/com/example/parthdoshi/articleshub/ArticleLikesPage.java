@@ -29,35 +29,36 @@ public class ArticleLikesPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connection
-        if (NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline()) {
             setContentView(R.layout.activity_article_likes_page);
-        else
+
+
+            Calligrapher calligrapher = new Calligrapher(ArticleLikesPage.this);
+            calligrapher.setFont(ArticleLikesPage.this, FixedVars.FONT_NAME, true);
+
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            Intent mIntent = getIntent();
+            Long aid = mIntent.getLongExtra("aid", 0);
+
+            Log.i("Like page AID----", "" + aid);
+
+            lv_allUsers = (ListView) findViewById(R.id.list_view_likes_page);
+
+            RequestTask<ShortUserDetail[]> getAllUsersRequest =
+                    new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
+            getAllUsersRequest.execute(FixedVars.BASE_URL + "/article/" + aid + "/likes");
+            allUsers = getAllUsersRequest.getObj();
+
+            for (ShortUserDetail singleUser : allUsers) {
+                listOfUsers.add(singleUser.getUserName());
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(ArticleLikesPage.this, android.R.layout.simple_list_item_1, listOfUsers);
+            lv_allUsers.setAdapter(adapter);
+        } else
             NetworkStatus.getInstance(this).buildDialog(this).show();
-
-        Calligrapher calligrapher = new Calligrapher(ArticleLikesPage.this);
-        calligrapher.setFont(ArticleLikesPage.this, FixedVars.FONT_NAME, true);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        Intent mIntent = getIntent();
-        Long aid = mIntent.getLongExtra("aid", 0);
-
-        Log.i("Like page AID----", ""+aid);
-
-        lv_allUsers = (ListView) findViewById(R.id.list_view_likes_page);
-
-        RequestTask<ShortUserDetail[]> getAllUsersRequest =
-                new RequestTask<>(ShortUserDetail[].class, CONTENT_TYPE_JSON);
-        getAllUsersRequest.execute(FixedVars.BASE_URL + "/article/" + aid + "/likes");
-        allUsers = getAllUsersRequest.getObj();
-
-        for(ShortUserDetail singleUser : allUsers){
-            listOfUsers.add(singleUser.getUserName());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ArticleLikesPage.this, android.R.layout.simple_list_item_1, listOfUsers);
-        lv_allUsers.setAdapter(adapter);
     }
 }

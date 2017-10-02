@@ -12,6 +12,7 @@
     <string name="prompt_email">Enter your Email</string>
     <string name="prompt_reg_uname">Enter your registered Username</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
     <string name="action_log_in">Log in</string>
     <string name="action_sign_up">Create Account</string>
     <string name="action_sign_up_short">Sign up</string>
@@ -50,7 +51,7 @@
     <string name="select_tag_page_search_title">Search here</string>
     <string name="invalid_login_credentials">Invalid Login Credentials</string>
     <string name="prompt_info">Enter your info (Optional)</string>
-    <string name="invalid_or_empty_details">Invalid details entered.\nTry selecting a different UserName or different Email address</string>
+    <string name="invalid_or_empty_details">Invalid details entered.\nTry selecting a different UserName or different valid Email address</string>
     <string name="string_tag_page_suggestions">Example: Game, Programming, Study, Science, Fashion, News, Movie etc.\nClick on any of the selected tags from the list below to remove that particular tag.</string>
     <string name="tag_req_instruction">Enter a new tag name that is not in our database in the below bar to send us a request for adding it</string>
     <string name="title_activity_home_comments_page">Your Comments</string>
@@ -66,7 +67,10 @@
     <string name="help_page_q4">Q4. What are the different tags that i can select?</string>
     <string name="help_page_a4">A. Currently the tags available for selection ar as follows:\nGame, Tutorial, Study, Fashion,
     Story, News, Movie, AI, Future, Book, Programming, Smartphone, Philosophy and Science.</string>
+    <string name="help_page_q5">Q5. How to change the username?</string>
+    <string name="help_page_a5">A. You cannot change your username as that is the main attribute linking you to your profile on our database</string>
     <string name="title_activity_article_likes_page">ArticleLikesPage</string>
     <string name="title_activity_edit_comment_page">EditCommentPage</string>
+    <string name="error_passwords_dont_match">Passwords Do Not Match</string>
 
 </resources>

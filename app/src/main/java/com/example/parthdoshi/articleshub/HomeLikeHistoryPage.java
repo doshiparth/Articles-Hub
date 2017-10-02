@@ -71,53 +71,52 @@ public class HomeLikeHistoryPage extends AppCompatActivity
             startActivity(myIntent);
         } else {
             //Checking for internet connection
-            if (NetworkStatus.getInstance(this).isOnline())
+            if (NetworkStatus.getInstance(this).isOnline()) {
                 setContentView(R.layout.activity_home_like_history_page);
-            else
-                NetworkStatus.getInstance(this).buildDialog(this).show();
+
+                toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+
+                drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
+
+                navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setNavigationItemSelectedListener(this);
+
+                //Main code
+                heading = (TextView) findViewById(R.id.txt_no_likes_yet);
+                lprv = (RecyclerView) findViewById(R.id.like_page_recycler_view);
+                layoutManager = new LinearLayoutManager(HomeLikeHistoryPage.this);
+                lprv.setLayoutManager(layoutManager);
 
 
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+                //Getting users liked articles from server
+                RequestTask<ShortArticleDetail[]> getUsersLikes = new RequestTask<ShortArticleDetail[]>(ShortArticleDetail[].class,
+                        HttpMethod.GET,
+                        HeaderTools.CONTENT_TYPE_JSON,
+                        HeaderTools.makeAuth(token));
+                getUsersLikes.execute(FixedVars.BASE_URL + "/user/" + userName + "/likes");
+                articleDetails = getUsersLikes.getObj();
 
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-
-            navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-
-            //Main code
-            heading = (TextView) findViewById(R.id.txt_no_likes_yet);
-            lprv = (RecyclerView) findViewById(R.id.like_page_recycler_view);
-            layoutManager = new LinearLayoutManager(HomeLikeHistoryPage.this);
-            lprv.setLayoutManager(layoutManager);
-
-
-            //Getting users liked articles from server
-            RequestTask<ShortArticleDetail[]> getUsersLikes = new RequestTask<ShortArticleDetail[]>(ShortArticleDetail[].class,
-                    HttpMethod.GET,
-                    HeaderTools.CONTENT_TYPE_JSON,
-                    HeaderTools.makeAuth(token));
-            getUsersLikes.execute(FixedVars.BASE_URL + "/user/" + userName + "/likes");
-            articleDetails = getUsersLikes.getObj();
-
-            if (articleDetails.length==0) {
-                heading.setVisibility(View.VISIBLE);
-                lprv.setVisibility(View.GONE);
-                //Toast.makeText(HomeLikeHistoryPage.this, "Nothing liked yet", Toast.LENGTH_LONG).show();
-            } else {
-                heading.setVisibility(View.GONE);
-                lprv.setVisibility(View.VISIBLE);
-                articleList = new ArticlesListModel[articleDetails.length];
-                for (int i = 0; i < articleDetails.length; i++) {
-                    articleList[i] = new ArticlesListModel(articleDetails[i]);
+                if (articleDetails.length == 0) {
+                    heading.setVisibility(View.VISIBLE);
+                    lprv.setVisibility(View.GONE);
+                    //Toast.makeText(HomeLikeHistoryPage.this, "Nothing liked yet", Toast.LENGTH_LONG).show();
+                } else {
+                    heading.setVisibility(View.GONE);
+                    lprv.setVisibility(View.VISIBLE);
+                    articleList = new ArticlesListModel[articleDetails.length];
+                    for (int i = 0; i < articleDetails.length; i++) {
+                        articleList[i] = new ArticlesListModel(articleDetails[i]);
+                    }
+                    adapter = new ArticlesListCustomAdapter(HomeLikeHistoryPage.this, articleList);
+                    lprv.setAdapter(adapter);
                 }
-                adapter = new ArticlesListCustomAdapter(HomeLikeHistoryPage.this, articleList);
-                lprv.setAdapter(adapter);
-            }
+            } else
+                NetworkStatus.getInstance(this).buildDialog(this).show();
         }
     }
 

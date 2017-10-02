@@ -81,63 +81,59 @@ public class WriteArticlePage extends AppCompatActivity {
         } else {
 
             //Checking for internet connection
-            if (NetworkStatus.getInstance(this).isOnline())
+            if (NetworkStatus.getInstance(this).isOnline()) {
                 setContentView(R.layout.activity_write_article_page);
-            else
-                NetworkStatus.getInstance(this).buildDialog(this).show();
 
-            toolbar = (Toolbar) findViewById(R.id.write_page_toolbar);
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-            newArticleTitleText = (EditText) findViewById(R.id.txt_write_article_title);
-            newArticleContentText = (EditText) findViewById(R.id.txt_write_article_content);
-            newArticleTagsText = (TextView) findViewById(R.id.txt_write_article_selected_tags);
-            publishArticleButton = (Button) findViewById(R.id.publish_button);
+                toolbar = (Toolbar) findViewById(R.id.write_page_toolbar);
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-            userSearchText = (EditText) findViewById(R.id.txt_user_search);
-            userSearchButton = (Button) findViewById(R.id.btn_user_search);
-            newArticleTagsText.setText(singleTag);
+                newArticleTitleText = (EditText) findViewById(R.id.txt_write_article_title);
+                newArticleContentText = (EditText) findViewById(R.id.txt_write_article_content);
+                newArticleTagsText = (TextView) findViewById(R.id.txt_write_article_selected_tags);
+                publishArticleButton = (Button) findViewById(R.id.publish_button);
 
-            userSearchButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String usersTag = userSearchText.getText().toString().trim().toLowerCase();
-                    RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
-                    tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
-                    TagDetail tag = tagRead.getObj();
-                    HttpStatus status = tagRead.getHttpStatus();
+                userSearchText = (EditText) findViewById(R.id.txt_user_search);
+                userSearchButton = (Button) findViewById(R.id.btn_user_search);
+                newArticleTagsText.setText(singleTag);
 
-                    if (status == HttpStatus.OK && tag != null) {
-                        //To check if the tag user has selected is already present in his selection list
-                        for (String addedTag : listAdded) {
-                            if ((usersTag.equals(addedTag))) {
-                                Toast.makeText(WriteArticlePage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
-                                TAG_ALREADY_PRESENT = true;
+                userSearchButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String usersTag = userSearchText.getText().toString().trim().toLowerCase();
+                        RequestTask<TagDetail> tagRead = new RequestTask<>(TagDetail.class, CONTENT_TYPE_JSON);
+                        tagRead.execute(FixedVars.BASE_URL + "/tag/" + usersTag);
+                        TagDetail tag = tagRead.getObj();
+                        HttpStatus status = tagRead.getHttpStatus();
+
+                        if (status == HttpStatus.OK && tag != null) {
+                            //To check if the tag user has selected is already present in his selection list
+                            for (String addedTag : listAdded) {
+                                if ((usersTag.equals(addedTag))) {
+                                    Toast.makeText(WriteArticlePage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
+                                    TAG_ALREADY_PRESENT = true;
+                                }
                             }
-                        }
-                        //If the tag is not already present and is available in the Database, ENTER it into the list
-                        if (!TAG_ALREADY_PRESENT) {
-                            userSearchText.setText("");
-                            tags.add(usersTag);
-                            singleTag = singleTag + usersTag + ", ";
-                            newArticleTagsText.setText(singleTag);
-                            listAdded.add(usersTag);
-                            NO_SELECTION_FLAG = false;
-                        }
-                    } else if (usersTag.equals(""))
-                        Toast.makeText(WriteArticlePage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
-                    else
-                        Toast.makeText(WriteArticlePage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
-                }
-            });
+                            //If the tag is not already present and is available in the Database, ENTER it into the list
+                            if (!TAG_ALREADY_PRESENT) {
+                                userSearchText.setText("");
+                                tags.add(usersTag);
+                                singleTag = singleTag + usersTag + ", ";
+                                newArticleTagsText.setText(singleTag);
+                                listAdded.add(usersTag);
+                                NO_SELECTION_FLAG = false;
+                            }
+                        } else if (usersTag.equals(""))
+                            Toast.makeText(WriteArticlePage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(WriteArticlePage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
+                    }
+                });
 
-            //publishArticleButton.setOnClickListener(new View.OnClickListener() {
-            //    @Override
-            //    public void onClick(View view) {
-            //    }
-            //});
+            } else
+                NetworkStatus.getInstance(this).buildDialog(this).show();
         }
     }
 

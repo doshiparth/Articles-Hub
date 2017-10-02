@@ -4,9 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +29,11 @@ import me.anwarshahriar.calligrapher.Calligrapher;
  */
 public class SignupPage extends AppCompatActivity {
 
+    public String token;
+    Button signupButton;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+    ProgressDialog progressDialog;
     /**
      * A dummy authentication store containing known user names and passwords.
      * <p>
@@ -43,76 +47,74 @@ public class SignupPage extends AppCompatActivity {
     private EditText userNameText;
     private EditText uinfoText;
     private EditText passwordText;
+    private EditText confirmPaswordText;
     private EditText fnameText;
     private EditText lnameText;
-    Button signupButton;
     private TextView noTokenErrorText;
-    public String token;
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
-    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connectivity
-        if (NetworkStatus.getInstance(this).isOnline())
+        if (NetworkStatus.getInstance(this).isOnline()) {
             setContentView(R.layout.activity_signup_page);
-        else
-            NetworkStatus.getInstance(this).buildDialog(this).show();
 
-        Calligrapher calligrapher = new Calligrapher(SignupPage.this);
-        calligrapher.setFont(SignupPage.this, FixedVars.FONT_NAME, true);
+            Calligrapher calligrapher = new Calligrapher(SignupPage.this);
+            calligrapher.setFont(SignupPage.this, FixedVars.FONT_NAME, true);
 
-        //Initializing ProgressDialog
-        progressDialog = new ProgressDialog(SignupPage.this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setTitle("Please wait");
-        progressDialog.setMessage("Registering you as our new user");
-        progressDialog.setCancelable(false);
-        progressDialog.setIndeterminate(true);
+            //Initializing ProgressDialog
+            progressDialog = new ProgressDialog(SignupPage.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage("Registering you as our new user");
+            progressDialog.setCancelable(false);
+            progressDialog.setIndeterminate(true);
 
-        //Creating a SharedPreferences file
-        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
-        editor.apply();
+            //Creating a SharedPreferences file
+            sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+            editor = sharedPref.edit();
+            editor.apply();
 
-        // Set up the login form.
-        fnameText = (EditText) findViewById(R.id.signup_page_fname);
-        lnameText = (EditText) findViewById(R.id.signup_page_lname);
-        emailText = (EditText) findViewById(R.id.signup_page_email);
-        userNameText = (EditText) findViewById(R.id.signup_page_username);
-        uinfoText = (EditText) findViewById(R.id.signup_page_uinfo);
-        passwordText = (EditText) findViewById(R.id.signup_page_password);
-        signupButton = (Button) findViewById(R.id.btn_signup);
-        noTokenErrorText = (TextView) findViewById(R.id.text_no_token_error_signup);
+            // Set up the login form.
+            fnameText = (EditText) findViewById(R.id.signup_page_fname);
+            lnameText = (EditText) findViewById(R.id.signup_page_lname);
+            emailText = (EditText) findViewById(R.id.signup_page_email);
+            userNameText = (EditText) findViewById(R.id.signup_page_username);
+            uinfoText = (EditText) findViewById(R.id.signup_page_uinfo);
+            passwordText = (EditText) findViewById(R.id.signup_page_password);
+            confirmPaswordText = (EditText) findViewById(R.id.signup_page_confirm_password);
+            signupButton = (Button) findViewById(R.id.btn_signup);
+            noTokenErrorText = (TextView) findViewById(R.id.text_no_token_error_signup);
 
-        passwordText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.signup || id == EditorInfo.IME_ACTION_SEND) {
-                    attemptLogin();
-                    return true;
+            passwordText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == R.id.signup || id == EditorInfo.IME_ACTION_SEND) {
+                        attemptLogin();
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        signupButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                noTokenErrorText.setError("");
-                fnameText.setError("");
-                lnameText.setError("");
-                emailText.setError("");
-                userNameText.setError("");
-                uinfoText.setError("");
-                passwordText.setError("");
-                progressDialog.show();
-                attemptLogin();
-            }
-        });
+            signupButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fnameText.setError(null);
+                    lnameText.setError(null);
+                    emailText.setError(null);
+                    userNameText.setError(null);
+                    uinfoText.setError(null);
+                    passwordText.setError(null);
+                    confirmPaswordText.setError(null);
+                    noTokenErrorText.setText(null);
+                    progressDialog.show();
+                    attemptLogin();
+                }
+            });
+        } else
+            NetworkStatus.getInstance(this).buildDialog(this).show();
     }
 
     private void doSignUp(UserDetail user) {
@@ -148,7 +150,8 @@ public class SignupPage extends AppCompatActivity {
         userNameText.setError(null);
         uinfoText.setError(null);
         passwordText.setError(null);
-        noTokenErrorText.setError(null);
+        confirmPaswordText.setError(null);
+        noTokenErrorText.setText(null);
 
         // Store values at the time of the login attempt.
         String fname = fnameText.getText().toString();
@@ -157,6 +160,7 @@ public class SignupPage extends AppCompatActivity {
         String uname = userNameText.getText().toString();
         String uinfo = uinfoText.getText().toString();
         String password = passwordText.getText().toString();
+        String confirmPassword = confirmPaswordText.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -167,32 +171,32 @@ public class SignupPage extends AppCompatActivity {
             fnameText.setError(getString(R.string.error_field_required));
             focusView = fnameText;
             cancel = true;
-        }// Check if the Last name field is empty.
-        //if (TextUtils.isEmpty(lname)) {
-        if (lname.matches("")) {
+        } else if (lname.matches("")) {
             lnameText.setError(getString(R.string.error_field_required));
             focusView = lnameText;
             cancel = true;
-        }
-        // Check if the Email field is empty.
-        //if (TextUtils.isEmpty(email)) {
-        if (email.matches("")) {
+        } else if (email.matches("")) {
             emailText.setError(getString(R.string.error_field_required));
             focusView = emailText;
             cancel = true;
-        }
-        // Check if the username field is empty.
-        //if (TextUtils.isEmpty(uname)) {
-        if (uname.matches("")) {
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailText.setError("Please enter a valid email address");
+            cancel = true;
+        } else if (uname.matches("")) {
             userNameText.setError(getString(R.string.error_field_required));
             focusView = userNameText;
             cancel = true;
-        }
-        // Check if the password field is empty.
-        //if (!TextUtils.isEmpty(password)) {
-        if (password.matches("")) {
+        } else if (password.matches("")) {
             passwordText.setError(getString(R.string.error_field_required));
             focusView = passwordText;
+            cancel = true;
+        } else if (confirmPassword.matches("")) {
+            confirmPaswordText.setError(getString(R.string.error_field_required));
+            focusView = confirmPaswordText;
+            cancel = true;
+        } else if (!password.matches(confirmPassword)) {
+            noTokenErrorText.setText(getString(R.string.error_passwords_dont_match));
+            focusView = noTokenErrorText;
             cancel = true;
         }
 
@@ -200,7 +204,9 @@ public class SignupPage extends AppCompatActivity {
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
-            focusView.requestFocus();
+            if (focusView != null) {
+                focusView.requestFocus();
+            }
         } else {
             //Attempts login by calling the server using REST Api call
             UserDetail user = new UserDetail();
@@ -224,21 +230,24 @@ public class SignupPage extends AppCompatActivity {
 
             //Saving details for using in other activities using SharedPreferences.
             editor.putString(FixedVars.PREF_USER_NAME, userNameText.getText().toString());
+            editor.putString(FixedVars.PREF_USER_PASSWORD, passwordText.getText().toString());
             editor.putString(FixedVars.PREF_LOGIN_TOKEN, token);
             editor.apply();
 
             progressDialog.cancel();
 
-            Toast.makeText(SignupPage.this, "Welcome to Articles Hub "+uname, Toast.LENGTH_LONG).show();
+            Toast.makeText(SignupPage.this, "Welcome to Articles Hub " + uname, Toast.LENGTH_LONG).show();
 
-            Intent myIntent = new Intent(SignupPage.this, SelectTagPage.class);
+            FixedVars.signedUp = true;
+            Intent myIntent = new Intent(SignupPage.this, StartPage.class);
             startActivity(myIntent);
+
             finish();
         } else {
             // sign up failed
             Log.i("doshi signup", "signup failed");
 
-            noTokenErrorText.setEnabled(true);
+            noTokenErrorText.setVisibility(View.VISIBLE);
             noTokenErrorText.setText(getString(R.string.invalid_or_empty_details));
             userNameText.requestFocus();
             emailText.requestFocus();

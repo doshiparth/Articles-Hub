@@ -34,6 +34,7 @@ public class NetworkStatus {
         builder.setTitle("No Internet Connection");
         builder.setMessage("You need to have a working internet connection to access this application.\n\n" +
                 "Click on RETRY after connecting to the internet");
+        builder.setCancelable(false);
 
         builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
 
