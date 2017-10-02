@@ -33,6 +33,8 @@ public class EditCommentPage extends AppCompatActivity {
     String token = null, userName = null;
     SharedPreferences sharedPref;
 
+    String articleLink;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ public class EditCommentPage extends AppCompatActivity {
             final Long cid = intent.getExtras().getLong("cid");
             final String commentContent = intent.getExtras().getString("commentContent");
             final Long aid = intent.getExtras().getLong("aid");
+            articleLink = intent.getExtras().getString("articleLink");
 
             Log.i("CID--------", "" + cid);
             Log.i("AID--------", "" + aid);
@@ -89,6 +92,9 @@ public class EditCommentPage extends AppCompatActivity {
                         commentRequest.execute(FixedVars.BASE_URL + "/comment/" + cid);
                         commentText.setEnabled(false);
                         Toast.makeText(EditCommentPage.this, "Comment Edited Successfully", Toast.LENGTH_LONG).show();
+                        Intent myIntent = new Intent(EditCommentPage.this, ArticleDisplayPage.class);
+                        myIntent.putExtra("ArticleLink", articleLink);
+                        startActivity(myIntent);
                         finish();
                     }
                 }
@@ -103,6 +109,9 @@ public class EditCommentPage extends AppCompatActivity {
                     deleteCommentRequest.execute(FixedVars.BASE_URL + "/comment/" + cid);
                     commentText.setText("");
                     Toast.makeText(EditCommentPage.this, "Comment Deleted", Toast.LENGTH_LONG).show();
+                    Intent myIntent = new Intent(EditCommentPage.this, ArticleDisplayPage.class);
+                    myIntent.putExtra("ArticleLink", articleLink);
+                    startActivity(myIntent);
                     finish();
                 }
             });

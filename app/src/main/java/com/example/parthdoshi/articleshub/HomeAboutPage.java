@@ -88,22 +88,22 @@ public class HomeAboutPage extends AppCompatActivity
                             Toast.LENGTH_LONG).show();
                 } else {
                     TagDetail tagToSend = new TagDetail();
-                    tagToSend.setTagName("username");
+                    tagToSend.setTagName(usersTag);
 
                     AddRequestTask<String, TagDetail> requestNewTag = new AddRequestTask<String, TagDetail>(String.class,
                             tagToSend, HttpMethod.POST, HeaderTools.CONTENT_TYPE_JSON,
                             HeaderTools.makeAuth(token));
                     requestNewTag.execute(FixedVars.BASE_URL + "/tag");
 
-                    HttpStatus status1 = requestNewTag.getHttpStatus();
+                    //HttpStatus status1 = requestNewTag.getHttpStatus();
 
-                    if (status == HttpStatus.CREATED) {
-                        Toast.makeText(HomeAboutPage.this, "The request for adding " + usersTag + " into our database has been " +
-                                        "successfully registered.\nWe'll verify it and add it as soon as possible",
-                                Toast.LENGTH_LONG).show();
-                        newTagSearchBox.setText("");
-                    }else
-                        Toast.makeText(HomeAboutPage.this, "This feature is temporary unavailable. Please try again after some time", Toast.LENGTH_LONG).show();
+                    //if (status1 == HttpStatus.CREATED) {
+                    Toast.makeText(HomeAboutPage.this, "The request for adding " + usersTag + " into our database has been " +
+                                    "successfully registered.\nWe'll verify it and add it as soon as possible",
+                            Toast.LENGTH_LONG).show();
+                    newTagSearchBox.setText("");
+                    //}else
+                    //  Toast.makeText(HomeAboutPage.this, "This feature is temporary unavailable. Please try again after some time", Toast.LENGTH_LONG).show();
                 }
             }
         });

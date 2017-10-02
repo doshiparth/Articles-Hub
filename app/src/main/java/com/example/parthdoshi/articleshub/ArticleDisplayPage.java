@@ -56,6 +56,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
 
     ShortUserDetail[] totalLikesObj;
     CommentDetail[] articleCommentsObj;
+    CommentDetail[] articleCommentsObj2;
     CommentListModel[] commentList;
 
     String singleUser;
@@ -67,6 +68,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
     String finalAuthorName = "";
     String finalTags = "";
     String finalDate = "";
+
+    String articleLink;
 
 
     @Override
@@ -107,7 +110,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 return;
             }
 
-            final String articleLink = articleData.getString("ArticleLink");
+            articleLink = articleData.getString("ArticleLink");
 
             RequestTask<ArticleDetail> getArticleData = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
             getArticleData.execute(articleLink);
@@ -133,7 +136,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
             getLikesRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/likes");
             totalLikesObj = getLikesRequest.getObj();
 
-            //Check if the user has commented on this article previously
+            //Get all comments previously done on this article
             RequestTask<CommentDetail[]> getArticlesCommentsRequest =
                     new RequestTask<>(CommentDetail[].class, CONTENT_TYPE_JSON);
             getArticlesCommentsRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/comments");
@@ -220,7 +223,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
                     commentList[i] = new CommentListModel(articleCommentsObj[i]);
                 }
                 aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
-                adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList, userName);
+                adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList, userName, articleLink);
                 aprv.setAdapter(adapter);
 
                 Log.i("commentList", aprv.toString());
@@ -248,6 +251,28 @@ public class ArticleDisplayPage extends AppCompatActivity {
                         commentRequest.execute(FixedVars.BASE_URL + "/comment");
                         Toast.makeText(ArticleDisplayPage.this, "Commented successfully", Toast.LENGTH_SHORT).show();
                         commentText.setText("");
+
+                        //Get all comments previously done on this article
+                        RequestTask<CommentDetail[]> getArticlesCommentsRequest =
+                                new RequestTask<>(CommentDetail[].class, CONTENT_TYPE_JSON);
+                        getArticlesCommentsRequest.execute(FixedVars.BASE_URL + "/article/" + article.getArticleId() + "/comments");
+                        articleCommentsObj2 = getArticlesCommentsRequest.getObj();
+
+                        if (!(articleCommentsObj2 == null)) {
+                            txtAllComments.setEnabled(true);
+                            commentList = new CommentListModel[articleCommentsObj2.length];
+                            for (int i = 0; i < articleCommentsObj2.length; i++) {
+                                commentList[i] = new CommentListModel(articleCommentsObj2[i]);
+                            }
+                            aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
+                            adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList, userName, articleLink);
+                            aprv.setAdapter(adapter);
+
+                            Log.i("commentList", aprv.toString());
+                        } else {
+                            txtAllComments.setEnabled(false);
+                            commentList = null;
+                        }
                     }
                 }
             });

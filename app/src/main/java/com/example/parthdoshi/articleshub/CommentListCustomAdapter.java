@@ -14,11 +14,13 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
     Context context;
     String currentUser;
     private CommentListModel[] commentList;
+    String articleLink;
 
-    CommentListCustomAdapter(Context context, CommentListModel[] commentList, String currentUser) {
+    CommentListCustomAdapter(Context context, CommentListModel[] commentList, String currentUser, String articleLink) {
         this.context = context;
         this.commentList = commentList;
         this.currentUser = currentUser;
+        this.articleLink = articleLink;
     }
 
     @Override
@@ -49,6 +51,7 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
                 Log.i("Adapter commentContent", commentList[position].getUsersComment());
                 myIntent.putExtra("aid", commentList[position].getArticleID());
                 Log.i("Adapter aid------", "" + commentList[position].getArticleID());
+                myIntent.putExtra("articleLink", articleLink);
                 context.startActivity(myIntent);
             }
         });
