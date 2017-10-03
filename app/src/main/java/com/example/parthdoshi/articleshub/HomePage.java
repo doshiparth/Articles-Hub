@@ -70,55 +70,56 @@ public class HomePage extends AppCompatActivity
                 Intent myIntent = new Intent(HomePage.this, StartPage.class);
                 startActivity(myIntent);
                 finish();
-            } //else
-            //  Toast.makeText(HomePage.this, "Welcome again " + userName, Toast.LENGTH_LONG).show();
+            } else {
 
-            Calligrapher calligrapher = new Calligrapher(HomePage.this);
-            calligrapher.setFont(HomePage.this, FixedVars.FONT_NAME, true);
+                //  Toast.makeText(HomePage.this, "Welcome again " + userName, Toast.LENGTH_LONG).show();
 
-            Log.i("Home Page Token", token);
+                Calligrapher calligrapher = new Calligrapher(HomePage.this);
+                calligrapher.setFont(HomePage.this, FixedVars.FONT_NAME, true);
+
+                Log.i("Home Page Token", token);
 
 
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
+                toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
 
-            //Floating Button for writing new Article.
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    //        .setAction("Action", null).show();
-                    Intent myIntent = new Intent(HomePage.this, WriteArticlePage.class);
-                    startActivity(myIntent);
-                }
-            });
+                //Floating Button for writing new Article.
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        //        .setAction("Action", null).show();
+                        Intent myIntent = new Intent(HomePage.this, WriteArticlePage.class);
+                        startActivity(myIntent);
+                    }
+                });
 
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
+                drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
 
-            navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
+                navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setNavigationItemSelectedListener(this);
 
-            hprv = (RecyclerView) findViewById(R.id.home_page_recycler_view);
-            layoutManager = new LinearLayoutManager(HomePage.this);
-            hprv.setLayoutManager(layoutManager);
+                hprv = (RecyclerView) findViewById(R.id.home_page_recycler_view);
+                layoutManager = new LinearLayoutManager(HomePage.this);
+                hprv.setLayoutManager(layoutManager);
 
-            swippy = (SwipeRefreshLayout) findViewById(R.id.home_page_swippy);
+                swippy = (SwipeRefreshLayout) findViewById(R.id.home_page_swippy);
 
-            //Initializing ProgressDialog
-            progressDialog = new ProgressDialog(HomePage.this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setTitle("Please wait");
-            progressDialog.setMessage("Registering you as our new user");
-            progressDialog.setCancelable(false);
-            progressDialog.setIndeterminate(true);
+                //Initializing ProgressDialog
+                progressDialog = new ProgressDialog(HomePage.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setTitle("Please wait");
+                progressDialog.setMessage("Registering you as our new user");
+                progressDialog.setCancelable(false);
+                progressDialog.setIndeterminate(true);
 
-            progressDialog.show();
-            loadHomePage();
+                progressDialog.show();
+                loadHomePage();
 
         /*
         ArticleList[0] = new ArticlesListModel("Article 0", "This is the metadata description of Article 0");
@@ -135,19 +136,20 @@ public class HomePage extends AppCompatActivity
         ArticleList[11] = new ArticlesListModel("Article 11", "This is the metadata description of Article 11");
         ArticleList[12] = new ArticlesListModel("Article 12", "This is the metadata description of Article 12");
         */
-            swippy.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    swippy.setColorSchemeResources(R.color.orange, R.color.indigo, R.color.pink, R.color.icons,
-                            R.color.green, R.color.blue);
-                    if (NetworkStatus.getInstance(HomePage.this).isOnline()) {
-                        loadHomePage();
-                        swippy.setRefreshing(false);
-                    } else
-                        NetworkStatus.getInstance(HomePage.this).buildDialog(HomePage.this).show();
+                swippy.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        swippy.setColorSchemeResources(R.color.orange, R.color.indigo, R.color.pink, R.color.icons,
+                                R.color.green, R.color.blue);
+                        if (NetworkStatus.getInstance(HomePage.this).isOnline()) {
+                            loadHomePage();
+                            swippy.setRefreshing(false);
+                        } else
+                            NetworkStatus.getInstance(HomePage.this).buildDialog(HomePage.this).show();
 
-                }
-            });
+                    }
+                });
+            }
         } else
             NetworkStatus.getInstance(this).buildDialog(this).show();
     }

@@ -114,6 +114,7 @@ public class WriteArticlePage extends AppCompatActivity {
                                 if ((usersTag.equals(addedTag))) {
                                     Toast.makeText(WriteArticlePage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
                                     TAG_ALREADY_PRESENT = true;
+                                    userSearchText.setText("");
                                 }
                             }
                             //If the tag is not already present and is available in the Database, ENTER it into the list
@@ -127,8 +128,10 @@ public class WriteArticlePage extends AppCompatActivity {
                             }
                         } else if (usersTag.equals(""))
                             Toast.makeText(WriteArticlePage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
-                        else
+                        else{
                             Toast.makeText(WriteArticlePage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
+                            userSearchText.setText("");
+                        }
                     }
                 });
 
@@ -162,7 +165,7 @@ public class WriteArticlePage extends AppCompatActivity {
             newArticleTitleText.setError(getString(R.string.error_field_required));
         else if (tags.isEmpty())
             newArticleTagsText.setError(getString(R.string.error_field_required));
-        else if (contentList.isEmpty())
+        else if (newArticleContentText.getText().toString().equals(""))
             newArticleContentText.setError(getString(R.string.error_field_required));
         else {
             article.setAuthor(userName);

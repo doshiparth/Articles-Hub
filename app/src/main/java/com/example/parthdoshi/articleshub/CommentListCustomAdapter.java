@@ -16,6 +16,8 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
     private CommentListModel[] commentList;
     String articleLink;
 
+    String dateAndTime;
+
     CommentListCustomAdapter(Context context, CommentListModel[] commentList, String currentUser, String articleLink) {
         this.context = context;
         this.commentList = commentList;
@@ -34,7 +36,8 @@ class CommentListCustomAdapter extends RecyclerView.Adapter<CommentListCustomAda
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.commentContent.setText(commentList[position].getUsersComment());
         holder.commentUsername.setText(commentList[position].getUsersName());
-        holder.commentDate.setText(commentList[position].getCommentDate());
+        dateAndTime = "On " + commentList[position].getCommentDate() + " at " + commentList[position].getCommentTime();
+        holder.commentDate.setText(dateAndTime);
 
         if (commentList[position].getUsersName().equals(currentUser))
             holder.editComment.setVisibility(View.VISIBLE);

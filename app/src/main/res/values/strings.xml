@@ -45,15 +45,18 @@
 
 
     <string name="about_page_description">Articles Hub is a community based web service.
-        It provides a platform for users to write their own articles on any topic of their choice by selecting one
-        or more tags from the provided tags.</string>
+        It provides a platform for all it\'s registered users to write their own articles on any topic of their choice by selecting
+        one or more tags from some predefined tags. The users can read articles written by other users and like and comment
+        on them as well. More tags will be added as the community grows and the range of different articles widens.\nThe users can
+    also browse through the articles and read them without registering as well, but they won\'t be able to write articles, like an
+    article or comment on any article without registeration.</string>
 
     <string name="select_tag_page_search_title">Search here</string>
     <string name="invalid_login_credentials">Invalid Login Credentials</string>
     <string name="prompt_info">Enter your info (Optional)</string>
     <string name="invalid_or_empty_details">Invalid details entered.\nTry selecting a different UserName or different valid Email address</string>
     <string name="string_tag_page_suggestions">Example: Game, Programming, Study, Science, Fashion, News, Movie etc.\nClick on any of the selected tags from the list below to remove that particular tag.</string>
-    <string name="tag_req_instruction">Enter a new tag name that is not in our database in the below bar to send us a request for adding it</string>
+    <string name="tag_req_instruction">Enter a new tag name you can not find and request us to add it for you to use.</string>
     <string name="title_activity_home_comments_page">Your Comments</string>
     <string name="title_activity_home_like_history_page">History</string>
 

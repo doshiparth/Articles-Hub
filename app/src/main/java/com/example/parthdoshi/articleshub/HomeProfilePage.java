@@ -120,6 +120,7 @@ public class HomeProfilePage extends AppCompatActivity
                     public void onClick(View view) {
                         Intent myIntent = new Intent(HomeProfilePage.this, EditDetailPage.class);
                         startActivity(myIntent);
+                        finish();
                     }
                 });
                 logoutButton.setOnClickListener(new View.OnClickListener() {

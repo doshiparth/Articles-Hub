@@ -52,49 +52,49 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Checking for internet connectivity
-        if (NetworkStatus.getInstance(this).isOnline()){
+        if (NetworkStatus.getInstance(this).isOnline()) {
             setContentView(R.layout.activity_login_page);
 
 
-        Calligrapher calligrapher = new Calligrapher(LoginPage.this);
-        calligrapher.setFont(LoginPage.this, FixedVars.FONT_NAME, true);
+            Calligrapher calligrapher = new Calligrapher(LoginPage.this);
+            calligrapher.setFont(LoginPage.this, FixedVars.FONT_NAME, true);
 
-        //Initializing ProgressDialog
-        progressDialog = new ProgressDialog(LoginPage.this);
+            //Initializing ProgressDialog
+            progressDialog = new ProgressDialog(LoginPage.this);
 
 
-        //Creating a SharedPreferences file
-        sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
-        editor.apply();
+            //Creating a SharedPreferences file
+            sharedPref = getSharedPreferences(FixedVars.PREF_NAME, Context.MODE_PRIVATE);
+            editor = sharedPref.edit();
+            editor.apply();
 
-        // Set up the login form.
-        userNameText = (EditText) findViewById(R.id.login_page_uname);
-        passwordText = (EditText) findViewById(R.id.login_page_password);
-        noTokenErrorText = (TextView) findViewById(R.id.text_no_token_error_login);
+            // Set up the login form.
+            userNameText = (EditText) findViewById(R.id.login_page_uname);
+            passwordText = (EditText) findViewById(R.id.login_page_password);
+            noTokenErrorText = (TextView) findViewById(R.id.text_no_token_error_login);
 
-        //If user clicks send/next button on keyboard, login would still be initialized directly
-        passwordText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_ACTION_SEND) {
-                    attemptLogin();
-                    return true;
+            //If user clicks send/next button on keyboard, login would still be initialized directly
+            passwordText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == R.id.login || id == EditorInfo.IME_ACTION_SEND) {
+                        attemptLogin();
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        loginPageButton = (Button) findViewById(R.id.btn_log_in_page);
-        loginPageButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                noTokenErrorText.setError(null);
-                userNameText.setError("");
-                passwordText.setError("");
-                attemptLogin();
-            }
-        });
+            loginPageButton = (Button) findViewById(R.id.btn_log_in_page);
+            loginPageButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    noTokenErrorText.setError(null);
+                    userNameText.setError("");
+                    passwordText.setError("");
+                    attemptLogin();
+                }
+            });
         } else
             NetworkStatus.getInstance(this).buildDialog(this).show();
     }
@@ -141,10 +141,7 @@ public class LoginPage extends AppCompatActivity {
             userNameText.setError(getString(R.string.error_field_required));
             focusView = userNameText;
             cancel = true;
-        }
-        // Check if the password field is empty.
-        //if (!TextUtils.isEmpty(password)) {
-        if (password.matches("")) {
+        } else if (password.matches("")) {
             passwordText.setError(getString(R.string.error_field_required));
             focusView = passwordText;
             cancel = true;

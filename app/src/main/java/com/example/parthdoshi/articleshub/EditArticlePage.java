@@ -147,6 +147,7 @@ public class EditArticlePage extends AppCompatActivity {
                             if ((usersTag.equals(addedTag))) {
                                 Toast.makeText(EditArticlePage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
                                 TAG_ALREADY_PRESENT = true;
+                                userSearchText.setText("");
                             }
                         }
                         //If the tag is not already present and is available in the Database, ENTER it into the list
@@ -160,8 +161,10 @@ public class EditArticlePage extends AppCompatActivity {
                         }
                     } else if (usersTag.equals(""))
                         Toast.makeText(EditArticlePage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
-                    else
+                    else{
                         Toast.makeText(EditArticlePage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
+                        userSearchText.setText("");
+                    }
                 }
             });
 

@@ -190,13 +190,19 @@ public class SignupPage extends AppCompatActivity {
             passwordText.setError(getString(R.string.error_field_required));
             focusView = passwordText;
             cancel = true;
+        } else if(password.length() < 6){
+            passwordText.setError("Please enter minimum 6 characters");
+            focusView = passwordText;
+            cancel = true;
         } else if (confirmPassword.matches("")) {
             confirmPaswordText.setError(getString(R.string.error_field_required));
             focusView = confirmPaswordText;
             cancel = true;
         } else if (!password.matches(confirmPassword)) {
-            noTokenErrorText.setText(getString(R.string.error_passwords_dont_match));
             focusView = noTokenErrorText;
+            noTokenErrorText.setEnabled(true);
+            noTokenErrorText.setVisibility(View.VISIBLE);
+            noTokenErrorText.setText(getString(R.string.error_passwords_dont_match));
             cancel = true;
         }
 

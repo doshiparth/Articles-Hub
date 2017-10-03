@@ -70,26 +70,26 @@ public class SelectTagPage extends AppCompatActivity {
 
             Log.i("Select Tag Page Token", token);
 
-        /*
-        //Initializing Tags
-        listSource.add("tutorial");
-        listSource.add("story");
-        listSource.add("fashion");
-        listSource.add("science");
-        listSource.add("game");
-        listSource.add("smartphone");
-        listSource.add("philosophy");
-        listSource.add("programming");
-        listSource.add("study");
-        listSource.add("news");
-        listSource.add("movie");
-        listSource.add("ai");
-        listSource.add("future");
-        listSource.add("book");
-        for (String str:listSource) {
-            System.out.println(str);
-        }
-        */
+            /*
+            //Initializing Tags
+            listSource.add("tutorial");
+            listSource.add("story");
+            listSource.add("fashion");
+            listSource.add("science");
+            listSource.add("game");
+            listSource.add("smartphone");
+            listSource.add("philosophy");
+            listSource.add("programming");
+            listSource.add("study");
+            listSource.add("news");
+            listSource.add("movie");
+            listSource.add("ai");
+            listSource.add("future");
+            listSource.add("book");
+            for (String str:listSource) {
+                System.out.println(str);
+            }
+            */
 
             lv_selected = (ListView) findViewById(R.id.select_page_listview);
             ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
@@ -112,6 +112,7 @@ public class SelectTagPage extends AppCompatActivity {
                             if ((usersTag.equals(addedTag))) {
                                 Toast.makeText(SelectTagPage.this, "You already selected this tag!!", Toast.LENGTH_LONG).show();
                                 TAG_ALREADY_PRESENT = true;
+                                userSearchText.setText("");
                             }
                         }
                         //If the tag is not already present and is available in the Database, ENTER it into the list
@@ -124,8 +125,10 @@ public class SelectTagPage extends AppCompatActivity {
                         }
                     } else if (usersTag.equals(""))
                         Toast.makeText(SelectTagPage.this, "Please Enter something!!!", Toast.LENGTH_LONG).show();
-                    else
+                    else {
                         Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
+                        userSearchText.setText("");
+                    }
                 }
             });
 
@@ -150,109 +153,109 @@ public class SelectTagPage extends AppCompatActivity {
 
             //lv_select.setAdapter(sourceAdapter);
 
-        /*
-        searchView = (MaterialSearchView)findViewById(R.id.select_tag_page_search_view);
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-            }
-            @Override
-            public void onSearchViewClosed() {
-                lv_selected = (ListView) findViewById(R.id.select_page_listview);
-                ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-                lv_selected.setAdapter(selectedAdapter);
-                //ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
-                //If Search View closed, list view will return default
-                //lv_select = (ListView)findViewById(R.id.select_page_display_listview);
-                //lv_select.setAdapter(sourceAdapter);
-            }
-        });
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                String usersTag = query.toLowerCase();
-                RequestTask<TagDetail> tagRead=new RequestTask<>(TagDetail.class,CONTENT_TYPE_JSON);
-                tagRead.execute(FixedVars.BASE_URL+"/tag/"+usersTag);
-                // initiate waiting logic
-                TagDetail tag=tagRead.getObj();
-                // terminate waiting logic
-                HttpStatus status = tagRead.getHttpStatus();
-                if(status==HttpStatus.OK && tag!=null) {
-                    listSelected.add(tag.getTagName());
-                    NO_SELECTION_FLAG = false;
+            /*
+            searchView = (MaterialSearchView)findViewById(R.id.select_tag_page_search_view);
+            searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+                @Override
+                public void onSearchViewShown() {
+                }
+                @Override
+                public void onSearchViewClosed() {
+                    lv_selected = (ListView) findViewById(R.id.select_page_listview);
                     ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
                     lv_selected.setAdapter(selectedAdapter);
+                    //ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
+                    //If Search View closed, list view will return default
+                    //lv_select = (ListView)findViewById(R.id.select_page_display_listview);
+                    //lv_select.setAdapter(sourceAdapter);
                 }
-                else
-                    Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
-                return true;
-            }
-            //Check if the entered Text in the search box matches with our list of tags
-            //If it does load those items in the new ArrayAdapter object
-            //else display the adapter with the old list
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                for (String str:listSource) {
-                    System.out.println(str);
-                }
-                if(newText != null && !newText.isEmpty()){
-                    for(String item:listSource){
-                        if(item.contains(newText))
-                            listFound.add(item);
+            });
+            searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    String usersTag = query.toLowerCase();
+                    RequestTask<TagDetail> tagRead=new RequestTask<>(TagDetail.class,CONTENT_TYPE_JSON);
+                    tagRead.execute(FixedVars.BASE_URL+"/tag/"+usersTag);
+                    // initiate waiting logic
+                    TagDetail tag=tagRead.getObj();
+                    // terminate waiting logic
+                    HttpStatus status = tagRead.getHttpStatus();
+                    if(status==HttpStatus.OK && tag!=null) {
+                        listSelected.add(tag.getTagName());
+                        NO_SELECTION_FLAG = false;
+                        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                        lv_selected.setAdapter(selectedAdapter);
                     }
-                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-                    ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
-                    lv_select.setAdapter(foundAdapter);
-                    lv_selected.setAdapter(selectedAdapter);
+                    else
+                        Toast.makeText(SelectTagPage.this, "The entered tag does not exist in the database.... Please try another tag", Toast.LENGTH_LONG).show();
+                    return true;
                 }
-                else{
-                    //if search text is null
-                    //return default
-                    ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
-                    ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-                    lv_select.setAdapter(sourceAdapter);
-                    lv_selected.setAdapter(selectedAdapter);
-                }
-                return true;
-            }
-        });
-        */
-        /*
-        lv_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                NO_SELECTION_FLAG = false;
-                //for(int j=0 ; j<listSelected.size() ; j++) {
-                //    if (!(listSource.get(i).equalsIgnoreCase(listSelected.get(j)))) {
-                for (String str:listSource) {
-                    System.out.println(str);
-                }
-                        listSelected.add(listSource.get(i));
-                        listSource.remove((listSource.get(i)));
+                //Check if the entered Text in the search box matches with our list of tags
+                //If it does load those items in the new ArrayAdapter object
+                //else display the adapter with the old list
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    for (String str:listSource) {
+                        System.out.println(str);
+                    }
+                    if(newText != null && !newText.isEmpty()){
+                        for(String item:listSource){
+                            if(item.contains(newText))
+                                listFound.add(item);
+                        }
+                        ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                        ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
+                        lv_select.setAdapter(foundAdapter);
+                        lv_selected.setAdapter(selectedAdapter);
+                    }
+                    else{
+                        //if search text is null
+                        //return default
                         ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
                         ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
-                        //ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
                         lv_select.setAdapter(sourceAdapter);
                         lv_selected.setAdapter(selectedAdapter);
-                //        return;
-                //   }
-                //}
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-        */
+                    }
+                    return true;
+                }
+            });
+            */
+            /*
+            lv_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    NO_SELECTION_FLAG = false;
+                    //for(int j=0 ; j<listSelected.size() ; j++) {
+                    //    if (!(listSource.get(i).equalsIgnoreCase(listSelected.get(j)))) {
+                    for (String str:listSource) {
+                        System.out.println(str);
+                    }
+                            listSelected.add(listSource.get(i));
+                            listSource.remove((listSource.get(i)));
+                            ArrayAdapter<String> sourceAdapter = new ArrayAdapter<>(SelectTagPage.this,android.R.layout.simple_list_item_multiple_choice, listSource);
+                            ArrayAdapter<String> selectedAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listSelected);
+                            //ArrayAdapter<String> foundAdapter = new ArrayAdapter<>(SelectTagPage.this, android.R.layout.simple_list_item_1, listFound);
+                            lv_select.setAdapter(sourceAdapter);
+                            lv_selected.setAdapter(selectedAdapter);
+                    //        return;
+                    //   }
+                    //}
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+            */
 
-        /*
-        lv_selected.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });*/
+            /*
+            lv_selected.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });*/
 
         } else
             NetworkStatus.getInstance(this).buildDialog(this).show();

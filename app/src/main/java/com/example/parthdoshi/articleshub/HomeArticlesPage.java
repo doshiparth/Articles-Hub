@@ -63,7 +63,7 @@ public class HomeArticlesPage extends AppCompatActivity
 
         //Checking if the user has a profile or not
         if (token.isEmpty()) {
-            Toast.makeText(HomeArticlesPage.this, "You need to be a logged in user to access the profile page", Toast.LENGTH_LONG).show();
+            Toast.makeText(HomeArticlesPage.this, "You need to be a logged in user to manage your articles", Toast.LENGTH_LONG).show();
             Intent myIntent = new Intent(HomeArticlesPage.this, StartPage.class);
             startActivity(myIntent);
         } else {
@@ -73,16 +73,7 @@ public class HomeArticlesPage extends AppCompatActivity
 
                 toolbar = (Toolbar) findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
-/*
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
-*/
+
                 drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                         this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

@@ -22,6 +22,10 @@ class CommentListModel {
         return commentDetail.getDate();
     }
 
+    String getCommentTime() {
+        return commentDetail.getTime();
+    }
+
     Long getCommentID(){
         return commentDetail.getCommentId();
     }

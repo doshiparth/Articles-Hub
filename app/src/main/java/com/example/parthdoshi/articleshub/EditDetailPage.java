@@ -130,7 +130,13 @@ public class EditDetailPage extends AppCompatActivity {
                         finalPassword = oldPassword;
                     }
 
-                    if (oldPassword.equals(password) && !newPassword.matches(""))
+                    if (oldPassword.equals(password) && !newPassword.matches("")) {
+                        if (newPassword.length() < 6) {
+                            newPasswordText.setError("Please enter minimum 6 characters");
+                            focusView = newPasswordText;
+                            cancel = true;
+                        }
+                    } else
                         finalPassword = newPassword;
 
                     //Only makes a call to the REST Server API if none of the required fields are empty

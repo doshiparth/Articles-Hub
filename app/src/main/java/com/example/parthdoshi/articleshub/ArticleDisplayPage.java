@@ -37,7 +37,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
     TextView articleDate;
     TextView articleContent;
     TextView articleLikes;
-    TextView txtAllComments;
     String tagArray[];
     String tagString = "";
     String contentArray[];
@@ -90,11 +89,10 @@ public class ArticleDisplayPage extends AppCompatActivity {
             articleDate = (TextView) findViewById(R.id.text_article_date);
             articleTag = (TextView) findViewById(R.id.text_article_tag);
             articleContent = (TextView) findViewById(R.id.text_article_content);
-            likeButton = (ToggleButton) findViewById(R.id.btn_like);
             articleLikes = (TextView) findViewById(R.id.total_likes);
+            likeButton = (ToggleButton) findViewById(R.id.btn_like);
             commentText = (EditText) findViewById(R.id.write_comment);
             commentButton = (Button) findViewById(R.id.btn_comment);
-            txtAllComments = (TextView) findViewById(R.id.txt_all_comments);
 
             //Recycler View
             aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
@@ -113,9 +111,10 @@ public class ArticleDisplayPage extends AppCompatActivity {
             articleLink = articleData.getString("ArticleLink");
 
             //To get the article's details from the server using articleLink
-            RequestTask<ArticleDetail> getArticleData = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
-            getArticleData.execute(articleLink);
-            final ArticleDetail article = getArticleData.getObj();
+            RequestTask<ArticleDetail> getArticleRequest = new RequestTask<>(ArticleDetail.class, CONTENT_TYPE_JSON);
+            getArticleRequest.execute(articleLink);
+            final ArticleDetail article = getArticleRequest.getObj();
+
 
             tagArray = new String[article.getTag().size()];
             Iterator<String> itr1 = article.getTag().iterator();
@@ -130,6 +129,8 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 contentArray[i] = itr2.next();
             for (String aContentArray : contentArray)
                 contentString += aContentArray + "\n";
+
+            Log.i("article links----------", article.getLink("likes").toString());
 
             //Check if the user has liked this article previously
             RequestTask<ShortUserDetail[]> getLikesRequest =
@@ -167,10 +168,11 @@ public class ArticleDisplayPage extends AppCompatActivity {
             likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (token == null) {
+                    if (token.isEmpty()) {{
                         Toast.makeText(ArticleDisplayPage.this, "You need to be logged in to like this article", Toast.LENGTH_LONG).show();
+                        likeButton.setChecked(false);
+                    }
                     } else {
-
                         if (likeButton.isChecked()) {
                             //Like the article
                             RequestTask<String> likeRequest = new RequestTask<String>(String.class, HttpMethod.POST,
@@ -191,7 +193,7 @@ public class ArticleDisplayPage extends AppCompatActivity {
                             articleLikes.setText("Total likes: " + totalLikes);
 
                         } else {
-                            //Reemove like from the article if previously liked
+                            //Remove like from the article if previously liked
                             RequestTask<String> unlikeRequest = new RequestTask<String>(String.class, HttpMethod.DELETE,
                                     HeaderTools.CONTENT_TYPE_JSON,
                                     HeaderTools.makeAuth(token));
@@ -222,7 +224,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
                         Long aid = article.getArticleId();
                         Intent myIntent = new Intent(ArticleDisplayPage.this, ArticleLikesPage.class);
                         myIntent.putExtra("aid", aid);
-
                         startActivity(myIntent);
                     }
                 }
@@ -230,7 +231,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
 
 
             if (!(articleCommentsObj == null)) {
-                txtAllComments.setEnabled(true);
                 commentList = new CommentListModel[articleCommentsObj.length];
                 for (int i = 0; i < articleCommentsObj.length; i++) {
                     commentList[i] = new CommentListModel(articleCommentsObj[i]);
@@ -238,21 +238,19 @@ public class ArticleDisplayPage extends AppCompatActivity {
                 aprv = (RecyclerView) findViewById(R.id.rv_all_comments);
                 adapter = new CommentListCustomAdapter(ArticleDisplayPage.this, commentList, userName, articleLink);
                 aprv.setAdapter(adapter);
-
-                Log.i("commentList", aprv.toString());
+                Log.i("commentList------------", aprv.toString());
+                Log.i("Comment List's Length--", "" + commentList.length);
             } else {
-                txtAllComments.setEnabled(false);
                 commentList = null;
             }
-            Log.i("Comment List's Length", "" + commentList.length);
 
             commentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (commentText.getText().toString().isEmpty()) {
-                        Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_SHORT).show();
-                    } else if (token == null)
-                        Toast.makeText(ArticleDisplayPage.this, "You need to be logged in to comment on this article", Toast.LENGTH_LONG).show();
+                    if (token.isEmpty()) {
+                        Toast.makeText(ArticleDisplayPage.this, "You need to be logged in to comment on this article", Toast.LENGTH_SHORT).show();
+                    } else if (commentText.getText().toString().isEmpty())
+                        Toast.makeText(ArticleDisplayPage.this, "Please enter something!!", Toast.LENGTH_LONG).show();
                     else {
                         CommentDetail comment = new CommentDetail();
                         comment.setArticleId(article.getArticleId());
@@ -274,7 +272,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
                         articleCommentsObj2 = getArticlesCommentsRequest.getObj();
 
                         if (!(articleCommentsObj2 == null)) {
-                            txtAllComments.setEnabled(true);
                             commentList = new CommentListModel[articleCommentsObj2.length];
                             for (int i = 0; i < articleCommentsObj2.length; i++) {
                                 commentList[i] = new CommentListModel(articleCommentsObj2[i]);
@@ -285,7 +282,6 @@ public class ArticleDisplayPage extends AppCompatActivity {
 
                             Log.i("commentList", aprv.toString());
                         } else {
-                            txtAllComments.setEnabled(false);
                             commentList = null;
                         }
                     }
